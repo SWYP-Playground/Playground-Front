@@ -17,6 +17,7 @@ export default tseslint.config(
       'airbnb',
       'airbnb/hooks',
       'plugin:react/jsx-runtime',
+      'plugin:@typescript-eslint/recommended',
       'plugin:react-hooks/recommended',
       'plugin:jsx-a11y/recommended',
       'prettier',

@@ -15,11 +15,14 @@ export default defineConfig({
       },
     }),
     VitePWA({
+      strategies: 'generateSW',
       registerType: 'autoUpdate',
       includeAssets: [faviconURL],
+      injectRegister: false,
+      pwaAssets: { disabled: false, config: true, htmlPreset: '2023', overrideManifestIcons: true },
       manifest: {
         name: 'PlayGround PWA App',
-        short_name: 'PlayGround',
+        short_name: 'PlayGround PWA',
         start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
@@ -37,6 +40,21 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,svg,ico}'],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+      },
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,svg,png,svg,ico}'],
+      },
+      devOptions: {
+        enabled: false,
+        navigateFallback: 'index.html',
+        suppressWarnings: true,
+        /* when using generateSW the PWA plugin will switch to classic */
+        type: 'module',
       },
     }),
   ],
