@@ -16,4 +16,5 @@ export const PATH = {
   REPORT_FRIEND: (userId: string) => `report-friend/${userId}`,
   DIRECT_MESSAGE: (userId: string) => `direct-message/${userId}`,
   CONTACT_US: 'contact-us',
+  RELOAD: 0,
 } as const;
