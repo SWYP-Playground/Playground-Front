@@ -1,5 +1,18 @@
+import CustomBottomSheet from '@/components/common/BottomSheet/CustomBottomSheet';
+import { useBottomSheet } from '@/hooks/common/useBottomSheet';
+
 const FindPlaygroundFriendPage = () => {
-  return <div>놀이터 친구 찾기 페이지입니다</div>;
+  const { isOpen, open, close } = useBottomSheet();
+
+  return (
+    <div>
+      <button onClick={open}>바텀시트 열기</button>
+      <CustomBottomSheet isOpen={isOpen} onClose={close}>
+        <h2>Bottom Sheet Content</h2>
+        <p>여기에 원하는 컨텐츠를 넣을 수 있습니다.</p>
+      </CustomBottomSheet>
+    </div>
+  );
 };
 
 export default FindPlaygroundFriendPage;
