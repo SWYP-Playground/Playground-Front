@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { Global } from '@emotion/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
 
 import { queryClient } from '@hooks/api/queryClient';
 
@@ -27,9 +29,11 @@ const main = async () => {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <Global styles={globalStyles} />
-        <AppRouter />
-        <ReactQueryDevtools />
+        <Theme>
+          <Global styles={globalStyles} />
+          <AppRouter />
+          <ReactQueryDevtools />
+        </Theme>
       </QueryClientProvider>
     </StrictMode>,
   );
