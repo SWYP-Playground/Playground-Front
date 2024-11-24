@@ -5,7 +5,7 @@ export const BASE_URL = PROD
   : 'http://localhost:5173';
 
 export const AXIOS_BASE_URL = PROD
-  ? `${window.location.protocol}//${import.meta.env.env.VITE_AXIOS_PROD_BASE_URL}`
+  ? `${window.location.protocol}//${import.meta.env.VITE_AXIOS_PROD_BASE_URL}`
   : '/';
 
 // 백엔드 api 연결시 간단하게 연결하기 위한 END_POINTS 상수 설정
