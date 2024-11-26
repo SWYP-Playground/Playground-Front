@@ -7,7 +7,7 @@ export const HeaderStyling = styled.header`
   right: 0;
 
   width: 100%;
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.black0};
   z-index: 50;
 `;
 

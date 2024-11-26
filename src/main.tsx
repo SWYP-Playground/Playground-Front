@@ -5,32 +5,33 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Theme } from '@radix-ui/themes';
 import { ThemeProvider } from '@emotion/react';
-import * as colors from '@radix-ui/colors';
 import '@radix-ui/themes/styles.css';
 
 import { queryClient } from '@hooks/api/queryClient';
 
-import { globalStyles } from '@styles/GlobalStyle.ts';
+import { globalStyles } from '@styles/GlobalStyle';
 
-import { worker } from '@mocks/browser.ts';
+import { worker } from '@mocks/browser';
 
-import AppRouter from '@router/AppRouter.tsx';
+import AppRouter from '@router/AppRouter';
 
 const theme = {
   colors: {
-    blue: colors.blue,
-    cyan: colors.cyan,
-    grape: colors.plum,
-    gray: colors.gray,
-    green: colors.green,
-    indigo: colors.indigo,
-    lime: colors.lime,
-    orange: colors.orange,
-    pink: colors.pink,
-    red: colors.red,
-    teal: colors.teal,
-    violet: colors.violet,
-    yellow: colors.yellow,
+    black0: '#FFFFFF',
+    black50: '#F8F9FA',
+    black100: '#F1F5F9',
+    black200: '#E5ECF2',
+    black300: '#DBE3EB',
+    black400: '#CED4DA',
+    black500: '#ADB5BD',
+    black600: '#99A3AD',
+    black700: '#878F9A',
+    black800: '#495057',
+    black900: '#212529',
+    primary1: '#FFE135',
+    primary2: '#907E19',
+    primary3: '#FFF9E1',
+    secondary: '#478EEE',
   },
 };
 
