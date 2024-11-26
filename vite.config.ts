@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
+import svgr from 'vite-plugin-svgr';
 
 let faviconURL = '/favicon.svg';
 
@@ -13,6 +14,10 @@ export default defineConfig({
       babel: {
         plugins: ['@emotion/babel-plugin'],
       },
+    }),
+    svgr({
+      svgrOptions: { icon: true, ref: true },
+      include: '**/*.svg?react',
     }),
     VitePWA({
       strategies: 'generateSW',
@@ -73,6 +78,12 @@ export default defineConfig({
       '@router': path.resolve(__dirname, './src/router'),
       '@store': path.resolve(__dirname, './src/store'),
       '@utils': path.resolve(__dirname, './src/utils'),
+    },
+  },
+  assetsInclude: ['**/*.svg'],
+  build: {
+    rollupOptions: {
+      plugins: [],
     },
   },
 });
