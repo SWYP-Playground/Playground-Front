@@ -4,6 +4,8 @@ import { Global } from '@emotion/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Theme } from '@radix-ui/themes';
+import { ThemeProvider } from '@emotion/react';
+import * as colors from '@radix-ui/colors';
 import '@radix-ui/themes/styles.css';
 
 import { queryClient } from '@hooks/api/queryClient';
@@ -13,6 +15,24 @@ import { globalStyles } from '@styles/GlobalStyle.ts';
 import { worker } from '@mocks/browser.ts';
 
 import AppRouter from '@router/AppRouter.tsx';
+
+const theme = {
+  colors: {
+    blue: colors.blue,
+    cyan: colors.cyan,
+    grape: colors.plum,
+    gray: colors.gray,
+    green: colors.green,
+    indigo: colors.indigo,
+    lime: colors.lime,
+    orange: colors.orange,
+    pink: colors.pink,
+    red: colors.red,
+    teal: colors.teal,
+    violet: colors.violet,
+    yellow: colors.yellow,
+  },
+};
 
 const main = async () => {
   if (import.meta.env.MODE === 'development') {
@@ -29,11 +49,13 @@ const main = async () => {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <Theme>
-          <Global styles={globalStyles} />
-          <AppRouter />
-          <ReactQueryDevtools />
-        </Theme>
+        <ThemeProvider theme={theme}>
+          <Theme>
+            <Global styles={globalStyles} />
+            <AppRouter />
+            <ReactQueryDevtools />
+          </Theme>
+        </ThemeProvider>
       </QueryClientProvider>
     </StrictMode>,
   );
