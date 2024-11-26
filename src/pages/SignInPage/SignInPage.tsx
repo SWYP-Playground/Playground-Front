@@ -1,50 +1,83 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignInPage = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailWarning, setEmailWarning] = useState('');
+  const [passwordWarning, setPasswordWarning] = useState('');
+  const [isClicked, setIsClicked] = useState(false);
 
-  const handleLogin = (): void => {
-    console.log('Login attempt:', { email, password });
+  const navigate = useNavigate();
+
+  // 이메일 유효성 검사
+  const validateEmail = (email: string) => {
+    if (!email) {
+      setEmailWarning('');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailWarning('올바른 이메일 형식이 아닙니다.');
+    } else {
+      setEmailWarning('');
+    }
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value);
+  // 비밀번호 유효성 검사
+  const validatePassword = (password: string) => {
+    if (!password) {
+      setPasswordWarning('');
+      return;
+    }
+    const lengthValid = password.length >= 6 && password.length <= 20;
+    const combinationValid =
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /[0-9]/.test(password) &&
+      /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (!lengthValid) {
+      setPasswordWarning('비밀번호는 최소 6자리에서 최대 20자리여야 합니다.');
+    } else if (!combinationValid) {
+      setPasswordWarning('비밀번호는 영어 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.');
+    } else {
+      setPasswordWarning('');
+    }
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setEmail(inputValue);
+    validateEmail(inputValue);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setPassword(inputValue);
+    validatePassword(inputValue);
+  };
+
+  const handleLogin = () => {
+    if (!emailWarning && !passwordWarning) {
+      console.log('Login attempt:', { email, password });
+      setIsClicked(true);
+      setTimeout(() => {
+        setIsClicked(false);
+        navigate('/find-account');
+      }, 2000);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleLogin();
   };
 
-  const handleCancel = (): void => {
-    console.log('Cancel button clicked');
-  };
-
-  const handleButtonClick = (): void => {
-    console.log('Button Clicked');
-    setIsClicked(true);
-    console.log('isClicked:', isClicked);
-    setTimeout(() => {
-      setIsClicked(false);
-      console.log('isClicked reset:', isClicked);
-    }, 2000);
-  };
-
-  useEffect(() => {
-    console.log('isClicked changed:', isClicked);
-  }, [isClicked]);
-
   return (
     <Container>
-      <CancelIcon src="/src/assets/svg/cancel.svg" alt="Cancel" onClick={handleCancel} />
+      <CancelIcon src="/src/assets/svg/cancel.svg" alt="Cancel" />
       <LogoContainer>
         <Logo src="/src/assets/svg/logo-vertical.svg" alt="Playground Logo" />
       </LogoContainer>
@@ -57,6 +90,9 @@ const SignInPage = () => {
             value={email}
             onChange={handleEmailChange}
           />
+          <WarningMessageContainer>
+            {emailWarning && <WarningMessage>{emailWarning}</WarningMessage>}
+          </WarningMessageContainer>
         </Label>
         <Label>
           비밀번호
@@ -66,12 +102,14 @@ const SignInPage = () => {
             value={password}
             onChange={handlePasswordChange}
           />
+          <WarningMessageContainer>
+            {passwordWarning && <WarningMessage>{passwordWarning}</WarningMessage>}
+          </WarningMessageContainer>
         </Label>
         <SubmitButton
           type="submit"
-          disabled={!email || !password}
+          disabled={!email || !password || !!emailWarning || !!passwordWarning}
           isClicked={isClicked}
-          onClick={handleButtonClick}
         >
           로그인
         </SubmitButton>
@@ -122,7 +160,7 @@ const Form = styled.form`
   max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
 `;
 
 const Label = styled.label`
@@ -136,13 +174,24 @@ const Input = styled.input`
   height: 44px;
   padding: 12px 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
 
   color: ${(props) => props.theme.colors.black800};
   background-color: ${(props) => props.theme.colors.black100};
 
   font-size: 14px;
   margin-top: 10px;
+`;
+
+const WarningMessageContainer = styled.div`
+  min-height: 20px;
+  margin-top: 5px;
+`;
+
+const WarningMessage = styled.p`
+  font-size: 12px;
+  color: ${(props) => props.theme.colors.primary1};
+  margin: 0;
 `;
 
 interface SubmitButtonProps {
@@ -158,10 +207,10 @@ const SubmitButton = styled.button<SubmitButtonProps>`
   color: ${(props) =>
     props.isClicked ? props.theme.colors.black900 : props.theme.colors.black600};
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
-  margin-top: 100px;
+  margin-top: 80px;
   cursor: pointer;
 
   &:disabled {
@@ -178,7 +227,7 @@ const FooterLinkContainer = styled.div`
 `;
 
 const FooterLink = styled.a`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.black900};
   text-decoration: none;
