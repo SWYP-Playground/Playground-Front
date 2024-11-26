@@ -28,7 +28,7 @@ export const globalStyles = css`
     min-width: 360px;
     min-height: 100vh;
     margin: 0 auto;
-    padding: 46px 16px 16px 16px;
+    padding: 46px 0px 16px 0px;
 
     // 터치 동작 최적화
     -webkit-touch-callout: none;
@@ -46,13 +46,13 @@ export const globalStyles = css`
     @media (min-width: 768px) {
       // 태블릿
       max-width: 768px;
-      padding: 46px 24px 24px 24px;
+      padding: 46px 0px 24px 0px;
     }
 
     @media (min-width: 1024px) {
       // 데스크탑
       max-width: 1024px;
-      padding: 46px 32px 32px 32px;
+      padding: 46px 0px 32px 0px;
     }
   }
 
