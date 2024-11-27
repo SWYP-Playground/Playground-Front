@@ -111,17 +111,19 @@ const SignInPage = () => {
             {passwordWarning && <WarningMessage>{passwordWarning}</WarningMessage>}
           </WarningMessageContainer>
         </Label>
-        <SubmitButton
-          type="submit"
-          disabled={!email || !password || !!emailWarning || !!passwordWarning}
-          isClicked={isClicked}
-        >
-          로그인
-        </SubmitButton>
-        <FooterLinkContainer>
-          <FooterLink to="/sign-up">회원가입</FooterLink>
-          <FooterLink to="/find-account">계정찾기</FooterLink>
-        </FooterLinkContainer>
+        <BottomContainer>
+          <SubmitButton
+            type="submit"
+            disabled={!email || !password || !!emailWarning || !!passwordWarning}
+            isClicked={isClicked}
+          >
+            로그인
+          </SubmitButton>
+          <FooterLinkContainer>
+            <FooterLink to="/sign-up">회원가입</FooterLink>
+            <FooterLink to="/find-account">계정찾기</FooterLink>
+          </FooterLinkContainer>
+        </BottomContainer>
       </Form>
     </Container>
   );
@@ -173,6 +175,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex-grow: 1;
 `;
 
 const Label = styled.label`
@@ -209,6 +212,10 @@ const WarningMessage = styled.p`
   font-size: 12px;
   color: ${(props) => props.theme.colors.red};
   margin: 0;
+`;
+
+const BottomContainer = styled.div`
+  margin-top: auto;
 `;
 
 interface SubmitButtonProps {
