@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SignInPage = () => {
   const [email, setEmail] = useState('');
@@ -65,8 +66,8 @@ const SignInPage = () => {
       setIsClicked(true);
       setTimeout(() => {
         setIsClicked(false);
-        navigate('/find-account');
-      }, 2000);
+        navigate('/');
+      }, 1000);
     }
   };
 
@@ -77,7 +78,9 @@ const SignInPage = () => {
 
   return (
     <Container>
-      <CancelIcon src="/src/assets/svg/cancel.svg" alt="Cancel" />
+      <HeaderContainer>
+        <CancelIcon src="/src/assets/svg/cancel.svg" alt="Cancel" />
+      </HeaderContainer>
       <LogoContainer>
         <Logo src="/src/assets/svg/logo-vertical.svg" alt="Playground Logo" />
       </LogoContainer>
@@ -89,6 +92,7 @@ const SignInPage = () => {
             placeholder="이메일을 입력해 주세요"
             value={email}
             onChange={handleEmailChange}
+            hasError={!!emailWarning}
           />
           <WarningMessageContainer>
             {emailWarning && <WarningMessage>{emailWarning}</WarningMessage>}
@@ -101,6 +105,7 @@ const SignInPage = () => {
             placeholder="비밀번호를 입력해 주세요"
             value={password}
             onChange={handlePasswordChange}
+            hasError={!!passwordWarning}
           />
           <WarningMessageContainer>
             {passwordWarning && <WarningMessage>{passwordWarning}</WarningMessage>}
@@ -114,8 +119,8 @@ const SignInPage = () => {
           로그인
         </SubmitButton>
         <FooterLinkContainer>
-          <FooterLink>회원가입</FooterLink>
-          <FooterLink>계정찾기</FooterLink>
+          <FooterLink to="/sign-up">회원가입</FooterLink>
+          <FooterLink to="/find-account">계정찾기</FooterLink>
         </FooterLinkContainer>
       </Form>
     </Container>
@@ -134,11 +139,18 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.colors.black0};
 `;
 
+const HeaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  margin-right: 40px;
+`;
+
 const CancelIcon = styled.img`
-  width: 16px;
-  position: absolute;
-  top: 0px;
-  right: 10px;
+  position: flex;
+  justify-content: flex-end;
+
   cursor: pointer;
 
   &:hover {
@@ -169,11 +181,11 @@ const Label = styled.label`
   color: ${(props) => props.theme.colors.black800};
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ hasError: boolean }>`
   width: 100%;
   height: 44px;
   padding: 12px 16px;
-  border: none;
+  border: 1px solid ${(props) => (props.hasError ? props.theme.colors.red : 'transparent')};
   border-radius: 8px;
 
   color: ${(props) => props.theme.colors.black800};
@@ -181,6 +193,11 @@ const Input = styled.input`
 
   font-size: 14px;
   margin-top: 10px;
+
+  &:focus {
+    border: 2px solid ${(props) => (props.hasError ? props.theme.colors.red : 'transparent')};
+    outline: none;
+  }
 `;
 
 const WarningMessageContainer = styled.div`
@@ -190,7 +207,7 @@ const WarningMessageContainer = styled.div`
 
 const WarningMessage = styled.p`
   font-size: 12px;
-  color: ${(props) => props.theme.colors.primary1};
+  color: ${(props) => props.theme.colors.red};
   margin: 0;
 `;
 
@@ -203,19 +220,17 @@ const SubmitButton = styled.button<SubmitButtonProps>`
   height: 50px;
   padding: 16px 0;
   background-color: ${(props) =>
-    props.isClicked ? props.theme.colors.primary1 : props.theme.colors.black400};
-  color: ${(props) =>
-    props.isClicked ? props.theme.colors.black900 : props.theme.colors.black600};
+    props.disabled ? props.theme.colors.black200 : props.theme.colors.primary1};
+  color: ${(props) => (props.disabled ? props.theme.colors.black400 : props.theme.colors.black900)};
   border: none;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
   margin-top: 80px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 
-  &:disabled {
-    background-color: ${(props) => props.theme.colors.black200};
-    cursor: not-allowed;
+  &:hover {
+    opacity: ${(props) => (props.disabled ? '1' : '0.8')};
   }
 `;
 
@@ -226,8 +241,8 @@ const FooterLinkContainer = styled.div`
   justify-content: space-around;
 `;
 
-const FooterLink = styled.a`
-  font-size: 14px;
+const FooterLink = styled(Link)`
+  font-size: 16px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.black900};
   text-decoration: none;
