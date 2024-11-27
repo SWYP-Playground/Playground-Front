@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import CustomBottomSheet from '@/components/common/BottomSheet/CustomBottomSheet';
 import Header from '@components/layout/Header/Header';
-import PlayGroundButton from '@/components/PlayGround/PlayGroundButton/PlayGroundButton';
-import PlayGroundSearchBar from '@/components/PlayGround/PlayGroundSearchBar/PlayGroundSearchBar';
+import PlayGroundButton from '@/components/playGround/PlayGroundButton/PlayGroundButton';
+import PlayGroundSearchBar from '@/components/playGround/PlayGroundSearchBar/PlayGroundSearchBar';
 import { useBottomSheet } from '@/hooks/common/useBottomSheet';
 import LeftIcon from '@assets/svg/left-icon.svg?react';
+import PlayGroundMap from '@/components/playGround/PlayGroundMap/PlayGroundMap';
 
 const FindPlaygroundFriendPage = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const FindPlaygroundFriendPage = () => {
         <h2>Bottom Sheet Content</h2>
         <p>여기에 원하는 컨텐츠를 넣을 수 있습니다.</p>
       </CustomBottomSheet>
+      <PlayGroundMap />
       <PlayGroundButton />
     </Flex>
   );
