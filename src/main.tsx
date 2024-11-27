@@ -32,6 +32,7 @@ const theme = {
     primary2: '#907E19',
     primary3: '#FFF9E1',
     secondary: '#478EEE',
+    red: '#EE1717',
   },
 };
 
