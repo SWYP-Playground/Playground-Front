@@ -103,8 +103,11 @@ const SignUpPage = () => {
       !!nameWarning ||
       !email ||
       !!emailWarning ||
+      !password ||
       !!passwordWarning ||
-      !!confirmPasswordWarning
+      !confirmPassword ||
+      !!confirmPasswordWarning ||
+      !isChecked
     ) {
       console.log('입력 조건을 모두 충족해야 합니다.');
       return;
@@ -211,8 +214,11 @@ const SignUpPage = () => {
               !!nameWarning ||
               !email ||
               !!emailWarning ||
+              !password ||
               !!passwordWarning ||
-              !!confirmPasswordWarning
+              !confirmPassword ||
+              !!confirmPasswordWarning ||
+              !isChecked
             }
           >
             완료
