@@ -152,6 +152,14 @@ const AppRouter = () => {
             </Suspense>
           ),
         },
+        {
+          path: PATH.PLAYGROUND_SEARCH,
+          element: (
+            <Suspense>
+              <Lazy.PlaygroundSearchPage />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);
