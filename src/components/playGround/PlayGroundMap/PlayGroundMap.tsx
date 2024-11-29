@@ -1,37 +1,93 @@
-import { useRef } from 'react';
-import { Map } from 'react-kakao-maps-sdk';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 import useKakaoLoader from '@/hooks/common/useKakaoLoader';
-import { MAP_INITIAL_ZOOM_LEVEL } from '@/constants/map';
+import { MAP_DEFAULT_CENTER, MAP_INITIAL_ZOOM_LEVEL } from '@/constants/map';
 import useLocation from '@/hooks/common/useLocation';
+import CrossHair from '@/assets/svg/crosshair.svg?react';
+import {
+  CurrentPositionButton,
+  PlayGroundMapDiv,
+} from '@/components/playGround/PlayGroundMap/PlayGroundMap.style';
+
+export interface CenterType {
+  lat: number;
+  lng: number;
+}
 
 const PlayGroundMap = () => {
   useKakaoLoader();
+  const [center, setCenter] = useState<CenterType>(MAP_DEFAULT_CENTER);
   const mapRef = useRef<kakao.maps.Map>(null);
-  const { coords, locatedAt, error } = useLocation({
+
+  const { coords, error: locationError } = useLocation({
     enableHighAccuracy: true,
     timeout: 10000,
     maximumAge: 0,
   });
 
-  console.log(coords, locatedAt, error);
+  console.log(center, coords);
+
+  useEffect(() => {
+    if (coords.latitude && coords.longitude) {
+      setCenter({
+        lat: coords.latitude,
+        lng: coords.longitude,
+      });
+    }
+  }, [coords.latitude, coords.longitude]);
+
+  useEffect(() => {
+    if (coords.latitude && coords.longitude) {
+      setCenter({ lat: coords.latitude, lng: coords.longitude });
+    }
+  }, [coords.latitude, coords.longitude]);
+
+  const moveCenter = useCallback(() => {
+    console.log(coords.latitude, coords.longitude);
+    if (!mapRef.current || !coords.latitude || !coords.longitude) return;
+
+    const newCenter = new kakao.maps.LatLng(coords.latitude, coords.longitude);
+    mapRef.current.setCenter(newCenter);
+  }, [coords.latitude, coords.longitude]);
+
+  console.log(coords, locationError);
 
   return (
-    <Map // 지도를 표시할 Container
-      center={{
-        lat: 33.450701,
-        lng: 126.570667,
-      }}
-      style={{
-        // 지도의 크기
-        width: '100%',
-        height: '100dvh',
-      }}
-      level={MAP_INITIAL_ZOOM_LEVEL} // 지도의 확대 레벨
-      zoomable={true}
-      draggable={true}
-      ref={mapRef}
-    />
+    <PlayGroundMapDiv>
+      <Map
+        center={center}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        level={MAP_INITIAL_ZOOM_LEVEL}
+        zoomable={true}
+        draggable={true}
+        ref={mapRef}
+      >
+        <MapMarker
+          position={center}
+          title="현재 위치"
+          image={{
+            src: 'src/assets/svg/player-marker.svg',
+            size: {
+              width: 100,
+              height: 100,
+            },
+            options: {
+              offset: {
+                x: 45,
+                y: 45,
+              },
+            },
+          }}
+        />
+        <CurrentPositionButton title="현재 위치로 이동" onClick={moveCenter}>
+          <CrossHair />
+        </CurrentPositionButton>
+      </Map>
+    </PlayGroundMapDiv>
   );
 };
 
