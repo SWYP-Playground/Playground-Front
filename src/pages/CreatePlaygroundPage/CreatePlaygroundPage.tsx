@@ -1,5 +1,28 @@
+import { useNavigate } from 'react-router-dom';
+import { Flex } from '@radix-ui/themes';
+
+import Header from '@/components/layout/Header/Header';
+import LeftIcon from '@assets/svg/left-icon.svg?react';
+import CancelIcon from '@assets/svg/cancel.svg?react';
+
 const CreatePlaygroundPage = () => {
-  return <div>놀이터 모입 개설 페이지입니다</div>;
+  const navigate = useNavigate();
+
+  const goToBackPage = () => {
+    navigate(-1);
+  };
+
+  return (
+    <Flex direction="column">
+      <Header
+        title="모집글 등록"
+        leftIcon={<LeftIcon />}
+        onLeftClick={goToBackPage}
+        rightIcon={<CancelIcon />}
+        onRightClick={goToBackPage}
+      />
+    </Flex>
+  );
 };
 
 export default CreatePlaygroundPage;
