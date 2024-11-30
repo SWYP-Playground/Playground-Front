@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -74,16 +75,62 @@ const SignInPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleLogin();
+=======
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import {
+  Container,
+  HeaderContainer,
+  CancelButton,
+  LogoContainer,
+  Logo,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  ErrorMessage,
+  BottomContainer,
+  SubmitButton,
+  Footer,
+  FooterLink,
+} from './SignInPage.style';
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
+const SignInPage = () => {
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormData>({ mode: 'onChange' });
+
+  const onSubmit = (data: FormData) => {
+    console.log('Login Data:', data);
+
+    setTimeout(() => {
+      navigate('/');
+    }, 1000);
+>>>>>>> c712966e9de5c69167202eee7f7f0f78d7bf757f
   };
 
   return (
     <Container>
       <HeaderContainer>
+<<<<<<< HEAD
         <CancelIcon src="/src/assets/svg/cancel.svg" alt="Cancel" />
+=======
+        <CancelButton src="/src/assets/svg/cancel.svg" />
+>>>>>>> c712966e9de5c69167202eee7f7f0f78d7bf757f
       </HeaderContainer>
       <LogoContainer>
         <Logo src="/src/assets/svg/logo-vertical.svg" alt="Playground Logo" />
       </LogoContainer>
+<<<<<<< HEAD
       <Form onSubmit={handleSubmit}>
         <Label>
           이메일
@@ -123,6 +170,56 @@ const SignInPage = () => {
             <FooterLink to="/sign-up">회원가입</FooterLink>
             <FooterLink to="/find-account">계정찾기</FooterLink>
           </FooterLinkContainer>
+=======
+      <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <FormGroup>
+          <Label htmlFor="email">이메일</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="이메일을 입력해 주세요"
+            aria-invalid={errors.email ? 'true' : 'false'}
+            {...register('email', {
+              required: '이메일을 입력해 주세요.',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: '이메일 형식을 확인해주세요.',
+              },
+            })}
+            hasError={!!errors.email}
+          />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+        </FormGroup>
+
+        <FormGroup>
+          <Label htmlFor="password">비밀번호</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="비밀번호를 입력해 주세요"
+            aria-invalid={errors.password ? 'true' : 'false'}
+            {...register('password', {
+              required: '비밀번호를 입력해 주세요.',
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{6,20}$/,
+                message: '6-20자 이내 * 영문 대소문자 및 숫자, 특수문자 필수',
+              },
+            })}
+            hasError={!!errors.password}
+          />
+          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+        </FormGroup>
+
+        <BottomContainer>
+          <SubmitButton type="submit" disabled={!isValid || isSubmitting}>
+            로그인
+          </SubmitButton>
+
+          <Footer>
+            <FooterLink to="/sign-up">회원가입</FooterLink>
+            <FooterLink to="/find-account">계정찾기</FooterLink>
+          </Footer>
+>>>>>>> c712966e9de5c69167202eee7f7f0f78d7bf757f
         </BottomContainer>
       </Form>
     </Container>
