@@ -42,3 +42,7 @@ export const SignUpCompletePage = lazy(
 );
 
 export const SignUpPage = lazy(() => import('@pages/SignUpPage/SignUpPage'));
+
+export const PlaygroundSearchPage = lazy(
+  () => import('@pages/PlaygroundSearchPage/PlaygroundSearchPage'),
+);

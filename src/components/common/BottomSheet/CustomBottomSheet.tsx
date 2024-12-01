@@ -31,7 +31,7 @@ const CustomBottomSheet = ({ children, isOpen = false, onClose }: BottomSheetPro
           {children}
         </BottomSheetContent>
       </Sheet.Container>
-      <Sheet.Backdrop />
+      <Sheet.Backdrop onTap={onClose} />
     </Sheet>
   );
 };
