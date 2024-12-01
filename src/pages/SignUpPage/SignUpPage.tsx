@@ -23,7 +23,7 @@ import {
   HintMessage,
   DuplicateCheckButton,
 } from './SignUpPage.style.ts';
-import SignUpCompletePopup from './SignUpCompletePopup.tsx';
+import SignUpCompletePopup from '../../components/popUp/SignUpCompletePopup.tsx';
 import { PATH } from '@/constants/path';
 
 interface FormData {
