@@ -23,6 +23,7 @@ import {
   ErrorMessage,
   HintMessage,
 } from './SignUpPage.style.ts';
+import SignUpCompletePopup from './SignUpCompletePopup.tsx';
 
 interface FormData {
   name: string;
@@ -46,10 +47,17 @@ const SignUpPage = () => {
 
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isAgreeChecked, setIsAgreeChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const password = watch('password');
 
   const onSubmit = (data: FormData) => {
     console.log('회원가입 데이터:', data);
+    setIsModalOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsModalOpen(false);
+    navigate('/edit-profile/1');
   };
 
   const checkEmailDuplicate = () => {
@@ -173,6 +181,7 @@ const SignUpPage = () => {
           완료
         </SubmitButton>
       </Form>
+      {isModalOpen && <SignUpCompletePopup onClose={closePopup} />}
     </Container>
   );
 };
