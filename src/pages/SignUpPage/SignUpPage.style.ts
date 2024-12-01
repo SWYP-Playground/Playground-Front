@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { Link } from 'react-router-dom';
+import { Button } from '@radix-ui/themes';
 
 export const Container = styled.div`
   width: 100%;
@@ -88,22 +89,21 @@ export const EmailContainer = styled.div`
   gap: 8px;
 `;
 
-export const DuplicateCheckButton = styled.button`
+export const DuplicateCheckButton = styled(Button)`
   height: 44px;
   padding: 0 16px;
   font-weight: 600;
   white-space: nowrap;
-  background-color: ${(props) => props.theme.colors.black800};
-  color: ${(props) => props.theme.colors.black0};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.black400 : theme.colors.black800};
+  color: ${({ theme, disabled }) => (disabled ? theme.colors.black600 : theme.colors.black0)};
   margin-top: 10px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-  &:disabled {
-    background-color: ${(props) => props.theme.colors.black400};
-    color: ${(props) => props.theme.colors.black600};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
-    cursor: not-allowed;
+  &:hover {
+    background-color: ${({ theme, disabled }) => !disabled && theme.colors.primary2};
   }
 `;
 
@@ -154,7 +154,7 @@ export const DetailsLink = styled.a`
   cursor: pointer;
 `;
 
-export const SubmitButton = styled.button`
+export const SubmitButton = styled(Button)`
   width: calc(100% - 32px);
   height: 50px;
   max-width: 400px;
@@ -174,6 +174,10 @@ export const SubmitButton = styled.button`
   font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: opacity 0.2s;
+
+  &:hover {
+    background-color: ${({ theme, disabled }) => !disabled && theme.colors.primary2};
+  }
 `;
 
 export const ErrorMessage = styled.span`

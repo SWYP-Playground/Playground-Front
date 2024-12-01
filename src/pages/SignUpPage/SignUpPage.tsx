@@ -13,7 +13,6 @@ import {
   Label,
   Input,
   EmailContainer,
-  DuplicateCheckButton,
   CheckboxWrapper,
   CheckboxIndicator,
   CheckboxContainer,
@@ -22,6 +21,7 @@ import {
   SubmitButton,
   ErrorMessage,
   HintMessage,
+  DuplicateCheckButton,
 } from './SignUpPage.style.ts';
 import SignUpCompletePopup from './SignUpCompletePopup.tsx';
 
@@ -105,9 +105,9 @@ const SignUpPage = () => {
               hasError={!!errors.email}
             />
             <DuplicateCheckButton
-              type="button"
-              onClick={checkEmailDuplicate}
               disabled={isEmailChecked}
+              onClick={checkEmailDuplicate}
+              variant="solid"
             >
               {isEmailChecked ? '확인 완료' : '중복 확인'}
             </DuplicateCheckButton>
@@ -177,6 +177,7 @@ const SignUpPage = () => {
         <SubmitButton
           type="submit"
           disabled={!isValid || isSubmitting || !isEmailChecked || !isAgreeChecked}
+          variant="solid"
         >
           완료
         </SubmitButton>
