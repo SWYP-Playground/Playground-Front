@@ -24,6 +24,7 @@ import {
   DuplicateCheckButton,
 } from './SignUpPage.style.ts';
 import SignUpCompletePopup from './SignUpCompletePopup.tsx';
+import { PATH } from '@/constants/path';
 
 interface FormData {
   name: string;
@@ -57,7 +58,7 @@ const SignUpPage = () => {
 
   const closePopup = () => {
     setIsModalOpen(false);
-    navigate('/edit-profile/1');
+    navigate(PATH.EDIT_PROFILE('1'));
   };
 
   const checkEmailDuplicate = () => {

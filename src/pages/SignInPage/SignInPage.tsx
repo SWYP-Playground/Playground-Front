@@ -16,6 +16,7 @@ import {
   Footer,
   FooterLink,
 } from './SignInPage.style';
+import { PATH } from '@/constants/path';
 
 interface FormData {
   email: string;
@@ -35,7 +36,7 @@ const SignInPage = () => {
     console.log('Login Data:', data);
 
     setTimeout(() => {
-      navigate('/');
+      navigate(PATH.ROOT);
     }, 1000);
   };
 
