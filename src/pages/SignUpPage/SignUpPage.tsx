@@ -2,10 +2,6 @@ import { CheckIcon } from '@radix-ui/react-icons';
 import SignUpCompletePopup from '../../components/popUp/SignUpCompletePopup.tsx';
 import {
   Container,
-  HeaderContainer,
-  LeftIcon,
-  Title,
-  ToLogin,
   Form,
   InputContainer,
   Label,
@@ -23,6 +19,9 @@ import {
 } from './SignUpPage.style.ts';
 import { useSignUpForm } from '../../../src/hooks/signUp/useSignUpForm.ts';
 import { useNavigate } from 'react-router-dom';
+import Header from '@/components/layout/Header/Header.tsx';
+import LeftIcon from '@/assets/svg/left-icon.svg?react';
+import { PATH } from '@/constants/path.ts';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -45,11 +44,13 @@ const SignUpPage = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <LeftIcon src="/src/assets/svg/left-icon.svg" alt="LeftIcon" onClick={() => navigate(-1)} />
-        <Title>회원가입</Title>
-        <ToLogin to="/sign-in">로그인</ToLogin>
-      </HeaderContainer>
+      <Header
+        title="회원가입"
+        leftIcon={<LeftIcon />}
+        onLeftClick={() => navigate(-1)}
+        rightIcon="로그인"
+        onRightClick={() => navigate(PATH.SIGNIN)}
+      />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
           <Label htmlFor="name">이름</Label>

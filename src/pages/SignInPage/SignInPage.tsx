@@ -2,10 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  HeaderContainer,
-  CancelButton,
   LogoContainer,
-  Logo,
   Form,
   FormGroup,
   Label,
@@ -17,6 +14,9 @@ import {
   FooterLink,
 } from './SignInPage.style';
 import { PATH } from '@/constants/path';
+import Header from '@/components/layout/Header/Header';
+import CancelIcon from '@/assets/svg/cancel.svg?react';
+import LogoIcon from '@/assets/svg/logo-vertical.svg?react';
 
 interface FormData {
   email: string;
@@ -42,11 +42,9 @@ const SignInPage = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <CancelButton src="/src/assets/svg/cancel.svg" />
-      </HeaderContainer>
+      <Header rightIcon={<CancelIcon />} />
       <LogoContainer>
-        <Logo src="/src/assets/svg/logo-vertical.svg" alt="Playground Logo" />
+        <LogoIcon width={140} height={85} />
       </LogoContainer>
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <FormGroup>
