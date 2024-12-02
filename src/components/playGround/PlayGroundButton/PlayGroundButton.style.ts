@@ -4,7 +4,7 @@ import { Button } from '@radix-ui/themes';
 export const PlayGroundButtonStyling = styled(Button)`
   position: fixed;
   display: flex;
-  bottom: 40px;
+  bottom: 96px;
   left: 50%;
   transform: translateX(-50%);
   align-items: center;
