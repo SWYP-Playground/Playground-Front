@@ -5,44 +5,12 @@ import { Button } from '@radix-ui/themes';
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100dvh - 106px);
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: ${(props) => props.theme.colors.black0};
-`;
-
-export const HeaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  padding: 8px 22px;
-  margin-bottom: 30px;
-`;
-
-export const LeftIcon = styled.img`
-  width: 8px;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-export const Title = styled.p`
-  font-size: 18px;
-  font-weight: 900;
-  color: ${(props) => props.theme.colors.black900};
-  margin-left: 40px;
-`;
-
-export const ToLogin = styled(Link)`
-  font-size: 14px;
-  font-weight: 500;
-  color: ${(props) => props.theme.colors.black900};
 `;
 
 export const Form = styled.form`
@@ -51,6 +19,7 @@ export const Form = styled.form`
   flex-direction: column;
   gap: 16px;
   padding: 16px;
+  flex: 1;
 `;
 
 export const InputContainer = styled.div`
@@ -155,15 +124,13 @@ export const DetailsLink = styled.a`
 `;
 
 export const SubmitButton = styled(Button)`
-  width: calc(100% - 32px);
+  width: 100%;
   height: 50px;
   max-width: 400px;
-
-  position: fixed;
   bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
 
+  align-self: center;
+  margin-top: auto;
   background-color: ${({ disabled, theme }) =>
     disabled ? theme.colors.black400 : theme.colors.primary1};
   color: ${({ disabled, theme }) => (disabled ? theme.colors.black600 : theme.colors.black900)};
