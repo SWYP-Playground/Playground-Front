@@ -26,9 +26,10 @@ export const globalStyles = css`
       'Helvetica Neue';
     font-size: 16px;
     min-width: 360px;
-    min-height: 100vh;
+    height: 100dvh;
     margin: 0 auto;
-    padding: 46px 0px 16px 0px;
+    min-height: calc(100dvh - 106px);
+    /* padding: 46px 0px 56px 0px; */
 
     // 터치 동작 최적화
     -webkit-touch-callout: none;
@@ -46,13 +47,13 @@ export const globalStyles = css`
     @media (min-width: 768px) {
       // 태블릿
       max-width: 768px;
-      padding: 46px 0px 24px 0px;
+      /* padding: 46px 0px 56px 0px; */
     }
 
     @media (min-width: 1024px) {
       // 데스크탑
       max-width: 1024px;
-      padding: 46px 0px 32px 0px;
+      /* padding: 46px 0px 56px 0px; */
     }
   }
 
