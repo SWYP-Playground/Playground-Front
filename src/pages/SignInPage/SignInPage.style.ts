@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100dvh - 106px);
   background-color: ${(props) => props.theme.colors.black0};
   display: flex;
   flex-direction: column;

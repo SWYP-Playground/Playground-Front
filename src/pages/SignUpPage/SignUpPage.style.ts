@@ -5,7 +5,7 @@ import { Button } from '@radix-ui/themes';
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100dvh - 106px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -51,6 +51,7 @@ export const Form = styled.form`
   flex-direction: column;
   gap: 16px;
   padding: 16px;
+  flex: 1;
 `;
 
 export const InputContainer = styled.div`
@@ -158,12 +159,10 @@ export const SubmitButton = styled(Button)`
   width: calc(100% - 32px);
   height: 50px;
   max-width: 400px;
-
-  position: fixed;
   bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
 
+  align-self: center;
+  margin-top: auto;
   background-color: ${({ disabled, theme }) =>
     disabled ? theme.colors.black400 : theme.colors.primary1};
   color: ${({ disabled, theme }) => (disabled ? theme.colors.black600 : theme.colors.black900)};
