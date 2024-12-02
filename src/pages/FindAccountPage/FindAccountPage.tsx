@@ -2,10 +2,6 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  HeaderContainer,
-  LeftIcon,
-  Title,
-  ToHome,
   Form,
   Label,
   Input,
@@ -16,6 +12,10 @@ import {
   FooterLinkContainer,
   FooterLink,
 } from './FindAccountPage.style';
+import Header from '@/components/layout/Header/Header.tsx';
+import LeftIcon from '@/assets/svg/left-icon.svg?react';
+import { PATH } from '@/constants/path.ts';
+
 interface FormData {
   email: string;
 }
@@ -36,12 +36,13 @@ const FindAccountPage = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <LeftIcon src="/src/assets/svg/left-icon.svg" alt="LeftIcon" onClick={() => navigate(-1)} />
-        <Title>계정찾기</Title>
-        <ToHome to="/">홈으로</ToHome>
-      </HeaderContainer>
-
+      <Header
+        title="계정찾기"
+        leftIcon={<LeftIcon />}
+        onLeftClick={() => navigate(-1)}
+        rightIcon="홈으로"
+        onRightClick={() => navigate(PATH.ROOT)}
+      />
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Label>
           이메일

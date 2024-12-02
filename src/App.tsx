@@ -7,14 +7,20 @@ import Error from '@components/common/Error/Error';
 import Login from '@components/common/Login/Login';
 import ErrorBoundary from '@components/common/ErrorBoundary/ErrorBoundary';
 import { useResetError } from '@hooks/common/useResetError';
+import BottomNav from '@components/layout/BottomNav/BottomNav';
 
 function App() {
   return (
     <ErrorBoundary Fallback={Error} onReset={useResetError}>
       <Login>
-        <main>
-          <Outlet />
-        </main>
+        <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '100dvh' }}>
+          <main
+            style={{ flex: '1 1 0%', margin: '49px 0 56px 0', overflowY: 'auto', width: '100%' }}
+          >
+            <Outlet />
+          </main>
+        </div>
+        <BottomNav />
       </Login>
       <ToastContainer
         position="top-center"

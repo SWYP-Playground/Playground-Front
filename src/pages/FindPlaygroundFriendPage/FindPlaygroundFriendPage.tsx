@@ -1,4 +1,3 @@
-import { Flex } from '@radix-ui/themes';
 import { useNavigate } from 'react-router-dom';
 
 import CustomBottomSheet from '@/components/common/BottomSheet/CustomBottomSheet';
@@ -8,6 +7,7 @@ import PlayGroundSearchBar from '@/components/playGround/PlayGroundSearchBar/Pla
 import { useBottomSheet } from '@/hooks/common/useBottomSheet';
 import LeftIcon from '@assets/svg/left-icon.svg?react';
 import PlayGroundMap from '@/components/playGround/PlayGroundMap/PlayGroundMap';
+import { PlaygroundFlex } from '@/pages/FindPlaygroundFriendPage/FindPlaygroundFriendPage.style';
 
 const FindPlaygroundFriendPage = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const FindPlaygroundFriendPage = () => {
   const { isOpen, open, close } = useBottomSheet();
 
   return (
-    <Flex direction="column">
+    <PlaygroundFlex direction="column">
       <Header title="놀이터 찾기" leftIcon={<LeftIcon />} onLeftClick={goToBackPage} />
       <PlayGroundSearchBar />
       <button onClick={open}>바텀시트 열기</button>
@@ -29,7 +29,7 @@ const FindPlaygroundFriendPage = () => {
       </CustomBottomSheet>
       <PlayGroundMap />
       <PlayGroundButton />
-    </Flex>
+    </PlaygroundFlex>
   );
 };
 

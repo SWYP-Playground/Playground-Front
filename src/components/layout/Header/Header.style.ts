@@ -9,6 +9,16 @@ export const HeaderStyling = styled.header`
   width: 100%;
   background-color: ${(props) => props.theme.colors.black0};
   z-index: 50;
+
+  @media (min-width: 768px) {
+    max-width: 768px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 1024px;
+  }
 `;
 
 export const HeaderDiv = styled.div`
@@ -23,10 +33,13 @@ export const LeftDiv = styled.div`
   margin-right: auto;
 `;
 
-export const TitleDiv = styled.div`
+export const Title = styled.p`
   display: flex;
   grid-column: span 2 / span 2;
+  font-size: 18px;
+  font-weight: 900;
   justify-content: center;
+  color: ${(props) => props.theme.colors.black900};
 `;
 
 export const RightDiv = styled.div`
