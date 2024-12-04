@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
 import Header from '@/components/layout/Header/Header';
-import TemperatureModal from '@/components/common/TemperatureModal/TemperatureModal';
+import TemperatureModal from '@/components/temperature/TemperatureModal/TemperatureModal';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import { FriendsPlayedFlex } from '@/pages/FriendsPlayedPage/FriendsPlayedPage style';
-import TemperatureButton from '@/components/common/TemperatureButton/TemperatureButton';
+import TemperatureButton from '@/components/temperature/TemperatureButton/TemperatureButton';
 
 const FriendsPlayedPage = () => {
   const navigate = useNavigate();

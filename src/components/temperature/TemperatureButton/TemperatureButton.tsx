@@ -1,7 +1,7 @@
 import {
   TemperatureButtonStyling,
   TemperatureSpan,
-} from '@/components/common/TemperatureButton/TemperatureButton.style';
+} from '@/components/temperature/TemperatureButton/TemperatureButton.style';
 import TemperatureIcon from '@/assets/svg/temperature.svg?react';
 import { Dialog } from '@radix-ui/themes';
 
