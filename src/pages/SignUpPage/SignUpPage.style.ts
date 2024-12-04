@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { Link } from 'react-router-dom';
 import { Button } from '@radix-ui/themes';
 
 export const Container = styled.div`
