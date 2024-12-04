@@ -13,6 +13,7 @@ import {
   Footer,
   FooterLink,
 } from './SignInPage.style';
+import { PATH } from '@/constants/path';
 import Header from '@/components/layout/Header/Header';
 import CancelIcon from '@/assets/svg/cancel.svg?react';
 import LogoIcon from '@/assets/svg/logo-vertical.svg?react';
@@ -35,7 +36,7 @@ const SignInPage = () => {
     console.log('Login Data:', data);
 
     setTimeout(() => {
-      navigate('/');
+      navigate(PATH.ROOT);
     }, 1000);
   };
 

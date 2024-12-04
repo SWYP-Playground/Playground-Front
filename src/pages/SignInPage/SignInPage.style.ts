@@ -10,27 +10,8 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const HeaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px;
-`;
-
-export const CancelButton = styled.img`
-  background: none;
-  border: none;
-  font-size: 20px;
-
-  color: ${(props) => props.theme.colors.black900};
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
 export const LogoContainer = styled.div`
-  margin: 40px 0;
+  margin: 70px 0;
 `;
 
 export const Logo = styled.img`

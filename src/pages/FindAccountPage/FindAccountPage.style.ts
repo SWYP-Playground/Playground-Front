@@ -3,44 +3,12 @@ import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
-  position: relative;
+  min-height: calc(100vh - 106px);
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: ${(props) => props.theme.colors.black0};
-`;
-
-export const HeaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  padding: 8px 22px;
-  margin-bottom: 30px;
-`;
-
-export const LeftIcon = styled.img`
-  width: 8px;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-export const Title = styled.p`
-  font-size: 18px;
-  font-weight: 900;
-  color: ${(props) => props.theme.colors.black900};
-  margin-left: 40px;
-`;
-
-export const ToHome = styled(Link)`
-  font-size: 14px;
-  font-weight: 500;
-  color: ${(props) => props.theme.colors.black900};
+  padding: 0 16px;
 `;
 
 export const Form = styled.form`
@@ -48,8 +16,9 @@ export const Form = styled.form`
   max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
   flex-grow: 1;
+  padding: 16px 0;
+  gap: 5px;
 `;
 
 export const Label = styled.label`
@@ -91,6 +60,7 @@ export const WarningMessage = styled.p`
 export const ButtonContainer = styled.div`
   width: 100%;
   margin-top: auto;
+  justify-content: center;
 `;
 
 export const FindButton = styled.button`

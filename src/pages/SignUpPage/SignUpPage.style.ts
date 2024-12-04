@@ -13,38 +13,6 @@ export const Container = styled.div`
   background-color: ${(props) => props.theme.colors.black0};
 `;
 
-export const HeaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  padding: 8px 22px;
-  margin-bottom: 30px;
-`;
-
-export const LeftIcon = styled.img`
-  width: 8px;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-export const Title = styled.p`
-  font-size: 18px;
-  font-weight: 900;
-  color: ${(props) => props.theme.colors.black900};
-  margin-left: 40px;
-`;
-
-export const ToLogin = styled(Link)`
-  font-size: 14px;
-  font-weight: 500;
-  color: ${(props) => props.theme.colors.black900};
-`;
-
 export const Form = styled.form`
   width: 100%;
   display: flex;
@@ -156,7 +124,7 @@ export const DetailsLink = styled.a`
 `;
 
 export const SubmitButton = styled(Button)`
-  width: calc(100% - 32px);
+  width: 100%;
   height: 50px;
   max-width: 400px;
   bottom: 16px;
@@ -173,10 +141,6 @@ export const SubmitButton = styled(Button)`
   font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: opacity 0.2s;
-
-  &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.colors.primary2};
-  }
 `;
 
 export const ErrorMessage = styled.span`
