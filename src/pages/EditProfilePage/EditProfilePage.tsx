@@ -1,17 +1,13 @@
 import { useForm, useFieldArray } from 'react-hook-form';
-import {
-  Container,
-  HeaderContainer,
-  LeftIcon,
-  Title,
-  CancelButton,
-  Form,
-  SubmitButton,
-} from './EditProfilePage.style.ts';
+import { Container, Form, SubmitButton } from './EditProfilePage.style.ts';
 import ProfileImageSection from '../../../src/components/profile/EditProfile/ProfileImageSection.tsx';
 import FamilyInfoSection from '../../../src/components/profile/EditProfile/FamilyInfoSection.tsx';
 import AdditionalInfoSection from '../../../src/components/profile/EditProfile/AdditionalInfoSection.tsx';
 import { useNavigate } from 'react-router-dom';
+import Header from '@/components/layout/Header/Header.tsx';
+import { PATH } from '@/constants/path.ts';
+import LeftIcon from '@/assets/svg/left-icon.svg?react';
+import CloseIcon from '@/assets/svg/cancel.svg?react';
 
 interface ChildInfo {
   gender: string;
@@ -55,11 +51,13 @@ const EditProfilePage = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <LeftIcon src="/src/assets/svg/left-icon.svg" alt="LeftIcon" onClick={() => navigate(-1)} />
-        <Title>프로필 작성</Title>
-        <CancelButton src="/src/assets/svg/cancel.svg" />
-      </HeaderContainer>
+      <Header
+        title="프로필 작성"
+        leftIcon={<LeftIcon />}
+        onLeftClick={() => navigate(-1)}
+        rightIcon={<CloseIcon />}
+        onRightClick={() => navigate(PATH.SIGNIN)}
+      />
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <ProfileImageSection register={register} errors={errors} />

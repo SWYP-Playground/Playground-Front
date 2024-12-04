@@ -10,6 +10,7 @@ const ToggleButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 8px;
+  margin-top: 10px;
 `;
 
 const ToggleButton = styled.button<{ isSelected: boolean }>`

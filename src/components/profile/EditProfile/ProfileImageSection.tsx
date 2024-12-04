@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Container,
   InputContainer,
   Label,
   Input,
@@ -14,6 +13,8 @@ import {
   ErrorMessage,
   SearchIcon,
   SearchIconWrapper,
+  HorizonLine,
+  ComponentContainer,
 } from '../../../pages/EditProfilePage/EditProfilePage.style';
 
 interface Props {
@@ -31,15 +32,20 @@ const ProfileImageSection = ({ register, errors }: Props) => {
     }
   };
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [isPhoneChecked, setIsPhoneChecked] = useState(false);
 
-  const checkEmailDuplicate = () => {
+  const checkNicknameDuplicate = () => {
     console.log('이메일 중복 확인');
     setIsNicknameChecked(true);
   };
 
+  const checkPhoneDuplicate = () => {
+    console.log('이메일 중복 확인');
+    setIsPhoneChecked(true);
+  };
+
   return (
-    <Container>
-      {/* 숨겨진 파일 입력 */}
+    <ComponentContainer>
       <ProfileImage
         type="file"
         id="profileImage"
@@ -48,7 +54,6 @@ const ProfileImageSection = ({ register, errors }: Props) => {
         {...register('additionalPhoto')}
       />
 
-      {/* 프로필 이미지 컨테이너 */}
       <ProfileImageContainer htmlFor="profileImage">
         {selectedImage ? (
           <img
@@ -83,7 +88,7 @@ const ProfileImageSection = ({ register, errors }: Props) => {
           />
           <DuplicateCheckButton
             disabled={isNicknameChecked}
-            onClick={checkEmailDuplicate}
+            onClick={checkNicknameDuplicate}
             variant="solid"
           >
             {isNicknameChecked ? '확인 완료' : '중복 확인'}
@@ -111,27 +116,27 @@ const ProfileImageSection = ({ register, errors }: Props) => {
             })}
           />
           <DuplicateCheckButton
-            disabled={isNicknameChecked}
-            onClick={checkEmailDuplicate}
+            disabled={isPhoneChecked}
+            onClick={checkPhoneDuplicate}
             variant="solid"
           >
-            {isNicknameChecked ? '확인 완료' : '중복 확인'}
+            {isPhoneChecked ? '확인 완료' : '중복 확인'}
           </DuplicateCheckButton>
         </DuplicateContainer>
-        {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
+        {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber.message}</ErrorMessage>}
       </InputContainer>
 
       <InputContainer>
-        <Label htmlFor="phoneNumber">휴대폰 번호</Label>
+        <Label htmlFor="address">주소</Label>
         <DuplicateContainer>
           <Input
-            id="phoneNumber"
-            placeholder="010-0000-0000"
-            {...register('phoneNumber', {
-              required: '휴대폰 번호를 입력해 주세요.',
+            id="address"
+            placeholder="주소를 검색해 주세요"
+            {...register('address', {
+              // required: '주소를 검색해 주세요.',
               pattern: {
                 value: /^01[0-9]-\d{3,4}-\d{4}$/,
-                message: '올바른 휴대폰 번호를 입력해 주세요.',
+                message: '주소를 검색해 주세요.',
               },
             })}
           />
@@ -139,9 +144,10 @@ const ProfileImageSection = ({ register, errors }: Props) => {
             <SearchIcon />
           </SearchIconWrapper>
         </DuplicateContainer>
-        {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
+        {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
       </InputContainer>
-    </Container>
+      <HorizonLine />
+    </ComponentContainer>
   );
 };
 

@@ -1,13 +1,20 @@
+import { ErrorMessage } from '@/pages/SignInPage/SignInPage.style';
 import {
   InputContainer,
   Input,
   Label,
   RadioContainer,
-  ButtonGroup,
-  RadioButton,
+  PlusIcon,
   AddButton,
+  Title,
+  SubTitle,
+  HorizonLine,
+  ComponentContainer,
+  DeleteButton,
+  SubTitleContainer,
 } from '../../../pages/EditProfilePage/EditProfilePage.style';
-
+import ToggleButtonGroupComponent from '../Button/ToggleButton';
+import { useState } from 'react';
 interface Props {
   register: any;
   errors: any;
@@ -17,21 +24,38 @@ interface Props {
 }
 
 const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) => {
+  const [parentGender, setParentGender] = useState('');
+  const [childGenders, setChildGenders] = useState<{ [key: number]: string }>({});
+
+  const handleParentGenderChange = (value: string) => {
+    setParentGender(value);
+    console.log(`부모 성별 선택: ${value}`);
+  };
+
+  const handleChildGenderChange = (index: number, value: string) => {
+    setChildGenders((prev) => ({
+      ...prev,
+      [index]: value,
+    }));
+    console.log(`아이 ${index + 1} 성별 선택: ${value}`);
+  };
+
   return (
-    <>
-      <h2>가족 정보</h2>
+    <ComponentContainer>
+      <Title>가족 정보</Title>
+
       <RadioContainer>
-        <Label>보호자 성별</Label>
-        <ButtonGroup>
-          <RadioButton type="radio" value="엄마" {...register('parentGender')} />
-          엄마
-          <RadioButton type="radio" value="아빠" {...register('parentGender')} />
-          아빠
-        </ButtonGroup>
+        <SubTitle>보호자</SubTitle>
+        <Label>성별</Label>
+        <ToggleButtonGroupComponent
+          options={['엄마', '아빠']}
+          selectedValue={parentGender}
+          onChange={handleParentGenderChange}
+        />
       </RadioContainer>
 
       <InputContainer>
-        <Label htmlFor="parentBirthDate">보호자 생년월일</Label>
+        <Label htmlFor="parentBirthDate">생년월일</Label>
         <Input
           id="parentBirthDate"
           type="date"
@@ -39,31 +63,26 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) 
             required: '생년월일을 입력해 주세요.',
           })}
         />
-        {errors.parentBirthDate && <p>{errors.parentBirthDate.message}</p>}
+        {errors.parentBirthDate && <ErrorMessage>{errors.parentBirthDate.message}</ErrorMessage>}
       </InputContainer>
 
-      <h2>아이 정보</h2>
       {fields.map((field: any, index: number) => (
         <div key={field.id}>
-          <RadioContainer>
-            <Label>아이 성별</Label>
-            <ButtonGroup>
-              <RadioButton
-                type="radio"
-                value="남자 아이"
-                {...register(`children.${index}.gender` as const)}
-              />
-              남자 아이
-              <RadioButton
-                type="radio"
-                value="여자 아이"
-                {...register(`children.${index}.gender` as const)}
-              />
-              여자 아이
-            </ButtonGroup>
-          </RadioContainer>
+          <HorizonLine />
+          <SubTitleContainer>
+            <SubTitle>아이 {index + 1}</SubTitle>
+            <DeleteButton type="button" onClick={() => remove(index)} />
+          </SubTitleContainer>
+
+          <Label>성별</Label>
+          <ToggleButtonGroupComponent
+            options={['남자 아이', '여자 아이']}
+            selectedValue={childGenders[index] || ''}
+            onChange={(value) => handleChildGenderChange(index, value)}
+          />
+
           <InputContainer>
-            <Label>아이 생년월일</Label>
+            <Label>생년월일</Label>
             <Input
               type="date"
               {...register(`children.${index}.birthDate` as const, {
@@ -71,18 +90,19 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) 
               })}
             />
             {errors.children?.[index]?.birthDate && (
-              <p>{errors.children[index]?.birthDate?.message}</p>
+              <ErrorMessage>{errors.children[index]?.birthDate?.message}</ErrorMessage>
             )}
           </InputContainer>
-          <button type="button" onClick={() => remove(index)}>
-            아이 삭제
-          </button>
         </div>
       ))}
+
+      {/* 아이 추가 버튼 */}
       <AddButton type="button" onClick={() => append({ gender: '', birthDate: '' })}>
-        + 아이 추가
+        <PlusIcon />
+        아이 추가
       </AddButton>
-    </>
+      <HorizonLine />
+    </ComponentContainer>
   );
 };
 

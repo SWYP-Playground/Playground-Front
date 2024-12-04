@@ -141,10 +141,6 @@ export const SubmitButton = styled(Button)`
   font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: opacity 0.2s;
-
-  &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.colors.primary2};
-  }
 `;
 
 export const ErrorMessage = styled.span`
