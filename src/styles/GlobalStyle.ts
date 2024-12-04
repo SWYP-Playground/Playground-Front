@@ -25,7 +25,6 @@ export const globalStyles = css`
       'Open Sans',
       'Helvetica Neue';
     font-size: 16px;
-    min-width: 360px;
     height: 100dvh;
     margin: 0 auto;
     min-height: calc(100dvh - 106px);
