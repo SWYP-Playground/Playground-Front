@@ -25,14 +25,6 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.CONTACT_US,
-          element: (
-            <Suspense>
-              <Lazy.ContactUsPage />
-            </Suspense>
-          ),
-        },
-        {
           path: PATH.CREATE_PLAYGROUND,
           element: (
             <Suspense>
@@ -157,6 +149,14 @@ const AppRouter = () => {
           element: (
             <Suspense>
               <Lazy.PlaygroundSearchPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.FRIEND_MESSAGE(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.FriendMessagePage />
             </Suspense>
           ),
         },

@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-export const ContactUsPage = lazy(() => import('@pages/ContactUsPage/ContactUsPage'));
+export const FriendMessagePage = lazy(() => import('@/pages/FriendMessagePage/FriendMessagePage'));
 
 export const CreatePlaygroundPage = lazy(
   () => import('@pages/CreatePlaygroundPage/CreatePlaygroundPage'),
