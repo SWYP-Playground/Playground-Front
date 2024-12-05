@@ -160,6 +160,14 @@ const AppRouter = () => {
             </Suspense>
           ),
         },
+        {
+          path: PATH.MY_RECRUITMENTS(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.MyRecruitmentsPage />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);
