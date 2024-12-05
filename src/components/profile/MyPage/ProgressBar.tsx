@@ -39,5 +39,6 @@ const StyledProgressIndicator = styled(Progress.Indicator)<{ progress: number }>
 
   width: ${(props) => props.progress}%;
   height: 100%;
+  border-radius: 20px;
   transition: width 660ms cubic-bezier(0.65, 0, 0.35, 1);
 `;
