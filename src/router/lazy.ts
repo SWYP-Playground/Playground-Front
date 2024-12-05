@@ -54,3 +54,5 @@ export const MyRecruitmentsPage = lazy(
 export const FreindRecommendedPage = lazy(
   () => import('@/pages/FriendRecommendedPage/FriendRecommendedPage'),
 );
+
+export const UserSettingPage = lazy(() => import('@/pages/UserSettingPage/UserSettingPage'));
