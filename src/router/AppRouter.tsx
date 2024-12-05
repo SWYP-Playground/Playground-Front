@@ -168,6 +168,14 @@ const AppRouter = () => {
             </Suspense>
           ),
         },
+        {
+          path: PATH.FRIEND_RECOMMENDED(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.FreindRecommendedPage />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);

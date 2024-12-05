@@ -50,3 +50,7 @@ export const PlaygroundSearchPage = lazy(
 export const MyRecruitmentsPage = lazy(
   () => import('@pages/MyRecruitmentsPage/MyRecruitmentsPage'),
 );
+
+export const FreindRecommendedPage = lazy(
+  () => import('@/pages/FriendRecommendedPage/FriendRecommendedPage'),
+);
