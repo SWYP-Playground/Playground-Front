@@ -15,8 +15,11 @@ interface Colors {
   primary1: string;
   primary2: string;
   primary3: string;
-  secondary: string;
+  primary3: string;
+  primary4: string;
+  tertiary: string;
   red: string;
+  secondary: string;
 }
 
 declare module '@emotion/react' {
