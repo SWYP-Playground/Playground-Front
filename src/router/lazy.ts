@@ -46,13 +46,3 @@ export const SignUpPage = lazy(() => import('@pages/SignUpPage/SignUpPage'));
 export const PlaygroundSearchPage = lazy(
   () => import('@pages/PlaygroundSearchPage/PlaygroundSearchPage'),
 );
-
-export const MyRecruitmentsPage = lazy(
-  () => import('@pages/MyRecruitmentsPage/MyRecruitmentsPage'),
-);
-
-export const FreindRecommendedPage = lazy(
-  () => import('@/pages/FriendRecommendedPage/FriendRecommendedPage'),
-);
-
-export const UserSettingPage = lazy(() => import('@/pages/UserSettingPage/UserSettingPage'));
