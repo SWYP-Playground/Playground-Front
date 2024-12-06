@@ -16,8 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import ProfileDetails from '../../components/profile/MyPage/ProfileDetailSection.tsx';
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
-import RecentFriendsSection from '@/components/profile/MyPage/RecentFriendsSection.tsx';
 import ContactUsSection from '@/components/profile/MyPage/ContactUsSection.tsx';
+import Card from '@/components/common/Card/Card.tsx';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -40,6 +40,16 @@ const ProfilePage = () => {
     },
   ];
 
+  const recentFriends = [
+    {
+      nickname: '닉네임1',
+      status: '아빠',
+      address: '서울시 노원구 중계동',
+      image: 'https://via.placeholder.com/150',
+      content: '안녕하세요!',
+    },
+  ];
+
   return (
     <Container>
       <Background>
@@ -52,7 +62,7 @@ const ProfilePage = () => {
               <SettingText>설정</SettingText>
             </SettingsButton>
           }
-          onRightClick={() => navigate(PATH.EDIT_ACCOUNT('1'))}
+          onRightClick={() => navigate(PATH.USER_SETTING('1'))}
         />
         <ProfileDetails progress={progress} children={children} />
       </Background>
@@ -69,13 +79,17 @@ const ProfilePage = () => {
       </TitleContainer>
 
       <RecentFriendsContainer>
-        <RecentFriendsSection
-          title="닉네임"
-          parentGender="male"
-          address="서울시 노원구 중계동"
-          introText="안녕하세요!"
-          profileImage="https://via.placeholder.com/150"
-        />
+        {recentFriends.map((friend, index) => (
+          <Card
+            key={index}
+            nickname={friend.nickname}
+            status={friend.status}
+            address={friend.address}
+            image={friend.image}
+            content={friend.content}
+            onClick={() => navigate(PATH.DIRECT_MESSAGE(`${index + 1}`))}
+          />
+        ))}
       </RecentFriendsContainer>
 
       <ContactUsContainer>
