@@ -25,3 +25,8 @@ export const SendMessageButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.primary1};
   cursor: pointer;
 `;
+
+export const ExtraImageContainer = styled.div`
+  width: 100%;
+  padding: 0 20px;
+`;

@@ -39,13 +39,13 @@ export default ExtraImageSection;
 
 const Container = styled.div`
   width: 100%;
-  padding: 0 20px;
+  padding: 20px 0;
 `;
 
 const Label = styled.p`
   font-size: 14px;
-  font-weight: 500;
-  color: ${(props) => props.theme.colors.black700};
+  font-weight: 00;
+  color: ${(props) => props.theme.colors.black800};
 `;
 
 const ImageContainer = styled.div`
@@ -75,6 +75,8 @@ const StyledLabel = styled.label`
   width: 100%;
   height: 45px;
   margin: 20px 0;
+  font-size: 14px;
+  font-weight: 600;
   border: 1px solid ${(props) => props.theme.colors.black300};
   border-radius: 8px;
   color: ${(props) => props.theme.colors.black800};
