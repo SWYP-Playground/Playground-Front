@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
+import { useUserSettingForm } from '../../hooks/mypage/useUserSettingForm.ts';
+import DeletePopup from '../../components/popUp/DeletePopup.tsx';
 import {
   Container,
   Form,
@@ -13,28 +14,30 @@ import {
   ErrorMessage,
   HintMessage,
   Title,
-  Section,
+  EmailContainer,
+  EmailText,
   DeleteButton,
 } from './UserSettingPage.style.ts';
-
-interface FormValues {
-  name: string;
-  currentPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-}
+import { PATH } from '../../constants/path.ts';
 
 const UserSettingPage = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors, isSubmitting, isValid },
-  } = useForm<FormValues>();
-  const [email, setEmail] = useState<string>('');
+    errors,
+    isSubmitting,
+    isValid,
+    onSubmit,
+    newPassword,
+    popupState,
+    handleDeleteClick,
+    handlePopupClose,
+    handleDeleteConfirm,
+  } = useUserSettingForm();
 
-  // API 나오면 axios로 수정
+  const [email, setEmail] = useState<string>('playground@naver.com');
+
   useEffect(() => {
     const fetchEmail = async () => {
       const response = await new Promise((resolve) => {
@@ -46,26 +49,19 @@ const UserSettingPage = () => {
     fetchEmail();
   }, []);
 
-  const onSubmit = async (data: FormValues) => {
-    try {
-      console.log('Submitted data:', data);
-      alert('정보가 성공적으로 업데이트되었습니다!');
-    } catch (error) {
-      console.error('Error updating user info:', error);
-    }
+  const handleDeleteComplete = () => {
+    navigate(PATH.ROOT);
   };
 
   return (
     <Container>
       <Header title="설정" leftIcon={<LeftIcon />} onLeftClick={() => navigate(-1)} />
       <Title>회원정보</Title>
-
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Section>
+        <EmailContainer>
           <Label>이메일</Label>
-          <Input type="text" value={email} readOnly />
-        </Section>
-
+          <EmailText>{email}</EmailText>
+        </EmailContainer>
         <InputContainer>
           <Label htmlFor="name">이름</Label>
           <Input
@@ -76,25 +72,25 @@ const UserSettingPage = () => {
           />
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </InputContainer>
-
         <InputContainer>
-          <Label htmlFor="currentPassword">현재 비밀번호</Label>
+          <Label htmlFor="currentPassword">비밀번호 변경</Label>
           <Input
             id="currentPassword"
             type="password"
-            placeholder="현재 비밀번호 입력"
-            {...register('currentPassword', { required: '현재 비밀번호를 입력해 주세요.' })}
+            placeholder="현재 비밀번호를 입력해 주세요"
+            {...register('currentPassword', {
+              required: '현재 비밀번호를 입력해 주세요.',
+              minLength: { value: 6, message: '비밀번호는 최소 6자 이상이어야 합니다.' },
+            })}
             hasError={!!errors.currentPassword}
           />
           {errors.currentPassword && <ErrorMessage>{errors.currentPassword.message}</ErrorMessage>}
         </InputContainer>
-
         <InputContainer>
-          <Label htmlFor="newPassword">새 비밀번호</Label>
           <Input
             id="newPassword"
             type="password"
-            placeholder="새 비밀번호 입력"
+            placeholder="새 비밀번호를 입력해 주세요"
             {...register('newPassword', {
               required: '새 비밀번호를 입력해 주세요.',
               pattern: {
@@ -104,42 +100,54 @@ const UserSettingPage = () => {
             })}
             hasError={!!errors.newPassword}
           />
-          {errors.newPassword ? (
-            <ErrorMessage>{errors.newPassword.message}</ErrorMessage>
+          {errors.newPassword && <ErrorMessage>{errors.newPassword.message}</ErrorMessage>}
+        </InputContainer>
+        <InputContainer>
+          <Input
+            id="confirmNewPassword"
+            type="password"
+            placeholder="새 비밀번호를 다시 입력해 주세요"
+            {...register('confirmNewPassword', {
+              required: '비밀번호를 재입력해 주세요.',
+              validate: (value) => value === newPassword || '새 비밀번호와 일치하지 않습니다.',
+            })}
+            hasError={!!errors.confirmNewPassword}
+          />
+          {errors.confirmNewPassword ? (
+            <ErrorMessage>{errors.confirmNewPassword.message}</ErrorMessage>
           ) : (
             <HintMessage>6-20자 이내 *영문 대소문자, 숫자, 특수문자 필수</HintMessage>
           )}
         </InputContainer>
-
-        <InputContainer>
-          <Label htmlFor="confirmNewPassword">새 비밀번호 재입력</Label>
-          <Input
-            id="confirmNewPassword"
-            type="password"
-            placeholder="새 비밀번호 재입력"
-            {...register('confirmNewPassword', {
-              required: '비밀번호를 재입력해 주세요.',
-              validate: (value) =>
-                value === watch('newPassword') || '비밀번호가 일치하지 않습니다.',
-            })}
-            hasError={!!errors.confirmNewPassword}
-          />
-          {errors.confirmNewPassword && (
-            <ErrorMessage>{errors.confirmNewPassword.message}</ErrorMessage>
-          )}
-        </InputContainer>
-
-        <Section>
-          <Title>회원 탈퇴</Title>
-          <DeleteButton type="button" onClick={() => alert('회원 탈퇴 요청이 처리되었습니다.')}>
-            탈퇴
-          </DeleteButton>
-        </Section>
-
+        <Title>회원 탈퇴</Title>
+        <DeleteButton onClick={handleDeleteClick}>탈퇴</DeleteButton>
         <SubmitButton type="submit" disabled={!isValid || isSubmitting}>
           수정하기
         </SubmitButton>
       </Form>
+
+      {popupState === 'CONFIRM_DELETE' && (
+        <DeletePopup
+          title="정말 탈퇴하시겠어요?"
+          subtitle="탈퇴 버튼 클릭 시, 회원정보 및 기존의 모든 기록이 삭제돼요."
+          buttonText="탈퇴하기"
+          buttonColor="#FF5A5A"
+          onClick={handleDeleteConfirm}
+          onClose={handlePopupClose}
+        />
+      )}
+
+      {popupState === 'DELETE_COMPLETE' && (
+        <DeletePopup
+          title="탈퇴 완료"
+          subtitle="탈퇴가 완료되었습니다."
+          buttonText="홈으로"
+          buttonColor="#FFE135"
+          textColor="#212529"
+          onClick={handleDeleteComplete}
+          onClose={handlePopupClose}
+        />
+      )}
     </Container>
   );
 };

@@ -17,7 +17,7 @@ import {
   HintMessage,
   DuplicateCheckButton,
 } from './SignUpPage.style.ts';
-import { useSignUpForm } from '../../../src/hooks/signUp/useSignUpForm.ts';
+import { useSignUpForm } from '../../hooks/signup/useSignUpForm.ts';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
@@ -51,6 +51,7 @@ const SignUpPage = () => {
         rightIcon="로그인"
         onRightClick={() => navigate(PATH.SIGNIN)}
       />
+
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
           <Label htmlFor="name">이름</Label>

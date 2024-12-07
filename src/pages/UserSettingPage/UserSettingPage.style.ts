@@ -8,9 +8,8 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 16px;
   color: ${(props) => props.theme.colors.black800};
 `;
 
@@ -20,8 +19,22 @@ export const Form = styled.form`
   gap: 16px;
 `;
 
-export const Section = styled.div`
-  margin-top: 24px;
+export const EmailContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const EmailText = styled.p`
+  padding: 8px 0;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.black800};
+`;
+
+export const DeleteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const InputContainer = styled.div`
@@ -33,27 +46,36 @@ export const InputContainer = styled.div`
 export const Label = styled.label`
   font-size: 14px;
   font-weight: 500;
-  color: ${(props) => props.theme.colors.black700};
+  color: ${(props) => props.theme.colors.black800};
+  margin-top: 15px;
 `;
 
 export const Input = styled.input<{ hasError?: boolean }>`
-  padding: 12px;
-  border: 1px solid
-    ${(props) => (props.hasError ? props.theme.colors.red : props.theme.colors.black300)};
-  border-radius: 8px;
-  font-size: 14px;
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  border: 1px solid ${(props) => (props.hasError ? props.theme.colors.red : 'transparent')};
+  border-radius: 5px;
+
   color: ${(props) => props.theme.colors.black800};
+  background-color: ${(props) => props.theme.colors.black100};
+
+  font-size: 14px;
+  margin-top: 0px;
+
   &:focus {
+    border: 2px solid
+      ${(props) => (props.hasError ? props.theme.colors.red : props.theme.colors.primary4)};
     outline: none;
-    border-color: ${(props) => props.theme.colors.primary4};
   }
 `;
 
 export const SubmitButton = styled.button`
   padding: 16px;
   border-radius: 8px;
-  background-color: ${(props) => props.theme.colors.primary4};
-  color: white;
+  background-color: ${(props) => props.theme.colors.primary1};
+  color: ${(props) => props.theme.colors.black900};
+
   font-size: 16px;
   font-weight: 600;
   border: none;
@@ -69,18 +91,22 @@ export const DeleteButton = styled.button`
   padding: 12px;
   background-color: ${(props) => props.theme.colors.black0};
   color: ${(props) => props.theme.colors.black800};
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
   border-radius: 8px;
-  border: 1px solid ${(props) => props.theme.colors.black800};
+  border: 1px solid ${(props) => props.theme.colors.black300};
+  margin-bottom: 30px;
   cursor: pointer;
 `;
 
 export const ErrorMessage = styled.p`
   font-size: 12px;
+  font-weight: 500;
   color: ${(props) => props.theme.colors.red};
 `;
 
 export const HintMessage = styled.p`
   font-size: 12px;
   color: ${(props) => props.theme.colors.black600};
+  margin-bottom: 20px;
 `;
