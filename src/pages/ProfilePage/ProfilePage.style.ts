@@ -67,6 +67,14 @@ export const ProfileSubLabel = styled.label`
   color: ${(props) => props.theme.colors.black600};
 `;
 
+export const SummaryText = styled.label`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.black800};
+  text-align: center;
+  padding: 10px 50px;
+`;
+
 export const ProgressBarContainer = styled.div`
   width: 100%;
   display: flex;

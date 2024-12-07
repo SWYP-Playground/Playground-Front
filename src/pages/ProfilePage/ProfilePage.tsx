@@ -64,7 +64,7 @@ const ProfilePage = () => {
           }
           onRightClick={() => navigate(PATH.USER_SETTING('1'))}
         />
-        <ProfileDetails progress={progress} children={children} />
+        <ProfileDetails progress={progress} children={children} showButtons={true} />
       </Background>
 
       <TitleContainer>
