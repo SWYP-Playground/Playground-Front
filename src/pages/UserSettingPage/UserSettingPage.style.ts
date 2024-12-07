@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 export const Container = styled.div`
   width: 100%;
   max-width: 480px;
+  height: calc(100dvh - 106px);
+
   margin: 0 auto;
   padding: 16px;
 `;
