@@ -1,5 +1,5 @@
 import { CheckIcon } from '@radix-ui/react-icons';
-import SignUpCompletePopup from '../../components/popUp/SignUpCompletePopup.tsx';
+import SignUpCompletePopup from '@/components/popUp/SignUpCompletePopup.tsx';
 import {
   Container,
   Form,
@@ -17,7 +17,7 @@ import {
   HintMessage,
   DuplicateCheckButton,
 } from './SignUpPage.style.ts';
-import { useSignUpForm } from '../../hooks/signup/useSignUpForm.ts';
+import { useSignUpForm } from '@/hooks/signup/useSignUpForm.ts';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';

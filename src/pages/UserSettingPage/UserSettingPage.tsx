@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
-import { useUserSettingForm } from '../../hooks/mypage/useUserSettingForm.ts';
-import DeletePopup from '../../components/popUp/DeletePopup.tsx';
+import { useUserSettingForm } from '@/hooks/mypage/useUserSettingForm.ts';
+import DeletePopup from '@/components/popUp/DeletePopup.tsx';
 import {
   Container,
   Form,
@@ -18,7 +18,7 @@ import {
   EmailText,
   DeleteButton,
 } from './UserSettingPage.style.ts';
-import { PATH } from '../../constants/path.ts';
+import { PATH } from '@/constants/path.ts';
 
 const UserSettingPage = () => {
   const navigate = useNavigate();

@@ -11,11 +11,11 @@ import {
 } from './ProfilePage.style.ts';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
-import ProfileDetails from '../../components/profile/MyPage/ProfileDetailSection.tsx';
+import ProfileDetails from '@/components/profile/MyPage/ProfileDetailSection.tsx';
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import ContactUsSection from '@/components/profile/MyPage/ContactUsSection.tsx';
 import Card from '@/components/common/Card/Card.tsx';
-import SettingButton from '../../components/profile/Button/SettingButton.tsx';
+import SettingButton from '@/components/profile/Button/SettingButton.tsx';
 
 const ProfilePage = () => {
   const navigate = useNavigate();

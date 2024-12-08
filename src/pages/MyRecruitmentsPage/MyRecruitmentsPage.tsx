@@ -1,7 +1,7 @@
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import { useNavigate } from 'react-router-dom';
-import { Container } from '../../pages/MyRecruitmentsPage/MyRecruitmentsPage.style.ts';
+import { Container } from '@/pages/MyRecruitmentsPage/MyRecruitmentsPage.style.ts';
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 
 const MyRecruitmentsPage = () => {

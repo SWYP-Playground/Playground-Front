@@ -4,10 +4,10 @@ import {
   Container,
   SendMessageButton,
   ExtraImageContainer,
-} from '../../pages/ProfileInfoPage/ProfileInfoPage.syle.ts';
+} from '@/pages/ProfileInfoPage/ProfileInfoPage.syle.ts';
 import { useNavigate } from 'react-router-dom';
-import ProfileDetails from '../../components/profile/MyPage/ProfileDetailSection.tsx';
-import ExtraImageSection from '../../components/profile/EditProfile/ExtraImageSection.tsx';
+import ProfileDetails from '@/components/profile/MyPage/ProfileDetailSection.tsx';
+import ExtraImageSection from '@/components/profile/EditProfile/ExtraImageSection.tsx';
 
 const ProfileInfoPage = () => {
   const progress = 70;
