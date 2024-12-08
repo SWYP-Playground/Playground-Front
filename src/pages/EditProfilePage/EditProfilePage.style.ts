@@ -1,9 +1,9 @@
 import CloseIcon from '@/assets/svg/cancel.svg?react';
 import styled from '@emotion/styled';
-import Pencil from '/src/assets/svg/pencil.svg?react';
-import Search from '/src/assets/svg/search.svg?react';
+import Pencil from '@/assets/svg/pencil.svg?react';
+import Search from '@/assets/svg/search.svg?react';
 import { Button } from '@radix-ui/themes';
-import Plus from '/src/assets/svg/plus.svg?react';
+import Plus from '@/assets/svg/plus.svg?react';
 
 export const Container = styled.div`
   width: 100%;
