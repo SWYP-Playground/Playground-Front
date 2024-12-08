@@ -74,6 +74,7 @@ const ProfilePage = () => {
       <RecentFriendsContainer>
         {recentFriends.map((friend, index) => (
           <Card
+            key={index}
             nickname={friend.nickname}
             status={friend.status}
             address={friend.address}

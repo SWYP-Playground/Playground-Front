@@ -31,7 +31,7 @@ const FriendsPlayedPage = () => {
       <Banner />
 
       {cardData.map((items) => (
-        <FriendsContainer>
+        <FriendsContainer key={items.friendId}>
           <Card
             onClick={goToFriendMessage(items.friendId)}
             nickname={items.nickname}
