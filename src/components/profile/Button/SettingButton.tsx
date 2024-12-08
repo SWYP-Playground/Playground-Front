@@ -19,7 +19,7 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
-const SettingsButton = styled.button`
+const SettingsButton = styled.div`
   width: 65px;
   display: flex;
   padding: 8px;
@@ -30,6 +30,7 @@ const SettingsButton = styled.button`
   align-items: center;
   border-radius: 20px;
   border: 1px solid ${(props) => props.theme.colors.black400};
+  cursor: pointer;
 `;
 
 const SettingIcon = styled(Setting)`
