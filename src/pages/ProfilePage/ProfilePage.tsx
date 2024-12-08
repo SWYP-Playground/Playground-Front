@@ -3,9 +3,6 @@ import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import {
   Container,
   Background,
-  SettingsButton,
-  SettingIcon,
-  SettingText,
   TitleText,
   ViewMore,
   ContactUsContainer,
@@ -18,6 +15,7 @@ import ProfileDetails from '../../components/profile/MyPage/ProfileDetailSection
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import ContactUsSection from '@/components/profile/MyPage/ContactUsSection.tsx';
 import Card from '@/components/common/Card/Card.tsx';
+import SettingButton from '../../components/profile/Button/SettingButton.tsx';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -56,12 +54,7 @@ const ProfilePage = () => {
         <Header
           title="내정보"
           leftIcon={<LeftIcon />}
-          rightIcon={
-            <SettingsButton>
-              <SettingIcon />
-              <SettingText>설정</SettingText>
-            </SettingsButton>
-          }
+          rightIcon={<SettingButton />}
           onRightClick={() => navigate(PATH.USER_SETTING('1'))}
         />
         <ProfileDetails progress={progress} children={children} showButtons={true} />
@@ -81,7 +74,6 @@ const ProfilePage = () => {
       <RecentFriendsContainer>
         {recentFriends.map((friend, index) => (
           <Card
-            key={index}
             nickname={friend.nickname}
             status={friend.status}
             address={friend.address}
