@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Setting from '/src/assets/svg/setting.svg?react';
 
 export const Container = styled.div`
   width: 100%;
@@ -10,28 +9,6 @@ export const Container = styled.div`
 
 export const Background = styled.div`
   background-color: ${(props) => props.theme.colors.black100};
-`;
-
-export const SettingsButton = styled.button`
-  width: 65px;
-  display: flex;
-  padding: 8px;
-
-  gap: 5px;
-  white-space: nowrap;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  border: 1px solid ${(props) => props.theme.colors.black400};
-`;
-
-export const SettingIcon = styled(Setting)`
-  fill: ${(props) => props.theme.colors.black600};
-`;
-
-export const SettingText = styled.p`
-  font-size: 14px;
-  font-weight: 400;
 `;
 
 export const ProfileContainer = styled.div`
@@ -65,6 +42,14 @@ export const ProfileSubLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
   color: ${(props) => props.theme.colors.black600};
+`;
+
+export const SummaryText = styled.label`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.black800};
+  text-align: center;
+  padding: 10px 50px;
 `;
 
 export const ProgressBarContainer = styled.div`

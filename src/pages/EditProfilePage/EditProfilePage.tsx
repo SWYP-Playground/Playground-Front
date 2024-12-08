@@ -1,13 +1,14 @@
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Container, Form, SubmitButton } from './EditProfilePage.style.ts';
-import ProfileImageSection from '../../../src/components/profile/EditProfile/ProfileImageSection.tsx';
-import FamilyInfoSection from '../../../src/components/profile/EditProfile/FamilyInfoSection.tsx';
-import AdditionalInfoSection from '../../../src/components/profile/EditProfile/AdditionalInfoSection.tsx';
+import ProfileImageSection from '@/components/profile/EditProfile/ProfileImageSection.tsx';
+import FamilyInfoSection from '@/components/profile/EditProfile/FamilyInfoSection.tsx';
+import AdditionalInfoSection from '@/components/profile/EditProfile/AdditionalInfoSection.tsx';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header.tsx';
 import { PATH } from '@/constants/path.ts';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import CloseIcon from '@/assets/svg/cancel.svg?react';
+import ExtraImageSection from '@/components/profile/EditProfile/ExtraImageSection.tsx';
 
 interface ChildInfo {
   gender: string;
@@ -69,6 +70,7 @@ const EditProfilePage = () => {
           remove={remove}
         />
         <AdditionalInfoSection register={register} errors={errors} />
+        <ExtraImageSection />
         <SubmitButton type="submit">완료</SubmitButton>
       </Form>
     </Container>

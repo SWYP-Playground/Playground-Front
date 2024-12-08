@@ -184,6 +184,14 @@ const AppRouter = () => {
             </Suspense>
           ),
         },
+        {
+          path: PATH.PROFILE_INFO(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.ProfileInfoPage />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);

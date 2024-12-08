@@ -20,5 +20,6 @@ export const PATH = {
   MY_RECRUITMENTS: (userId: string) => `/my-recruitments/${userId}`,
   FRIEND_RECOMMENDED: (userId: string) => `/friend-recommended/${userId}`,
   USER_SETTING: (userId: string) => `/user-setting/${userId}`,
+  PROFILE_INFO: (userId: string) => `/profile-info/${userId}`,
   RELOAD: 0,
 } as const;
