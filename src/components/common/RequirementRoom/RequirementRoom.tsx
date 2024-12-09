@@ -5,9 +5,8 @@ import {
   RequirementJoin,
   RequirementTime,
   RequirementTitle,
-  StatusBadge,
 } from '@/components/common/RequirementRoom/RequirementRoom.style';
-import { ROOM_STATUS } from '@/constants/status';
+import StatusBadge from '@/components/common/StatusBadge/StatusBadge';
 
 interface RequirementRoomProps {
   onClick: () => void;
@@ -29,8 +28,8 @@ const RequirementRoom = ({
   return (
     <RequirementFlex onClick={onClick}>
       <RequirementHeader>
-        <StatusBadge status={ROOM_STATUS.HIRING}>{status}</StatusBadge>
-        <RequirementJoin status={ROOM_STATUS.HIRING}>{currentCount}명 참여 중</RequirementJoin>
+        <StatusBadge status={status} />
+        <RequirementJoin status={status}>{currentCount}명 참여 중</RequirementJoin>
       </RequirementHeader>
       <RequirementTitle>{title}</RequirementTitle>
       <RequirementDescription>{description}</RequirementDescription>
