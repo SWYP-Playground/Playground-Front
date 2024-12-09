@@ -70,7 +70,7 @@ const EditProfilePage = () => {
           remove={remove}
         />
         <AdditionalInfoSection register={register} errors={errors} />
-        <ExtraImageSection />
+        <ExtraImageSection isEditable={true} />
         <SubmitButton type="submit">완료</SubmitButton>
       </Form>
     </Container>

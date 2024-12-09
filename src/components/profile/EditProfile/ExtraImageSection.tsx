@@ -1,27 +1,21 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import Close from '@/assets/svg/bg-close.svg?react';
+import { useExtraImage } from '@/hooks/mypage/useExtraImage';
+
 interface ExtraImageSectionProps {
   images?: string[];
-  showUploadButton?: boolean;
+  isEditable?: boolean;
 }
 
-const ExtraImageSection = ({ images = [], showUploadButton = true }: ExtraImageSectionProps) => {
-  const [localImages, setLocalImages] = useState<string[]>(images);
-
-  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setLocalImages((prev) => [...prev, imageUrl]);
-    }
-  };
+const ExtraImageSection = ({ images = [], isEditable = true }: ExtraImageSectionProps) => {
+  const { images: localImages, handleUpload, handleDelete } = useExtraImage(images);
 
   return (
     <Container>
       <Label>
         추가 사진<Gray> (선택)</Gray>
       </Label>
-      {showUploadButton && (
+      {isEditable && (
         <>
           <HiddenInput type="file" id="upload-input" accept="image/*" onChange={handleUpload} />
           <StyledLabel htmlFor="upload-input">+ 등록</StyledLabel>
@@ -29,7 +23,10 @@ const ExtraImageSection = ({ images = [], showUploadButton = true }: ExtraImageS
       )}
       <ImageContainer>
         {localImages.map((url, index) => (
-          <Image key={index} style={{ backgroundImage: `url(${url})` }} />
+          <ImageWrapper key={index}>
+            <Image style={{ backgroundImage: `url(${url})` }} />
+            {isEditable && <CloseIcon onClick={() => handleDelete(index)} />}
+          </ImageWrapper>
         ))}
       </ImageContainer>
     </Container>
@@ -45,16 +42,22 @@ const Container = styled.div`
 
 const Label = styled.p`
   font-size: 14px;
-  font-weight: 00;
+  font-weight: 500;
   color: ${(props) => props.theme.colors.black800};
 `;
 
 const ImageContainer = styled.div`
   width: 100%;
   display: flex;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
   margin: 10px 0;
+`;
+
+const ImageWrapper = styled.div`
+  position: relative;
+  width: 100px;
+  height: 100px;
 `;
 
 const Image = styled.div`
@@ -90,4 +93,12 @@ const StyledLabel = styled.label`
 const Gray = styled.a`
   font-weight: 500;
   color: ${(props) => props.theme.colors.black500};
+`;
+
+const CloseIcon = styled(Close)`
+  width: 18px;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  cursor: pointer;
 `;
