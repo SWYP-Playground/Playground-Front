@@ -17,6 +17,6 @@ export const PlayGroundButtonStyling = styled(Button)`
   z-index: 1000;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: ${(props) => props.theme.colors.black0};
-  background-color: ${(props) => props.theme.colors.black900};
+  color: ${(props) => props.theme.colors.black900};
+  background-color: ${(props) => props.theme.colors.primary1};
 `;
