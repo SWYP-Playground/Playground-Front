@@ -13,6 +13,7 @@ export const END_POINTS = {
   // 예시
   // LOGOUT: '/logout',
   // LOGIN: (provider: string) => `/login/${provider}`,
+  PLAYGROUNDS: (playgroundId: string) => `/playgrounds?pfctNm=${playgroundId}`,
 };
 
 export const NETWORK = {
