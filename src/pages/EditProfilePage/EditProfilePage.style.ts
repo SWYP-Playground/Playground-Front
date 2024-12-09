@@ -157,12 +157,14 @@ export const ProfileImageContainer = styled.label`
 
 export const PencilIcon = styled(Pencil)`
   color: ${(props) => props.theme.colors.black600};
+  margin-right: 5px;
 `;
 
-export const ProfileImageLabel = styled.label`
+export const ProfileImageLabel = styled.p`
   font-size: 14px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.black800};
+  cursor: pointer;
 `;
 
 export const ProfileImage = styled.label`
@@ -274,4 +276,9 @@ export const SubTitleContainer = styled.div`
 
 export const Blue = styled.a`
   color: ${(props) => props.theme.colors.secondary};
+`;
+
+export const HiddenInput = styled.input`
+  display: none;
+  background-color: pink;
 `;
