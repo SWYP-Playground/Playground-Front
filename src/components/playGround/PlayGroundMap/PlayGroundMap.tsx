@@ -9,6 +9,7 @@ import {
   CurrentPositionButton,
   PlayGroundMapDiv,
 } from '@/components/playGround/PlayGroundMap/PlayGroundMap.style';
+import playerMarkerUrl from '@/assets/svg/player-marker.svg';
 
 export interface CenterType {
   lat: number;
@@ -26,15 +27,12 @@ const PlayGroundMap = () => {
     maximumAge: 0,
   });
 
-  console.log(center, coords);
+  const moveCenter = useCallback(() => {
+    console.log(coords.latitude, coords.longitude);
+    if (!mapRef.current || !coords.latitude || !coords.longitude) return;
 
-  useEffect(() => {
-    if (coords.latitude && coords.longitude) {
-      setCenter({
-        lat: coords.latitude,
-        lng: coords.longitude,
-      });
-    }
+    const newCenter = new kakao.maps.LatLng(coords.latitude, coords.longitude);
+    mapRef.current.setCenter(newCenter);
   }, [coords.latitude, coords.longitude]);
 
   useEffect(() => {
@@ -43,13 +41,7 @@ const PlayGroundMap = () => {
     }
   }, [coords.latitude, coords.longitude]);
 
-  const moveCenter = useCallback(() => {
-    console.log(coords.latitude, coords.longitude);
-    if (!mapRef.current || !coords.latitude || !coords.longitude) return;
-
-    const newCenter = new kakao.maps.LatLng(coords.latitude, coords.longitude);
-    mapRef.current.setCenter(newCenter);
-  }, [coords.latitude, coords.longitude]);
+  console.log(center, coords);
 
   console.log(coords, locationError);
 
@@ -70,7 +62,7 @@ const PlayGroundMap = () => {
           position={center}
           title="현재 위치"
           image={{
-            src: 'src/assets/svg/player-marker.svg',
+            src: playerMarkerUrl,
             size: {
               width: 100,
               height: 100,
