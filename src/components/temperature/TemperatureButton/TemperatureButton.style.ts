@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Button } from '@radix-ui/themes';
 
 export const TemperatureButtonStyling = styled(Button)`
-  width: 90%;
+  width: calc(100% - 32px);
   justify-content: center;
   align-items: center;
   color: ${({ theme }) => theme.colors.black900};
