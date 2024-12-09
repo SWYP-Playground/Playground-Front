@@ -271,3 +271,7 @@ export const SubTitleContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
+export const Blue = styled.a`
+  color: ${(props) => props.theme.colors.secondary};
+`;

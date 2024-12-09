@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-
 interface ExtraImageSectionProps {
   images?: string[];
   showUploadButton?: boolean;
@@ -19,7 +18,9 @@ const ExtraImageSection = ({ images = [], showUploadButton = true }: ExtraImageS
 
   return (
     <Container>
-      <Label>추가 사진</Label>
+      <Label>
+        추가 사진<Gray> (선택)</Gray>
+      </Label>
       {showUploadButton && (
         <>
           <HiddenInput type="file" id="upload-input" accept="image/*" onChange={handleUpload} />
@@ -84,4 +85,9 @@ const StyledLabel = styled.label`
   text-align: center;
   line-height: 45px;
   cursor: pointer;
+`;
+
+const Gray = styled.a`
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.black500};
 `;

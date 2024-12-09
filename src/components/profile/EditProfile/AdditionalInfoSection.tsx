@@ -7,8 +7,9 @@ import {
   Title,
   TextLengthContainer,
   ComponentContainer,
-} from '../../../pages/EditProfilePage/EditProfilePage.style';
-import RadioButtonGroup from '../../profile/Button/RadioButton.tsx';
+  Blue,
+} from '@/pages/EditProfilePage/EditProfilePage.style';
+import RadioButtonGroup from '@/components/profile/Button/RadioButton.tsx';
 import { useState } from 'react';
 
 interface Props {
@@ -33,7 +34,9 @@ const AdditionalInfoSection = ({ register, errors }: Props) => {
     <ComponentContainer>
       <Title>추가 정보</Title>
       <RadioContainer>
-        <Label>친구 추천 기준</Label>
+        <Label>
+          친구 추천 기준 <Blue>*</Blue>
+        </Label>
         <RadioButtonGroup
           options={[
             { value: '가까운 거리', label: '가까운 거리' },
@@ -46,7 +49,9 @@ const AdditionalInfoSection = ({ register, errors }: Props) => {
       </RadioContainer>
 
       <InputContainer>
-        <Label htmlFor="introduction">소개글</Label>
+        <Label htmlFor="introduction">
+          소개글 <Blue>*</Blue>
+        </Label>
         <TextArea
           id="introduction"
           placeholder={`간단한 소개글을 적어주세요.\nex. 자주 노는 놀이터, 노는 시간대 등`}

@@ -15,7 +15,8 @@ import {
   SearchIconWrapper,
   HorizonLine,
   ComponentContainer,
-} from '../../../pages/EditProfilePage/EditProfilePage.style';
+  Blue,
+} from '@/pages/EditProfilePage/EditProfilePage.style';
 
 interface Props {
   register: any;
@@ -72,7 +73,9 @@ const ProfileImageSection = ({ register, errors }: Props) => {
       </ProfileImageContainer>
 
       <InputContainer>
-        <Label htmlFor="nickname">닉네임</Label>
+        <Label htmlFor="nickname">
+          닉네임 <Blue>*</Blue>
+        </Label>
         <DuplicateContainer>
           <Input
             id="nickname"
@@ -102,7 +105,9 @@ const ProfileImageSection = ({ register, errors }: Props) => {
       </InputContainer>
 
       <InputContainer>
-        <Label htmlFor="phoneNumber">휴대폰 번호</Label>
+        <Label htmlFor="phoneNumber">
+          휴대폰 번호 <Blue>*</Blue>
+        </Label>
         <DuplicateContainer>
           <Input
             id="phoneNumber"
@@ -127,7 +132,9 @@ const ProfileImageSection = ({ register, errors }: Props) => {
       </InputContainer>
 
       <InputContainer>
-        <Label htmlFor="address">주소</Label>
+        <Label htmlFor="address">
+          주소 <Blue>*</Blue>
+        </Label>
         <DuplicateContainer>
           <Input
             id="address"
