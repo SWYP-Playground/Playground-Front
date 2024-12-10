@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import {
   AlertName,
@@ -38,7 +38,10 @@ const PlayGroundSearchBar = () => {
   const handleSubmitForm = (event: FormEvent) => {
     event.preventDefault();
     if (playgroundWord.trim()) {
-      setSearchParams({ query: playgroundWord }, { replace: true });
+      navigate({
+        pathname: PATH.FIND_PLAYGROUND_FRIEND,
+        search: createSearchParams({ query: playgroundWord }).toString(),
+      });
     }
   };
 
@@ -65,7 +68,7 @@ const PlayGroundSearchBar = () => {
     }
   }, [query]);
 
-  console.log(query, debouncedPlaygroundWord, location, focusInput());
+  console.log(query, debouncedPlaygroundWord, location);
 
   return (
     <PlayGroundSearchFlex position="relative" direction="column">

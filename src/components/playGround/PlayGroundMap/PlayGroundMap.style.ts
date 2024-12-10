@@ -5,6 +5,7 @@ export const PlayGroundMapDiv = styled.div`
   position: relative;
   width: 100%;
   height: calc(100dvh - 46px);
+  min-height: 200px;
   overflow: hidden;
 `;
 

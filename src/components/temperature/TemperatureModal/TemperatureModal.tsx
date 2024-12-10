@@ -1,15 +1,16 @@
-import { Button, Dialog, Flex, Skeleton } from '@radix-ui/themes';
+import { Dialog, Flex, Skeleton } from '@radix-ui/themes';
 import { ReactNode, useState } from 'react';
 
 import {
   CompleteButton,
   RadioGroupItem,
   RadioGroupRoot,
+  ReportButton,
+  ReportSpan,
   TemperatureModalContent,
   TemperatureModalTitle,
 } from '@/components/temperature/TemperatureModal/TemperatureModal.style';
 import CancelIcon from '@/assets/svg/cancel.svg?react';
-import ReportIcon from '@/assets/svg/report.svg?react';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 
@@ -66,15 +67,16 @@ const TemperatureModal = ({ children }: TemperatureModalProps) => {
           </RadioGroupRoot>
         </Flex>
 
-        <Flex gap="3" mt="4" direction="column" align="start">
+        <Flex gap="3" mt="4" direction="column" align="center">
           <Dialog.Close>
             <CompleteButton disabled={!selectedValue}>완료</CompleteButton>
           </Dialog.Close>
-          <Dialog.Close>
-            <Button variant="soft" color="gray" onClick={reportFriend}>
-              <ReportIcon /> 신고하기
-            </Button>
-          </Dialog.Close>
+          <Flex align="center" gap="4">
+            <ReportSpan>친구와 다툼이 있었나요?</ReportSpan>
+            <Dialog.Close>
+              <ReportButton onClick={reportFriend}>신고하기</ReportButton>
+            </Dialog.Close>
+          </Flex>
         </Flex>
       </TemperatureModalContent>
     </Dialog.Root>
