@@ -39,3 +39,16 @@ export const RadioGroupItem = styled(RadioGroup.Item)`
     }
   }
 `;
+
+export const ReportSpan = styled.span`
+  font-size: 13px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.black500};
+`;
+
+export const ReportButton = styled(Button)`
+  color: ${({ theme }) => theme.colors.black800};
+  border: 1px ${({ theme }) => theme.colors.black300} solid;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.black0};
+`;

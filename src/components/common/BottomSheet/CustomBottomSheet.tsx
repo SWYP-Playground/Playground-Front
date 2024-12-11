@@ -8,9 +8,15 @@ interface BottomSheetProps {
   children: React.ReactNode;
   isOpen?: boolean;
   onClose: () => void;
+  showBackdrop?: boolean;
 }
 
-const CustomBottomSheet = ({ children, isOpen = false, onClose }: BottomSheetProps) => {
+const CustomBottomSheet = ({
+  children,
+  isOpen = false,
+  onClose,
+  showBackdrop = true,
+}: BottomSheetProps) => {
   const ref = useRef<SheetRef>();
   const [_, setSnapPoint] = useState<number>(SHEET_INITIAL_SNAP);
 
@@ -31,7 +37,7 @@ const CustomBottomSheet = ({ children, isOpen = false, onClose }: BottomSheetPro
           {children}
         </BottomSheetContent>
       </Sheet.Container>
-      <Sheet.Backdrop onTap={onClose} />
+      {showBackdrop ? <Sheet.Backdrop onTap={onClose} /> : <></>}
     </Sheet>
   );
 };

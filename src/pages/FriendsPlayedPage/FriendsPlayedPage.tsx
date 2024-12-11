@@ -1,16 +1,17 @@
 import { useNavigate } from 'react-router-dom';
+
 import Card from '@/components/common/Card/Card';
 import Header from '@/components/layout/Header/Header';
 import TemperatureModal from '@/components/temperature/TemperatureModal/TemperatureModal';
-import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import {
   FriendsPlayedFlex,
   Banner,
   FriendsContainer,
-} from '@/pages/FriendsPlayedPage/FriendsPlayedPage style';
+} from '@/pages/FriendsPlayedPage/FriendsPlayedPage.style';
 import TemperatureButton from '@/components/temperature/TemperatureButton/TemperatureButton';
 import { PATH } from '@/constants/path';
 import { useCardData } from '@/hooks/mypage/useCardData';
+import LeftIcon from '@/assets/svg/left-icon.svg?react';
 
 const FriendsPlayedPage = () => {
   const navigate = useNavigate();
