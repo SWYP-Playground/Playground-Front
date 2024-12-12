@@ -8,7 +8,7 @@ export const RequirementFlex = styled(Flex)`
   position: relative;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 4px;
   padding: 20px 16px;
   cursor: pointer;
 
@@ -19,7 +19,7 @@ export const RequirementFlex = styled(Flex)`
     left: 16px;
     right: 16px;
     height: 1px;
-    background-color: ${(props) => props.theme.colors.black500};
+    background-color: ${(props) => props.theme.colors.black300};
   }
 `;
 
@@ -29,7 +29,7 @@ export const RequirementHeader = styled(Flex)`
 `;
 
 export const RequirementJoin = styled.span<{ status: RoomStatusType }>`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
 
   ${({ status, theme }) => {
@@ -49,14 +49,25 @@ export const RequirementJoin = styled.span<{ status: RoomStatusType }>`
   }}
 `;
 
-export const RequirementTitle = styled.span``;
+export const RequirementTitle = styled.span`
+  font-weight: 500;
+`;
 
 export const RequirementDescription = styled.span`
   font-size: 15px;
   color: ${(props) => props.theme.colors.black500};
 `;
 
+export const PlaygroundDetails = styled(Flex)`
+  gap: 8px;
+`;
+
 export const RequirementTime = styled.span`
+  font-size: 13px;
+  color: ${(props) => props.theme.colors.black500};
+`;
+
+export const RequirementPlaygroundName = styled.span`
   font-size: 13px;
   color: ${(props) => props.theme.colors.black500};
 `;
