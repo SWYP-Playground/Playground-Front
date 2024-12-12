@@ -5,6 +5,8 @@ import {
   RequirementJoin,
   RequirementTime,
   RequirementTitle,
+  RequirementPlaygroundName,
+  PlaygroundDetails,
 } from '@/components/common/RequirementRoom/RequirementRoom.style';
 import StatusBadge from '@/components/common/StatusBadge/StatusBadge';
 
@@ -13,7 +15,8 @@ interface RequirementRoomProps {
   status: string;
   currentCount: number;
   title: string;
-  description: string;
+  description?: string;
+  playgroundName?: string;
   playTime: string;
 }
 
@@ -23,6 +26,7 @@ const RequirementRoom = ({
   currentCount,
   title,
   description,
+  playgroundName,
   playTime,
 }: RequirementRoomProps) => {
   return (
@@ -33,7 +37,10 @@ const RequirementRoom = ({
       </RequirementHeader>
       <RequirementTitle>{title}</RequirementTitle>
       <RequirementDescription>{description}</RequirementDescription>
-      <RequirementTime>{playTime}</RequirementTime>
+      <PlaygroundDetails>
+        <RequirementPlaygroundName>{playgroundName}</RequirementPlaygroundName>
+        <RequirementTime>{playTime}</RequirementTime>
+      </PlaygroundDetails>
     </RequirementFlex>
   );
 };
