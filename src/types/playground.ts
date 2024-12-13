@@ -4,4 +4,5 @@ export interface PlaygroundData {
   address: string;
   latitude: string;
   longitude: string;
+  distance: string;
 }
