@@ -10,15 +10,17 @@ import {
 } from '@/components/playGround/PlayGroundSearchBar/PlayGroundSearchBar.style';
 import ResetSearch from '@/assets/svg/reset-search.svg?react';
 import SearchIcon from '@/assets/svg/search.svg?react';
-import { useDebounce } from '@/hooks/common/useDebounce';
 import { PATH } from '@/constants/path';
 
-const PlayGroundSearchBar = () => {
+interface PlayGroundSearchBarProps {
+  onSearchChange?: (query: string) => void;
+}
+
+const PlayGroundSearchBar = ({ onSearchChange }: PlayGroundSearchBarProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
-  const [playgroundWord, setPlaygroundWord] = useState<string>(query || '');
+  const [word, setWord] = useState<string>(query || '');
   const inputRef = useRef<HTMLInputElement>(null);
-  const debouncedPlaygroundWord = useDebounce(playgroundWord, 500);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -32,21 +34,23 @@ const PlayGroundSearchBar = () => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const word = event.currentTarget.value;
-    setPlaygroundWord(word);
+    setWord(word);
+    onSearchChange?.(word);
   };
 
   const handleSubmitForm = (event: FormEvent) => {
     event.preventDefault();
-    if (playgroundWord.trim()) {
+    if (word.trim()) {
       navigate({
         pathname: PATH.FIND_PLAYGROUND_FRIEND,
-        search: createSearchParams({ query: playgroundWord }).toString(),
+        search: createSearchParams({ query: word }).toString(),
       });
     }
   };
 
   const handleInputClear = () => {
-    setPlaygroundWord('');
+    setWord('');
+    onSearchChange?.('');
     if (query) {
       searchParams.delete('query');
       setSearchParams(searchParams, { replace: true });
@@ -64,11 +68,9 @@ const PlayGroundSearchBar = () => {
 
   useEffect(() => {
     if (query) {
-      setPlaygroundWord(query);
+      setWord(query);
     }
   }, [query]);
-
-  console.log(query, debouncedPlaygroundWord, location);
 
   return (
     <PlayGroundSearchFlex position="relative" direction="column">
@@ -76,12 +78,12 @@ const PlayGroundSearchBar = () => {
         <SearchInput
           type="text"
           placeholder="놀이터를 검색해 주세요"
-          value={playgroundWord}
+          value={word}
           onChange={handleInputChange}
           ref={inputRef}
           onClick={goToSearchPage}
         />
-        {playgroundWord && (
+        {word && (
           <ResetSearch
             style={{ cursor: 'pointer' }}
             width="20"
@@ -89,7 +91,7 @@ const PlayGroundSearchBar = () => {
             onClick={handleInputClear}
           />
         )}
-        <SearchButton disabled={!playgroundWord} type="submit">
+        <SearchButton disabled={!word} type="submit">
           <SearchIcon width="20" height="20" />
         </SearchButton>
       </PlayGroundSearchBarForm>

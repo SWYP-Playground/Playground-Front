@@ -8,7 +8,8 @@ interface MyGroupsSectionProps {
     status: string;
     currentCount: number;
     title: string;
-    description: string;
+    description?: string;
+    playgroundName?: string;
     playTime: string;
   }[];
 }
@@ -28,7 +29,8 @@ const MyGroupsSection = ({ requireData }: MyGroupsSectionProps) => {
           status={item.status}
           currentCount={item.currentCount}
           title={item.title}
-          description={item.description}
+          description={item.description || ''}
+          playgroundName={item.playgroundName || ''}
           playTime={item.playTime}
         />
       ))}

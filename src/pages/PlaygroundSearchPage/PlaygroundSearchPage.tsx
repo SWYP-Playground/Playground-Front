@@ -8,23 +8,14 @@ import { PATH } from '@/constants/path';
 import PlayGroundItem from '@/components/playGround/PlayGroundItem/PlayGroundItem';
 import { PlayGroundItemFlex } from '@/pages/PlaygroundSearchPage/PlaygroundSearchPage.style';
 import LeftIcon from '@assets/svg/left-icon.svg?react';
-
-const playgroundData = [
-  {
-    name: '서리풀 상상나라 숲속학교 놀이터',
-    address: '서울 서초구 서초대로 160-7',
-  },
-  {
-    name: '도구머리 숲 놀이터',
-    address: '서울 서초구 강남대로 221 5층 공원녹지과',
-  },
-  {
-    name: '서초그랑자이 기부채납공원 내 놀이터',
-    address: '서울 서초구 효령로 391',
-  },
-];
+import { useState } from 'react';
+import { useDebounce } from '@/hooks/common/useDebounce';
+import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
 
 const PlaygroundSearchPage = () => {
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const debouncedPlaygroundWord = useDebounce(searchQuery, 500);
+  const { playgroundsData } = usePlaygroundsQuery(debouncedPlaygroundWord);
   const navigate = useNavigate();
 
   const goToBackPage = () => {
@@ -45,10 +36,10 @@ const PlaygroundSearchPage = () => {
         onRightClick={goToCreatePlayground}
       />
       <Flex style={{ padding: '16px' }}>
-        <PlayGroundSearchBar />
+        <PlayGroundSearchBar onSearchChange={setSearchQuery} />
       </Flex>
       <PlayGroundItemFlex>
-        {playgroundData.map((item) => (
+        {playgroundsData.map((item) => (
           <PlayGroundItem name={item.name} address={item.address} />
         ))}
       </PlayGroundItemFlex>

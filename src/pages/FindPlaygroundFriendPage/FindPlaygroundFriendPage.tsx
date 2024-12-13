@@ -11,29 +11,13 @@ import PlayGroundMap from '@/components/playGround/PlayGroundMap/PlayGroundMap';
 import { PlaygroundFlex } from '@/pages/FindPlaygroundFriendPage/FindPlaygroundFriendPage.style';
 import PlayGroundItem from '@/components/playGround/PlayGroundItem/PlayGroundItem';
 import LeftIcon from '@assets/svg/left-icon.svg?react';
-
-const playgroundData = [
-  {
-    name: '서리풀 상상나라 숲속학교 놀이터',
-    address: '서울 서초구 서초대로 160-7',
-    distance: '1.1',
-  },
-  {
-    name: '도구머리 숲 놀이터',
-    address: '서울 서초구 강남대로 221 5층 공원녹지과',
-    distance: '1.1',
-  },
-  {
-    name: '서초그랑자이 기부채납공원 내 놀이터',
-    address: '서울 서초구 효령로 391',
-    distance: '1.1',
-  },
-];
+import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
 
 const FindPlaygroundFriendPage = () => {
   const navigate = useNavigate();
   const [searchParams, _] = useSearchParams();
   const query = searchParams.get('query');
+  const { playgroundsData } = usePlaygroundsQuery(query ?? '');
 
   const goToBackPage = () => {
     navigate(-1);
@@ -42,9 +26,7 @@ const FindPlaygroundFriendPage = () => {
   const { isOpen, open, close } = useBottomSheet();
 
   useEffect(() => {
-    if (query) {
-      open();
-    }
+    query ? open() : close();
   }, [query]);
 
   return (
@@ -54,11 +36,9 @@ const FindPlaygroundFriendPage = () => {
         <PlayGroundSearchBar />
       </Flex>
       <CustomBottomSheet isOpen={isOpen} onClose={close} showBackdrop={false}>
-        {playgroundData.map((item) => (
-          <PlayGroundItem name={item.name} address={item.address} distance={item.distance} />
-        ))}
+        {playgroundsData?.map((item) => <PlayGroundItem name={item.name} address={item.address} />)}
       </CustomBottomSheet>
-      <PlayGroundMap />
+      <PlayGroundMap playgroundsData={playgroundsData} />
       <PlayGroundButton />
     </PlaygroundFlex>
   );
