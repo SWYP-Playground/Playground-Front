@@ -5,6 +5,13 @@ export const globalStyles = css`
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family:
+      'Pretendard',
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Open Sans',
+      'Helvetica Neue';
   }
 
   html {
@@ -19,6 +26,7 @@ export const globalStyles = css`
 
   body {
     font-family:
+      'Pretendard',
       system-ui,
       -apple-system,
       BlinkMacSystemFont,
