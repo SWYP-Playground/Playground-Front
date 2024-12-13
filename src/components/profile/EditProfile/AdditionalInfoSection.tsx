@@ -11,6 +11,9 @@ import {
 } from '@/pages/EditProfilePage/EditProfilePage.style';
 import RadioButtonGroup from '@/components/profile/Button/RadioButton.tsx';
 import { useState } from 'react';
+import FriendRecommendationIcon1 from '@/assets/svg/recommendation-icon-1.svg?react';
+import FriendRecommendationIcon2 from '@/assets/svg/recommendation-icon-2.svg?react';
+import FriendRecommendationIcon3 from '@/assets/svg/recommendation-icon-3.svg?react';
 
 interface Props {
   register: any;
@@ -39,9 +42,9 @@ const AdditionalInfoSection = ({ register, errors }: Props) => {
         </Label>
         <RadioButtonGroup
           options={[
-            { value: '가까운 거리', label: '가까운 거리' },
-            { value: '같은 성별', label: '같은 성별' },
-            { value: '같은 인원 수', label: '같은 인원 수' },
+            { value: '가까운 거리', label: '가까운 거리', icon: <FriendRecommendationIcon1 /> },
+            { value: '같은 성별', label: '같은 성별', icon: <FriendRecommendationIcon2 /> },
+            { value: '같은 인원 수', label: '같은 인원 수', icon: <FriendRecommendationIcon3 /> },
           ]}
           selectedValue={selectedOption}
           onChange={handleRadioChange}
