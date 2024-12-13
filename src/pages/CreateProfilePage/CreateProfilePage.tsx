@@ -1,5 +1,5 @@
 import { useForm, useFieldArray } from 'react-hook-form';
-import { Container, Form, SubmitButton } from './EditProfilePage.style.ts';
+import { Container, Form, SubmitButton } from './CreateProfilePage.style.ts';
 import ProfileImageSection from '@/components/profile/EditProfile/ProfileImageSection.tsx';
 import FamilyInfoSection from '@/components/profile/EditProfile/FamilyInfoSection.tsx';
 import AdditionalInfoSection from '@/components/profile/EditProfile/AdditionalInfoSection.tsx';
@@ -27,14 +27,14 @@ interface FormData {
   additionalPhoto: File | null;
 }
 
-const EditProfilePage = () => {
+const CreateProfilePage = () => {
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors }, // 유효성 검사 통과 못하면 에러 표시
+    formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
       children: [{ gender: '', birthDate: '' }],
@@ -53,7 +53,7 @@ const EditProfilePage = () => {
   return (
     <Container>
       <Header
-        title="프로필 수정"
+        title="프로필 작성"
         leftIcon={<LeftIcon />}
         onLeftClick={() => navigate(-1)}
         rightIcon={<CloseIcon />}
@@ -77,4 +77,4 @@ const EditProfilePage = () => {
   );
 };
 
-export default EditProfilePage;
+export default CreateProfilePage;

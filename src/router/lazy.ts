@@ -11,6 +11,8 @@ export const DirectMessagePage = lazy(() => import('@pages/DirectMessagePage/Dir
 
 export const EditAccountPage = lazy(() => import('@pages/EditAccountPage/EditAccountPage'));
 
+export const CreateProfilePage = lazy(() => import('@pages/CreateProfilePage/CreateProfilePage'));
+
 export const EditProfilePage = lazy(() => import('@pages/EditProfilePage/EditProfilePage'));
 
 export const FindAccountPage = lazy(() => import('@pages/FindAccountPage/FindAccountPage'));
