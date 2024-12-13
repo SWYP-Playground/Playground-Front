@@ -8,11 +8,37 @@ export const AXIOS_BASE_URL = PROD
   ? `${window.location.protocol}//${import.meta.env.VITE_AXIOS_PROD_BASE_URL}`
   : '/';
 
-// 백엔드 api 연결시 간단하게 연결하기 위한 END_POINTS 상수 설정
 export const END_POINTS = {
-  // 예시
-  // LOGOUT: '/logout',
-  // LOGIN: (provider: string) => `/login/${provider}`,
+  SIGNUP: '/auth/signup',
+  LOGOUT: '/auth/logout',
+  LOGIN: '/auth/login',
+  COMMENT_ALL: '/comment/all',
+  CREATE_COMMENT: '/comment',
+  MAIN_FIND_FRIEND_LIST: '/find-friend-list',
+  MY_FIND_FRIEND_LIST: '/find-friend/my',
+  RECENT_FIND_FRIEND_LIST: '/find-friend/recent',
+  CREATE_TEMPERATURE: '/manner-temp',
+  PARENT_ALL: '/auth/users/all',
+  NOTE_ALL: '/note/all',
+  REPORT_ALL: '/report/all',
+  CREATE_NOTE: '/note',
+  CREATE_REPORT: '/report',
+  NICKNAME: (email: string) => `/auth/get-nickname?email=${email}`,
+  REPORT: (reportId: number) => `/report?id=${reportId}`,
+  UPDATE_PARENT: (parentId: number) => `/auth/users/edit/${parentId}`, // PARENT 엔드 포인트로 PATCH메소드 사용하면 될 것 같은데 굳이 나눈 이유를 모르겠음
+  DELETE_PARENT: (parentId: number) => `/auth/users/delete/${parentId}`, // PARENT 엔드 포인트로 DELETE메소드 사용하면 될 것 같은데 굳이 나눈 이유를 모르겠음
+  PARENT: (parentId: number) => `/auth/users/${parentId}`,
+  NOTE: (noteId: number) => `/note?id=${noteId}`,
+  COMMENT_MATCH: (matchId: number) => `/comment/match?id=${matchId}`,
+  COMMENT: (commentId: number) => `/comment?id=${commentId}`,
+  RESET_PASSWORD: (email: string) => `/auth/reset-password?email=${email}`,
+  FIND_FRIEND: (playgroundId: string, findFriendId: number) =>
+    `/find-friend/${playgroundId}/${findFriendId}`,
+  PARTICIPATE_FIND_FRIEND: (playgroundId: string, findFriendId: number, action: string) =>
+    `/find-friend/${playgroundId}/${findFriendId}?action=${action}`,
+  FIND_FRIEND_INFO: (findFriendId: number) => `/find-friend/${findFriendId}`,
+  REGISTER_FIND_FRIEND: (playgroundId: string) => `/find-friend/${playgroundId}`,
+  FIND_FRIEND_LIST: (playgroundId: string) => `/find-friend-list/${playgroundId}`,
   PLAYGROUNDS: (playgroundId: string) => `/playgrounds?pfctNm=${playgroundId}`,
 };
 

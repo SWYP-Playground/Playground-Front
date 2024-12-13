@@ -7,6 +7,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 뚝섬로 273',
     latitude: '37.544',
     longitude: '127.036',
+    distance: '0.5',
   },
   {
     id: '2',
@@ -14,6 +15,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 성수이로7길 26',
     latitude: '37.546',
     longitude: '127.056',
+    distance: '0.5',
   },
   {
     id: '3',
@@ -21,6 +23,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 응봉동 산3-1',
     latitude: '37.555',
     longitude: '127.031',
+    distance: '0.5',
   },
   {
     id: '4',
@@ -28,6 +31,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 성수2가1동 282',
     latitude: '37.544',
     longitude: '127.057',
+    distance: '0.5',
   },
   {
     id: '5',
@@ -35,6 +39,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 성수동1가 685',
     latitude: '37.537',
     longitude: '127.066',
+    distance: '0.5',
   },
   {
     id: '6',
@@ -42,6 +47,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 금호로 119',
     latitude: '37.548',
     longitude: '127.020',
+    distance: '0.5',
   },
   {
     id: '7',
@@ -49,6 +55,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 행당동 273-1',
     latitude: '37.556',
     longitude: '127.030',
+    distance: '0.5',
   },
   {
     id: '8',
@@ -56,6 +63,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 성수1가1동 16',
     latitude: '37.542',
     longitude: '127.058',
+    distance: '0.5',
   },
   {
     id: '9',
@@ -63,6 +71,7 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 마장로31길 7',
     latitude: '37.567',
     longitude: '127.043',
+    distance: '0.5',
   },
   {
     id: '10',
@@ -70,5 +79,6 @@ export const playgrounds: PlaygroundData[] = [
     address: '서울특별시 성동구 왕십리로 410',
     latitude: '37.561',
     longitude: '127.037',
+    distance: '0.5',
   },
 ];
