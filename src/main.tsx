@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Theme } from '@radix-ui/themes';
 import { ThemeProvider } from '@emotion/react';
 import '@radix-ui/themes/styles.css';
+import 'pretendard/dist/web/static/pretendard.css';
 
 import { queryClient } from '@hooks/api/queryClient';
 
