@@ -1,21 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 
 import useKakaoLoader from '@/hooks/common/useKakaoLoader';
 import { MAP_DEFAULT_CENTER, MAP_INITIAL_ZOOM_LEVEL } from '@/constants/map';
 import useLocation from '@/hooks/common/useLocation';
-import CrossHair from '@/assets/svg/crosshair.svg?react';
 import {
   CurrentPositionButton,
   PlayGroundMapDiv,
 } from '@/components/playGround/PlayGroundMap/PlayGroundMap.style';
-
+import { PlaygroundData } from '@/types/playground';
+import playerMarkerUrl from '@/assets/svg/player-marker.svg';
+import CrossHair from '@/assets/svg/crosshair.svg?react';
+import playgroundMarkerUrl from '@/assets/svg/playground-marker.svg';
 export interface CenterType {
   lat: number;
   lng: number;
 }
 
-const PlayGroundMap = () => {
+interface PlayGroundMapProps {
+  playgroundsData?: PlaygroundData[];
+}
+
+const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
   useKakaoLoader();
   const [center, setCenter] = useState<CenterType>(MAP_DEFAULT_CENTER);
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -26,23 +32,6 @@ const PlayGroundMap = () => {
     maximumAge: 0,
   });
 
-  console.log(center, coords);
-
-  useEffect(() => {
-    if (coords.latitude && coords.longitude) {
-      setCenter({
-        lat: coords.latitude,
-        lng: coords.longitude,
-      });
-    }
-  }, [coords.latitude, coords.longitude]);
-
-  useEffect(() => {
-    if (coords.latitude && coords.longitude) {
-      setCenter({ lat: coords.latitude, lng: coords.longitude });
-    }
-  }, [coords.latitude, coords.longitude]);
-
   const moveCenter = useCallback(() => {
     console.log(coords.latitude, coords.longitude);
     if (!mapRef.current || !coords.latitude || !coords.longitude) return;
@@ -51,7 +40,13 @@ const PlayGroundMap = () => {
     mapRef.current.setCenter(newCenter);
   }, [coords.latitude, coords.longitude]);
 
-  console.log(coords, locationError);
+  useEffect(() => {
+    if (coords.latitude && coords.longitude) {
+      setCenter({ lat: coords.latitude, lng: coords.longitude });
+    }
+  }, [coords.latitude, coords.longitude]);
+
+  console.log(locationError);
 
   return (
     <PlayGroundMapDiv>
@@ -70,10 +65,10 @@ const PlayGroundMap = () => {
           position={center}
           title="현재 위치"
           image={{
-            src: 'src/assets/svg/player-marker.svg',
+            src: playerMarkerUrl,
             size: {
-              width: 100,
-              height: 100,
+              width: 80,
+              height: 80,
             },
             options: {
               offset: {
@@ -83,6 +78,23 @@ const PlayGroundMap = () => {
             },
           }}
         />
+        {playgroundsData && (
+          <MarkerClusterer averageCenter={true} minLevel={10}>
+            {playgroundsData.map((playground) => (
+              <MapMarker
+                position={{ lat: Number(playground.latitude), lng: Number(playground.longitude) }}
+                title="놀이터 위치"
+                image={{
+                  src: playgroundMarkerUrl,
+                  size: {
+                    width: 60,
+                    height: 60,
+                  },
+                }}
+              />
+            ))}
+          </MarkerClusterer>
+        )}
         <CurrentPositionButton title="현재 위치로 이동" onClick={moveCenter}>
           <CrossHair />
         </CurrentPositionButton>

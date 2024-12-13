@@ -3,7 +3,6 @@ import { Button, Flex } from '@radix-ui/themes';
 
 export const PlayGroundSearchFlex = styled(Flex)`
   width: 100%;
-  padding: 8px 16px;
 `;
 
 export const PlayGroundSearchBarForm = styled.form`
@@ -15,8 +14,6 @@ export const PlayGroundSearchBarForm = styled.form`
   align-items: center;
   width: 100%;
   margin: 0 auto;
-  width: 100%;
-  max-width: 500px;
   margin: 6px 0;
   border-radius: 8px;
 `;
@@ -48,4 +45,5 @@ export const AlertName = styled.div`
   color: ${(props) => props.theme.colors.black600};
   font-size: 13px;
   font-weight: 500;
+  align-self: flex-start;
 `;

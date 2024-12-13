@@ -25,14 +25,6 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.CONTACT_US,
-          element: (
-            <Suspense>
-              <Lazy.ContactUsPage />
-            </Suspense>
-          ),
-        },
-        {
           path: PATH.CREATE_PLAYGROUND,
           element: (
             <Suspense>
@@ -157,6 +149,46 @@ const AppRouter = () => {
           element: (
             <Suspense>
               <Lazy.PlaygroundSearchPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.FRIEND_MESSAGE(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.FriendMessagePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.MY_RECRUITMENTS(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.MyRecruitmentsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.FRIEND_RECOMMENDED(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.FreindRecommendedPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.USER_SETTING(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.UserSettingPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.PROFILE_INFO(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.ProfileInfoPage />
             </Suspense>
           ),
         },

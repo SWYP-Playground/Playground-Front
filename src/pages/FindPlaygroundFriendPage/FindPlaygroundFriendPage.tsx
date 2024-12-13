@@ -1,16 +1,23 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Flex } from '@radix-ui/themes';
 
 import CustomBottomSheet from '@/components/common/BottomSheet/CustomBottomSheet';
 import Header from '@components/layout/Header/Header';
 import PlayGroundButton from '@/components/playGround/PlayGroundButton/PlayGroundButton';
 import PlayGroundSearchBar from '@/components/playGround/PlayGroundSearchBar/PlayGroundSearchBar';
 import { useBottomSheet } from '@/hooks/common/useBottomSheet';
-import LeftIcon from '@assets/svg/left-icon.svg?react';
 import PlayGroundMap from '@/components/playGround/PlayGroundMap/PlayGroundMap';
 import { PlaygroundFlex } from '@/pages/FindPlaygroundFriendPage/FindPlaygroundFriendPage.style';
+import PlayGroundItem from '@/components/playGround/PlayGroundItem/PlayGroundItem';
+import LeftIcon from '@assets/svg/left-icon.svg?react';
+import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
 
 const FindPlaygroundFriendPage = () => {
   const navigate = useNavigate();
+  const [searchParams, _] = useSearchParams();
+  const query = searchParams.get('query');
+  const { playgroundsData } = usePlaygroundsQuery(query ?? '');
 
   const goToBackPage = () => {
     navigate(-1);
@@ -18,16 +25,20 @@ const FindPlaygroundFriendPage = () => {
 
   const { isOpen, open, close } = useBottomSheet();
 
+  useEffect(() => {
+    query ? open() : close();
+  }, [query]);
+
   return (
     <PlaygroundFlex direction="column">
       <Header title="놀이터 찾기" leftIcon={<LeftIcon />} onLeftClick={goToBackPage} />
-      <PlayGroundSearchBar />
-      <button onClick={open}>바텀시트 열기</button>
-      <CustomBottomSheet isOpen={isOpen} onClose={close}>
-        <h2>Bottom Sheet Content</h2>
-        <p>여기에 원하는 컨텐츠를 넣을 수 있습니다.</p>
+      <Flex style={{ padding: '0 16px' }}>
+        <PlayGroundSearchBar />
+      </Flex>
+      <CustomBottomSheet isOpen={isOpen} onClose={close} showBackdrop={false}>
+        {playgroundsData?.map((item) => <PlayGroundItem name={item.name} address={item.address} />)}
       </CustomBottomSheet>
-      <PlayGroundMap />
+      <PlayGroundMap playgroundsData={playgroundsData} />
       <PlayGroundButton />
     </PlaygroundFlex>
   );

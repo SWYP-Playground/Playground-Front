@@ -34,12 +34,15 @@ export const LeftDiv = styled.div`
 `;
 
 export const Title = styled.p`
-  display: flex;
   grid-column: span 2 / span 2;
   font-size: 18px;
   font-weight: 900;
-  justify-content: center;
+  text-align: center;
   color: ${(props) => props.theme.colors.black900};
+
+  white-space: nowrap; /* 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis; /* 생략(...) 처리 */
 `;
 
 export const RightDiv = styled.div`

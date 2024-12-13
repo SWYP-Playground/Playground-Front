@@ -7,6 +7,7 @@ export const PATH = {
   FIND_PLAYGROUND_FRIEND: '/find-playground-friend',
   CREATE_PLAYGROUND: '/create-playground',
   PLAYGROUND_SEARCH: '/playground-search',
+  FRIEND_MESSAGE: (userId: string) => `/friend-message/${userId}`,
   PLAYGROUND_MESSAGE: (playgroundId: string) => `/playground-message/${playgroundId}`,
   PLAYGROUND_ROOM: (playgroundId: string) => `/playground-room/${playgroundId}`,
   EDIT_ACCOUNT: (userId: string) => `/edit-account/${userId}`,
@@ -16,6 +17,9 @@ export const PATH = {
   FRIENDS_PLAYED: (userId: string) => `/friends-played/${userId}`,
   REPORT_FRIEND: (userId: string) => `/report-friend/${userId}`,
   DIRECT_MESSAGE: (userId: string) => `/direct-message/${userId}`,
-  CONTACT_US: '/contact-us',
+  MY_RECRUITMENTS: (userId: string) => `/my-recruitments/${userId}`,
+  FRIEND_RECOMMENDED: (userId: string) => `/friend-recommended/${userId}`,
+  USER_SETTING: (userId: string) => `/user-setting/${userId}`,
+  PROFILE_INFO: (userId: string) => `/profile-info/${userId}`,
   RELOAD: 0,
 } as const;

@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-export const ContactUsPage = lazy(() => import('@pages/ContactUsPage/ContactUsPage'));
+export const FriendMessagePage = lazy(() => import('@/pages/FriendMessagePage/FriendMessagePage'));
 
 export const CreatePlaygroundPage = lazy(
   () => import('@pages/CreatePlaygroundPage/CreatePlaygroundPage'),
@@ -46,3 +46,15 @@ export const SignUpPage = lazy(() => import('@pages/SignUpPage/SignUpPage'));
 export const PlaygroundSearchPage = lazy(
   () => import('@pages/PlaygroundSearchPage/PlaygroundSearchPage'),
 );
+
+export const MyRecruitmentsPage = lazy(
+  () => import('@pages/MyRecruitmentsPage/MyRecruitmentsPage'),
+);
+
+export const FreindRecommendedPage = lazy(
+  () => import('@/pages/FriendRecommendedPage/FriendRecommendedPage'),
+);
+
+export const UserSettingPage = lazy(() => import('@/pages/UserSettingPage/UserSettingPage'));
+
+export const ProfileInfoPage = lazy(() => import('@/pages/ProfileInfoPage/ProfileInfoPage'));
