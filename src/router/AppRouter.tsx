@@ -41,7 +41,7 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.DIRECT_MESSAGE(':userId'),
+          path: PATH.DIRECT_MESSAGE,
           element: (
             <Suspense>
               <Lazy.DirectMessagePage />
@@ -97,7 +97,7 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.PLAYGROUND_MESSAGE(':playgroundId'),
+          path: PATH.PLAYGROUND_MESSAGE(':findFriendId'),
           element: (
             <Suspense>
               <Lazy.PlaygroundMessagePage />
@@ -161,7 +161,7 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.FRIEND_MESSAGE(':userId'),
+          path: PATH.FRIEND_MESSAGE(':noteId'),
           element: (
             <Suspense>
               <Lazy.FriendMessagePage />
@@ -197,6 +197,14 @@ const AppRouter = () => {
           element: (
             <Suspense>
               <Lazy.ProfileInfoPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.PLAYGROUND_ROOM_LIST(':playgroundId'),
+          element: (
+            <Suspense>
+              <Lazy.PlaygroundRoomListPage />
             </Suspense>
           ),
         },
