@@ -11,9 +11,10 @@ import {
 } from '@/components/playGround/PlayGroundRoomContent/PlayGroundRoomContent.style';
 import VectorIcon from '@/assets/svg/vector.svg?react';
 import CalendarIcon from '@/assets/svg/calendar.svg?react';
+import { StatusType } from '@/types/friend';
 
 interface PlayGroundRoomContentProps {
-  status: string;
+  status: StatusType;
   title: string;
   description: string;
   location: string;
