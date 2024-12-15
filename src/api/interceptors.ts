@@ -17,11 +17,19 @@ export const checkAndSetToken = (config: InternalAxiosRequestConfig) => {
   if (!config.useAuth || !config.headers || config.headers.Authorization) return config;
 
   // localStorage에서 액세스 토큰 가져옴
-  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+  const authStorage = localStorage.getItem(ACCESS_TOKEN_KEY);
+
+  if (!authStorage) {
+    window.location.href = PATH.SIGNIN;
+    throw new Error('Auth storage not found');
+  }
+
+  const { state } = JSON.parse(authStorage);
+  const accessToken = state?.token;
 
   // 토큰이 없으면 루트 페이지로 리다이렉트하고 에러 발생
   if (!accessToken) {
-    window.location.href = PATH.ROOT;
+    window.location.href = PATH.SIGNIN;
     throw new Error('토큰이 유효하지 않습니다.');
   }
 

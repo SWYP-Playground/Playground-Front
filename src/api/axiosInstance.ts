@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// import { checkAndSetToken, handleAPIError, handleTokenError } from '@api/interceptors';
+import { checkAndSetToken, handleAPIError, handleTokenError } from '@api/interceptors';
 
 import { AXIOS_BASE_URL, NETWORK } from '@/constants/api';
 
@@ -11,8 +11,8 @@ export const axiosInstance = axios.create({
   useAuth: true, // 요청별로 인증이 필요한지 구분하기 위한 커스텀 인증 설정
 });
 
-// axiosInstance.interceptors.request.use(checkAndSetToken, handleAPIError);
+axiosInstance.interceptors.request.use(checkAndSetToken, handleAPIError);
 
-// axiosInstance.interceptors.response.use((response) => response, handleTokenError);
+axiosInstance.interceptors.response.use((response) => response, handleTokenError);
 
-// axiosInstance.interceptors.response.use((response) => response, handleAPIError);
+axiosInstance.interceptors.response.use((response) => response, handleAPIError);
