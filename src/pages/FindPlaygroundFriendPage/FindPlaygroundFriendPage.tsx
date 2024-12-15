@@ -17,7 +17,7 @@ const FindPlaygroundFriendPage = () => {
   const navigate = useNavigate();
   const [searchParams, _] = useSearchParams();
   const query = searchParams.get('query');
-  const { playgroundsData } = usePlaygroundsQuery(query ?? '');
+  const { playgroundsData } = query ? usePlaygroundsQuery(query) : { playgroundsData: [] };
 
   const goToBackPage = () => {
     navigate(-1);
@@ -36,7 +36,16 @@ const FindPlaygroundFriendPage = () => {
         <PlayGroundSearchBar />
       </Flex>
       <CustomBottomSheet isOpen={isOpen} onClose={close} showBackdrop={false}>
-        {playgroundsData?.map((item) => <PlayGroundItem name={item.name} address={item.address} />)}
+        {playgroundsData &&
+          playgroundsData.map((item) => (
+            <PlayGroundItem
+              key={item.id}
+              playgroundId={item.id}
+              name={item.name}
+              address={item.address}
+              distance={item.distance}
+            />
+          ))}
       </CustomBottomSheet>
       <PlayGroundMap playgroundsData={playgroundsData} />
       <PlayGroundButton />
