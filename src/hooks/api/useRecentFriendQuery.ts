@@ -1,14 +1,14 @@
 import { AxiosError } from 'axios';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { FindFriendData } from '@/types/friend';
+import { RecentFriendData } from '@/types/friend';
 import { getRecentFriend } from '@/api/findFriend/getRecentFriend';
 
 export const useRecentFriendQuery = () => {
-  const { data: RecentFriendData } = useSuspenseQuery<FindFriendData[], AxiosError>({
+  const { data } = useSuspenseQuery<RecentFriendData, AxiosError>({
     queryKey: ['recentFriend'],
     queryFn: () => getRecentFriend(),
   });
 
-  return { RecentFriendData };
+  return { RecentFriendData: data.data };
 };
