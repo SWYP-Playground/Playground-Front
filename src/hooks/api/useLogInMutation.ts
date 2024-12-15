@@ -20,6 +20,17 @@ export const useLogInMutation = (): UseMutationResult<LoginData, Error, LoginReq
         refreshToken: data.refreshToken,
       });
       console.log(data);
+
+      const storedData = localStorage.getItem('auth-storage');
+      // console.log('storedData', storedData);
+
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        console.log('Token: ', parsedData.state.token);
+      } else {
+        console.log('No data found in localStorage');
+      }
+
       toast.success('로그인 성공!');
     },
     onError: () => {
