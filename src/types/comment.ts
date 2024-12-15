@@ -4,6 +4,7 @@ export interface CommentData {
   content: string;
   writtenBy: string;
   sentAt: string;
+  writerId: string;
 }
 
 export interface CommentRequestBody {

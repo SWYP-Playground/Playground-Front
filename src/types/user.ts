@@ -1,3 +1,5 @@
+import { mannerTempType } from '@/constants/temperature';
+
 export interface LoginData {
   email: string;
   nickname: string;
@@ -12,5 +14,5 @@ export interface LoginRequestBody {
 
 export interface TemperatureBody {
   nickname: string;
-  mannerTemp: number;
+  mannerTemp: mannerTempType;
 }

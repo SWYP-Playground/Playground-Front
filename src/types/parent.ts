@@ -7,11 +7,20 @@ export interface ParentData {
   introduce: string;
   birthDate: string;
   phoneNumber: string;
-  role: 'FATHER' | 'MOTHER';
+  role: ParentRoleType;
   childCount: number;
   mannerTemp: number;
   children: ChildrenData[];
 }
+
+export interface Owner {
+  nickname: string;
+  role: ParentRoleType;
+  address: string;
+  profileImg: string;
+}
+
+export type ParentRoleType = 'FATHER' | 'MOTHER';
 
 export interface ChildrenData {
   id: number;
