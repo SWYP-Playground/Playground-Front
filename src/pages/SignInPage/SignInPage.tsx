@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useLogInMutation } from '@/hooks/api/useLogInMutation';
 import {
   Container,
   LogoContainer,
@@ -13,31 +14,33 @@ import {
   Footer,
   FooterLink,
 } from './SignInPage.style';
-import { PATH } from '@/constants/path';
 import Header from '@/components/layout/Header/Header';
 import CancelIcon from '@/assets/svg/cancel.svg?react';
 import LogoIcon from '@/assets/svg/logo-vertical.svg?react';
-
-interface FormData {
-  email: string;
-  password: string;
-}
+import { LoginRequestBody } from '@/types/user';
+import { PATH } from '@/constants/path';
 
 const SignInPage = () => {
   const navigate = useNavigate();
+  const logInMutation = useLogInMutation();
+
+  const logIn = logInMutation.mutate;
+  const isLoading = logInMutation.status === 'pending';
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
-  } = useForm<FormData>({ mode: 'onChange' });
+    formState: { errors, isValid },
+  } = useForm<LoginRequestBody>({ mode: 'onChange' });
 
-  const onSubmit = (data: FormData) => {
-    console.log('Login Data:', data);
+  const onSubmit = (data: LoginRequestBody) => {
+    console.log(data);
 
-    setTimeout(() => {
-      navigate(PATH.ROOT);
-    }, 1000);
+    logIn(data, {
+      onSuccess: () => {
+        navigate(PATH.ROOT);
+      },
+    });
   };
 
   return (
@@ -86,8 +89,8 @@ const SignInPage = () => {
         </FormGroup>
 
         <BottomContainer>
-          <SubmitButton type="submit" disabled={!isValid || isSubmitting}>
-            로그인
+          <SubmitButton type="submit" disabled={!isValid || isLoading}>
+            {isLoading ? '로딩 중' : '로그인'}
           </SubmitButton>
 
           <Footer>

@@ -7,7 +7,12 @@ export interface PostLoginParams {
 }
 
 export const postLogin = async ({ LoginData }: PostLoginParams) => {
-  const { data } = await axiosInstance.post<LoginData>(END_POINTS.LOGIN, LoginData);
+  const { data } = await axiosInstance.post<LoginData>(END_POINTS.LOGIN, LoginData, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  });
 
   return data;
 };
