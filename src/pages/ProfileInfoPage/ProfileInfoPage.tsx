@@ -35,7 +35,7 @@ const ProfileInfoPage = () => {
       />
       {Array.isArray(images) && images.length > 0 && (
         <ExtraImageContainer>
-          <ExtraImageSection images={images} showUploadButton={false} />
+          <ExtraImageSection images={images} isEditable={false} />
         </ExtraImageContainer>
       )}
       <SendMessageButton>쪽지 보내기</SendMessageButton>

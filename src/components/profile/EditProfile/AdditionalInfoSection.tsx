@@ -7,9 +7,13 @@ import {
   Title,
   TextLengthContainer,
   ComponentContainer,
-} from '../../../pages/EditProfilePage/EditProfilePage.style';
-import RadioButtonGroup from '../../profile/Button/RadioButton.tsx';
+  Blue,
+} from '@/pages/EditProfilePage/EditProfilePage.style';
+import RadioButtonGroup from '@/components/profile/Button/RadioButton.tsx';
 import { useState } from 'react';
+import FriendRecommendationIcon1 from '@/assets/svg/recommendation-icon-1.svg?react';
+import FriendRecommendationIcon2 from '@/assets/svg/recommendation-icon-2.svg?react';
+import FriendRecommendationIcon3 from '@/assets/svg/recommendation-icon-3.svg?react';
 
 interface Props {
   register: any;
@@ -33,12 +37,14 @@ const AdditionalInfoSection = ({ register, errors }: Props) => {
     <ComponentContainer>
       <Title>추가 정보</Title>
       <RadioContainer>
-        <Label>친구 추천 기준</Label>
+        <Label>
+          친구 추천 기준 <Blue>*</Blue>
+        </Label>
         <RadioButtonGroup
           options={[
-            { value: '가까운 거리', label: '가까운 거리' },
-            { value: '같은 성별', label: '같은 성별' },
-            { value: '같은 인원 수', label: '같은 인원 수' },
+            { value: '가까운 거리', label: '가까운 거리', icon: <FriendRecommendationIcon1 /> },
+            { value: '같은 성별', label: '같은 성별', icon: <FriendRecommendationIcon2 /> },
+            { value: '같은 인원 수', label: '같은 인원 수', icon: <FriendRecommendationIcon3 /> },
           ]}
           selectedValue={selectedOption}
           onChange={handleRadioChange}
@@ -46,7 +52,9 @@ const AdditionalInfoSection = ({ register, errors }: Props) => {
       </RadioContainer>
 
       <InputContainer>
-        <Label htmlFor="introduction">소개글</Label>
+        <Label htmlFor="introduction">
+          소개글 <Blue>*</Blue>
+        </Label>
         <TextArea
           id="introduction"
           placeholder={`간단한 소개글을 적어주세요.\nex. 자주 노는 놀이터, 노는 시간대 등`}

@@ -1,4 +1,3 @@
-import {} from '../../../pages/ProfilePage/ProfilePage.style.ts';
 import RequirementRoom from '@/components/common/RequirementRoom/RequirementRoom';
 import { PATH } from '@/constants/path';
 import { useNavigate } from 'react-router-dom';

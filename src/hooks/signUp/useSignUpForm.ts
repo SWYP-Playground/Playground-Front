@@ -35,7 +35,7 @@ export const useSignUpForm = () => {
 
   const closePopup = () => {
     setIsModalOpen(false);
-    navigate(PATH.EDIT_PROFILE('1'));
+    navigate(PATH.CREATE_PROFILE);
   };
 
   const checkEmailDuplicate = () => {

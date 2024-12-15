@@ -9,7 +9,7 @@ import {
   ChildCardContainer,
   ProfileButton,
   SummaryText,
-} from '../../../pages/ProfilePage/ProfilePage.style.ts';
+} from '@/pages/ProfilePage/ProfilePage.style.ts';
 import ProgressBar from './ProgressBar.tsx';
 import ChildCard from '@/components/profile/MyPage/ChildCard.tsx';
 import { useNavigate } from 'react-router-dom';

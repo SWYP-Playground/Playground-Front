@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 interface RadioButtonProps {
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; icon: React.ReactNode }[];
   selectedValue: string;
   onChange: (value: string) => void;
 }
@@ -23,7 +23,9 @@ const RadioButtonGroup = ({ options, selectedValue, onChange }: RadioButtonProps
           <RadioIconContainer
             isSelected={selectedValue === option.value}
             onClick={() => onChange(option.value)}
-          />
+          >
+            {option.icon}
+          </RadioIconContainer>
           <Label>{option.label}</Label>
         </RadioButtonWrapper>
       ))}
@@ -53,13 +55,18 @@ const RadioIconContainer = styled.div<{ isSelected: boolean }>`
   width: 100px;
   height: 80px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 1px solid ${(props) => (props.isSelected ? props.theme.colors.black800 : 'transparent')};
   background-color: ${(props) => props.theme.colors.black100};
   border-radius: 8px;
   cursor: pointer;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
 `;
 
 const RadioCircle = styled.div<{ isSelected: boolean }>`

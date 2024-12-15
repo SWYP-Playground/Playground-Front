@@ -15,7 +15,9 @@ import {
   SearchIconWrapper,
   HorizonLine,
   ComponentContainer,
-} from '../../../pages/EditProfilePage/EditProfilePage.style';
+  Blue,
+  HiddenInput,
+} from '@/pages/EditProfilePage/EditProfilePage.style';
 
 interface Props {
   register: any;
@@ -25,7 +27,7 @@ interface Props {
 const ProfileImageSection = ({ register, errors }: Props) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedImage(URL.createObjectURL(file));
@@ -46,16 +48,8 @@ const ProfileImageSection = ({ register, errors }: Props) => {
 
   return (
     <ComponentContainer>
-      <ProfileImage
-        type="file"
-        id="profileImage"
-        accept="image/*"
-        onChange={handleFileChange}
-        {...register('additionalPhoto')}
-      />
-
-      <ProfileImageContainer htmlFor="profileImage">
-        {selectedImage ? (
+      <ProfileImage>
+        {selectedImage && (
           <img
             src={selectedImage}
             alt="Selected profile"
@@ -66,13 +60,20 @@ const ProfileImageSection = ({ register, errors }: Props) => {
               objectFit: 'cover',
             }}
           />
-        ) : null}
-        {!selectedImage && <PencilIcon />}
-        <ProfileImageLabel>프로필 이미지 수정</ProfileImageLabel>
+        )}
+      </ProfileImage>
+      <ProfileImageContainer>
+        <ProfileImageLabel>
+          <PencilIcon />
+          프로필 이미지 수정
+        </ProfileImageLabel>
+        <HiddenInput type="file" id="upload-input" accept="image/*" onChange={handleUpload} />
       </ProfileImageContainer>
 
       <InputContainer>
-        <Label htmlFor="nickname">닉네임</Label>
+        <Label htmlFor="nickname">
+          닉네임 <Blue>*</Blue>
+        </Label>
         <DuplicateContainer>
           <Input
             id="nickname"
@@ -102,7 +103,9 @@ const ProfileImageSection = ({ register, errors }: Props) => {
       </InputContainer>
 
       <InputContainer>
-        <Label htmlFor="phoneNumber">휴대폰 번호</Label>
+        <Label htmlFor="phoneNumber">
+          휴대폰 번호 <Blue>*</Blue>
+        </Label>
         <DuplicateContainer>
           <Input
             id="phoneNumber"
@@ -127,7 +130,9 @@ const ProfileImageSection = ({ register, errors }: Props) => {
       </InputContainer>
 
       <InputContainer>
-        <Label htmlFor="address">주소</Label>
+        <Label htmlFor="address">
+          주소 <Blue>*</Blue>
+        </Label>
         <DuplicateContainer>
           <Input
             id="address"

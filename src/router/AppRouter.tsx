@@ -57,6 +57,14 @@ const AppRouter = () => {
           ),
         },
         {
+          path: PATH.CREATE_PROFILE,
+          element: (
+            <Suspense>
+              <Lazy.CreateProfilePage />
+            </Suspense>
+          ),
+        },
+        {
           path: PATH.EDIT_PROFILE(':userId'),
           element: (
             <Suspense>
