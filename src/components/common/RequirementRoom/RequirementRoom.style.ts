@@ -1,8 +1,8 @@
-import { ROOM_STATUS } from '@/constants/status';
-import { RoomStatusType } from '@/types/status';
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Flex } from '@radix-ui/themes';
+
+import styled from '@emotion/styled';
+import { StatusType } from '@/types/friend';
 
 export const RequirementFlex = styled(Flex)`
   position: relative;
@@ -28,18 +28,18 @@ export const RequirementHeader = styled(Flex)`
   gap: 8px;
 `;
 
-export const RequirementJoin = styled.span<{ status: RoomStatusType }>`
+export const RequirementJoin = styled.span<{ status: StatusType }>`
   font-size: 14px;
   font-weight: 600;
 
   ${({ status, theme }) => {
     switch (status) {
-      case ROOM_STATUS.COMPLETE:
+      case 'COMPLETE':
         return css`
           color: ${theme.colors.black700};
         `;
-      case ROOM_STATUS.PLAYING:
-      case ROOM_STATUS.HIRING:
+      case 'PLAYING':
+      case 'RECRUITING':
         return css`
           color: ${theme.colors.secondary};
         `;
