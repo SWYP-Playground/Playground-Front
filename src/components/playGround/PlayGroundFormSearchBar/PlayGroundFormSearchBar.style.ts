@@ -52,13 +52,11 @@ export const SuggestionFlex = styled(Flex)`
   overflow: hidden;
   position: absolute;
   margin-top: 3.5rem;
-  border-radius: 0.75rem;
-  border-width: 1px;
-  border-color: #e5e7eb;
+  border: 1px solid ${(props) => props.theme.colors.black800};
+  border-radius: 6px;
   width: 100%;
-  background-color: #ffffff;
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  background-color: ${(props) => props.theme.colors.black100};
   z-index: 10;
+  cursor: pointer;
 `;

@@ -8,30 +8,58 @@ import {
   CardNickname,
   CardInfo,
 } from '@/components/common/Card/Card.style';
+import { useParentQuery } from '@/hooks/api/useParentQuery';
+import { ParentRoleType } from '@/types/parent';
+import { convertRole } from '@/utils/convertRole';
 
 interface CardProps {
   onClick?: () => void;
-  nickname: string;
-  status: string;
-  address: string;
-  image: string;
+  id?: string;
+  nickname?: string;
+  status?: ParentRoleType;
+  address?: string;
+  image?: string;
   content?: string;
+  isSummary?: boolean;
 }
 
-const Card = ({ onClick, nickname, status, address, image, content }: CardProps) => {
+const Card = ({
+  onClick,
+  id,
+  nickname,
+  status,
+  address,
+  image,
+  content,
+  isSummary = false,
+}: CardProps) => {
+  const { ParentData } = useParentQuery(Number(id));
+
   return (
     <CardFlex onClick={onClick}>
       <CardMain>
         <CardHeader>
           <CardUser>
-            <CardNickname>{nickname}</CardNickname>
-            <CardInfo>
-              {status}·{address}
-            </CardInfo>
+            {id && ParentData && (
+              <>
+                <CardNickname>{ParentData.nickname}</CardNickname>
+                <CardInfo>
+                  {convertRole(ParentData.role) || ''}·{ParentData.address}
+                </CardInfo>
+              </>
+            )}
+            {!id && (
+              <>
+                <CardNickname>{nickname}</CardNickname>
+                <CardInfo>
+                  {status ? convertRole(status) : ''}·{address}
+                </CardInfo>
+              </>
+            )}
           </CardUser>
           <CardAvatar size="5" src={image} fallback="A" radius="full" />
         </CardHeader>
-        <CardContent>{content}</CardContent>
+        <CardContent isSummary={isSummary}>{content}</CardContent>
       </CardMain>
     </CardFlex>
   );

@@ -9,10 +9,11 @@ import {
   PlaygroundDetails,
 } from '@/components/common/RequirementRoom/RequirementRoom.style';
 import StatusBadge from '@/components/common/StatusBadge/StatusBadge';
+import { StatusType } from '@/types/friend';
 
 interface RequirementRoomProps {
   onClick: () => void;
-  status: string;
+  status: StatusType;
   currentCount: number;
   title: string;
   description?: string;

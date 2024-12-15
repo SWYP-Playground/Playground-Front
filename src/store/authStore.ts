@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
+import { ACCESS_TOKEN_KEY } from '@/constants/api';
+
 interface AuthState {
   email: string | null;
   nickname: string | null;
@@ -27,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: 'auth-storage',
+      name: ACCESS_TOKEN_KEY,
       storage: createJSONStorage(() => localStorage), // localStorage를 JSON 스토리지로 변환
     },
   ),

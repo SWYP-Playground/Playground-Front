@@ -6,6 +6,7 @@ export const PlayGroundItemFlex = styled(Flex)`
   gap: 8px;
   padding: 12px 0;
   position: relative;
+  cursor: pointer;
 
   &::after {
     content: '';

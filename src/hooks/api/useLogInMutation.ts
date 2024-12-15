@@ -1,11 +1,11 @@
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
+import { UseMutationResult } from '@tanstack/react-query';
 
 import { postLogin } from '@/api/user/postLogin';
 import { useAuthStore } from '@/store/authStore';
 import { LoginRequestBody, LoginData } from '@/types/user';
-
-import { UseMutationResult } from '@tanstack/react-query';
+import { ACCESS_TOKEN_KEY } from '@/constants/api';
 
 export const useLogInMutation = (): UseMutationResult<LoginData, Error, LoginRequestBody> => {
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -21,7 +21,7 @@ export const useLogInMutation = (): UseMutationResult<LoginData, Error, LoginReq
       });
       console.log(data);
 
-      const storedData = localStorage.getItem('auth-storage');
+      const storedData = localStorage.getItem(ACCESS_TOKEN_KEY);
       // console.log('storedData', storedData);
 
       if (storedData) {

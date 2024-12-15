@@ -31,3 +31,8 @@ export const FINISH_TIME_COLUMNS = [
     { label: '3시간 후', value: '3시간 후' },
   ],
 ];
+
+export const PARTICIPATE_ACTION = {
+  PARTICIPATE: 'participate',
+  CANCEL: 'cancel',
+};

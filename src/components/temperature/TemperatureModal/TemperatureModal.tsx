@@ -1,5 +1,6 @@
-import { Dialog, Flex, Skeleton } from '@radix-ui/themes';
 import { ReactNode, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Dialog, Flex, Skeleton } from '@radix-ui/themes';
 
 import {
   CompleteButton,
@@ -11,23 +12,38 @@ import {
   TemperatureModalTitle,
 } from '@/components/temperature/TemperatureModal/TemperatureModal.style';
 import CancelIcon from '@/assets/svg/cancel.svg?react';
-import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
+import { convertTemp } from '@/utils/convertTemp';
+import { TemperatureType } from '@/types/temperature';
+import { postLeaveMannerTemp } from '@/api/findFriend/postLeaveMannerTemp';
 
 interface TemperatureModalProps {
+  friendId: string;
+  nickname: string;
   children: ReactNode;
 }
 
-const TemperatureModal = ({ children }: TemperatureModalProps) => {
+const TemperatureModal = ({ friendId, nickname, children }: TemperatureModalProps) => {
   const navigate = useNavigate();
-  const [selectedValue, setSelectedValue] = useState<string>('');
+  const [selectedValue, setSelectedValue] = useState<TemperatureType>('good');
 
-  const handleValueChange = (value: string) => {
+  const onSubmitTemperature = async () => {
+    const mannerTemp = convertTemp(selectedValue);
+    const TempData = {
+      TemperatureData: {
+        nickname,
+        mannerTemp,
+      },
+    };
+    await postLeaveMannerTemp(TempData);
+  };
+
+  const handleValueChange = (value: TemperatureType) => {
     setSelectedValue(value);
   };
 
   const reportFriend = () => {
-    navigate(PATH.REPORT_FRIEND('22'));
+    navigate(PATH.REPORT_FRIEND(friendId));
   };
 
   return (
@@ -45,7 +61,12 @@ const TemperatureModal = ({ children }: TemperatureModalProps) => {
         </TemperatureModalTitle>
 
         <Flex direction="column" gap="3" align="center">
-          <RadioGroupRoot color="gray" highContrast onValueChange={handleValueChange}>
+          <RadioGroupRoot
+            color="gray"
+            highContrast
+            onValueChange={handleValueChange}
+            defaultValue="good"
+          >
             <RadioGroupItem value="sad" id="sad">
               <Flex direction="column" align="center" gap="2">
                 <Skeleton width="48px" height="48px" />
@@ -69,7 +90,9 @@ const TemperatureModal = ({ children }: TemperatureModalProps) => {
 
         <Flex gap="3" mt="4" direction="column" align="center">
           <Dialog.Close>
-            <CompleteButton disabled={!selectedValue}>완료</CompleteButton>
+            <CompleteButton disabled={!selectedValue} onClick={onSubmitTemperature}>
+              완료
+            </CompleteButton>
           </Dialog.Close>
           <Flex align="center" gap="4">
             <ReportSpan>친구와 다툼이 있었나요?</ReportSpan>

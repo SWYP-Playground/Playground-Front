@@ -11,62 +11,42 @@ import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path.ts';
 import Card from '@/components/common/Card/Card';
+import { useCardData } from '@/hooks/mypage/useCardData';
+import { FindFriendRoomType } from '@/types/friend';
+
+const requireData: FindFriendRoomType[] = [
+  {
+    findFriendId: 3,
+    playgroundName: '서울 식물원 숲 문화학교 앞 놀이터',
+    title: '문화학교 앞 놀이터에서 놀사람 구해요',
+    description: '같이 놀 사람 구합니다',
+    scheduleTime: '2024. 12. 15 일요일 오후 5:00~오후 6:00',
+    recruitmentStatus: 'COMPLETE',
+    currentCount: 1,
+  },
+  {
+    findFriendId: 2,
+    playgroundName: '서울숲 유아숲 체험원',
+    title: '서울숲에서 놀사람 구합니다',
+    description: '구합니다 놀 사람',
+    scheduleTime: '2024. 12. 15 일요일 오후 10:08~오전 12:08',
+    recruitmentStatus: 'COMPLETE',
+    currentCount: 2,
+  },
+  {
+    findFriendId: 1,
+    playgroundName: '서리풀 상상나라 숲속학교 놀이터',
+    title: '바다육지 할 분~~~~~',
+    description: '오늘 학원 쨌습니다.',
+    scheduleTime: '2024. 12. 10 화요일 오후 5:30~오후 6:00',
+    recruitmentStatus: 'COMPLETE',
+    currentCount: 1,
+  },
+];
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const requireData = [
-    {
-      playgroundId: '25',
-      status: '모집 중',
-      currentCount: 2,
-      title: '내일 서리풀 놀이터에서 놀 친구 구해요',
-      playgroundName: '서리풀 놀이터 ·',
-      playTime: '11.24 금요일·오후 3:00~4:00',
-    },
-    {
-      playgroundId: '25',
-      status: '모집 중',
-      currentCount: 2,
-      title: '내일 서리풀 놀이터에서 놀 친구 구해요',
-      playgroundName: '서리풀 놀이터 ·',
-      playTime: '11.24 금요일·오후 3:00~4:00',
-    },
-    {
-      playgroundId: '25',
-      status: '모집 중',
-      currentCount: 2,
-      title: '내일 서리풀 놀이터에서 놀 친구 구해요',
-      playgroundName: '서리풀 놀이터 ·',
-      playTime: '11.24 금요일·오후 3:00~4:00',
-    },
-  ];
-
-  const cardData = [
-    {
-      nickname: '닉네임',
-      status: '아빠',
-      address: '서울시 노원구 중계동',
-      image:
-        'https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop',
-      content: '안녕하세요 저는 6살 애기 아빠이고, 중계동에서 살고 있어요. 잘 부탁드립니다.',
-    },
-    {
-      nickname: '닉네임',
-      status: '아빠',
-      address: '서울시 노원구 중계동',
-      image:
-        'https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop',
-      content: '안녕하세요 저는 6살 애기 아빠이고, 중계동에서 살고 있어요. 잘 부탁드립니다.',
-    },
-    {
-      nickname: '닉네임',
-      status: '아빠',
-      address: '서울시 노원구 중계동',
-      image:
-        'https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop',
-      content: '안녕하세요 저는 6살 애기 아빠이고, 중계동에서 살고 있어요. 잘 부탁드립니다.',
-    },
-  ];
+  const cardData = useCardData();
 
   return (
     <Container>
@@ -83,13 +63,13 @@ const MainPage = () => {
         <TitleText>새로운 친구</TitleText>
         <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED('1'))}>더보기</ViewMore>
       </TitleContainer>
-      {cardData.map((items) => (
+      {cardData.map((item) => (
         <Card
-          nickname={items.nickname}
-          status={items.status}
-          address={items.address}
-          image={items.image}
-          content={items.content}
+          nickname={item.nickname}
+          status={item.roleType}
+          address={item.address}
+          image={item.image}
+          content={item.introduce}
         />
       ))}
     </Container>

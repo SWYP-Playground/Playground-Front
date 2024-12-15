@@ -72,6 +72,7 @@ export const PlayGroundFormSubmitButton = styled(Button)`
   color: ${({ disabled, theme }) => (disabled ? theme.colors.black600 : theme.colors.black900)};
   background-color: ${({ disabled, theme }) =>
     disabled ? theme.colors.black400 : theme.colors.primary1};
+  cursor: pointer;
 `;
 
 export const DropdownButton = styled(AntdButton)`

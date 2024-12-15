@@ -34,7 +34,7 @@ const CustomBottomSheet = ({
       <Sheet.Container>
         <Sheet.Header />
         <BottomSheetContent disableDrag={true} style={{ paddingBottom: ref.current?.y }}>
-          {children}
+          <Sheet.Scroller>{children}</Sheet.Scroller>
         </BottomSheetContent>
       </Sheet.Container>
       {showBackdrop ? <Sheet.Backdrop onTap={onClose} /> : <></>}

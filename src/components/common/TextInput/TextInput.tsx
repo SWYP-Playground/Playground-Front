@@ -14,9 +14,10 @@ import {
 interface TextInputProps {
   placeholder: string;
   buttonLabel: string;
+  onSubmit: (text: string) => void;
 }
 
-const TextInput = ({ placeholder, buttonLabel }: TextInputProps) => {
+const TextInput = ({ placeholder, buttonLabel, onSubmit }: TextInputProps) => {
   const [text, setText] = useState<string>('');
 
   const onChangeText = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -24,6 +25,13 @@ const TextInput = ({ placeholder, buttonLabel }: TextInputProps) => {
 
     if (inputValue.length <= TEXT_MAX_LENGTH) {
       setText(inputValue);
+    }
+  };
+
+  const submitText = () => {
+    if (text) {
+      onSubmit(text);
+      setText('');
     }
   };
 
@@ -38,7 +46,9 @@ const TextInput = ({ placeholder, buttonLabel }: TextInputProps) => {
           {text.length}/{TEXT_MAX_LENGTH}자
         </LengthSpan>
       </ReportTextFlex>
-      <ReportButton disabled={!text}>{buttonLabel}</ReportButton>
+      <ReportButton disabled={!text} onClick={submitText}>
+        {buttonLabel}
+      </ReportButton>
     </TextInputFlex>
   );
 };

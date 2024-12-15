@@ -1,3 +1,4 @@
+import { Flex } from '@radix-ui/themes';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
@@ -13,34 +14,9 @@ import { FormValues } from '@/components/playGround//PlayGroundForm/PlayGroundFo
 import { useDebounce } from '@/hooks/common/useDebounce';
 import SearchIcon from '@/assets/svg/search.svg?react';
 import ResetSearchIcon from '@/assets/svg/reset-search.svg?react';
-
-const playgrounds = [
-  {
-    id: 1,
-    name: '중앙 어린이 놀이터',
-    address: '서울시 강남구 테헤란로 123',
-    distance: '0.3km',
-  },
-  {
-    id: 2,
-    name: '숲속 놀이터',
-    address: '서울시 강남구 선릉로 456',
-    distance: '0.7km',
-  },
-  {
-    id: 3,
-    name: '무지개 놀이터',
-    address: '서울시 강남구 역삼로 789',
-    distance: '1.2km',
-  },
-];
-
-interface PlayGroundType {
-  id: number;
-  name: string;
-  address: string;
-  distance: string;
-}
+import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
+import { PlaygroundData } from '@/types/playground';
+import VectorIcon from '@/assets/svg/vector.svg?react';
 
 interface PlayGroundFormSearchBarProps {
   setValue: UseFormSetValue<FormValues>;
@@ -48,12 +24,13 @@ interface PlayGroundFormSearchBarProps {
 
 const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<PlayGroundType[]>([]);
+  const [suggestions, setSuggestions] = useState<PlaygroundData[]>([]);
   const [selectedPlayground, setSelectedPlayground] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const debouncedInputValue = useDebounce(inputValue, 150);
+  const { playgroundsData } = usePlaygroundsQuery(debouncedInputValue);
 
   const focusInput = () => {
     inputRef.current?.focus();
@@ -70,21 +47,18 @@ const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => 
     focusInput();
   };
 
-  const handlePlaygroundSelect = (playground: PlayGroundType) => {
+  const handlePlaygroundSelect = (playground: PlaygroundData) => {
     setSelectedPlayground(playground.name);
     setInputValue(playground.name);
     setSuggestions([]);
     setIsFocused(false);
 
-    setValue('playgroundName', playground.name);
+    setValue('playgroundName', playground);
   };
 
   useEffect(() => {
     if (isFocused && debouncedInputValue) {
-      const filteredPlaygrounds = playgrounds.filter((playground) =>
-        playground.name.toLowerCase().includes(debouncedInputValue.toLowerCase()),
-      );
-      setSuggestions(filteredPlaygrounds);
+      setSuggestions(playgroundsData);
     } else {
       setSuggestions([]);
     }
@@ -133,7 +107,7 @@ const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => 
           </FormSearchButton>
         </FormSearchInputFlex>
         {(suggestions.length > 0 || isFocused) && (
-          <SuggestionFlex>
+          <SuggestionFlex direction="column" gap="3">
             {/* 최근 검색어 섹션 */}
             {debouncedInputValue === '' && (
               <div>
@@ -142,20 +116,18 @@ const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => 
             )}
 
             {/* 검색 결과 목록 */}
-            <div>
-              {suggestions.map((playground) => (
-                <div key={playground.id} onClick={() => handlePlaygroundSelect(playground)}>
-                  <div>
-                    <div>
-                      <div>
-                        <div>{playground.name}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <hr />
-                </div>
-              ))}
-            </div>
+
+            {suggestions.map((playground) => (
+              <Flex
+                key={playground.id}
+                onClick={() => handlePlaygroundSelect(playground)}
+                gap="2"
+                align="center"
+              >
+                <VectorIcon />
+                <span>{playground.name}</span>
+              </Flex>
+            ))}
           </SuggestionFlex>
         )}
       </FormSearchFlex>
