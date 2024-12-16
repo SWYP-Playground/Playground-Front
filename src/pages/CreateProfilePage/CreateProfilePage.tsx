@@ -112,7 +112,7 @@ const CreateProfilePage = () => {
     signUpMutation.mutate(formData, {
       onSuccess: () => {
         console.log('회원가입 성공');
-        navigate(PATH.ROOT);
+        navigate(PATH.SIGNIN);
       },
       onError: (error) => {
         console.error('회원가입 실패:', error);
