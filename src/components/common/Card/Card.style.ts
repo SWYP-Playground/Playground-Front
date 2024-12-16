@@ -22,9 +22,17 @@ export const CardHeader = styled(Flex)`
   justify-content: space-between;
 `;
 
-export const CardContent = styled.span`
+export const CardContent = styled.span<{ isSummary: boolean }>`
   color: ${(props) => props.theme.colors.black800};
   font-size: 15px;
+
+  ${({ isSummary }) =>
+    isSummary &&
+    `
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+  `}
 `;
 
 export const CardAvatar = styled(Avatar)``;

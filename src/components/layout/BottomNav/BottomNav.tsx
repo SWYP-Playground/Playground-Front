@@ -17,7 +17,6 @@ const BottomNav = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  // 일단 임시적으로 상수를 설정하였습니다. 나중에 수정 해야함
   const NAV_ITEMS = [
     {
       id: 1,
@@ -45,7 +44,7 @@ const BottomNav = () => {
       label: '쪽지함',
       icon: <MessageIcon width="25" height="25" />,
       iconActive: <MessageFillIcon width="25" height="25" />,
-      path: PATH.DIRECT_MESSAGE('22'),
+      path: PATH.DIRECT_MESSAGE,
     },
     {
       id: 5,

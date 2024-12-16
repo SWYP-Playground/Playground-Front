@@ -1,17 +1,10 @@
 import RequirementRoom from '@/components/common/RequirementRoom/RequirementRoom';
 import { PATH } from '@/constants/path';
+import { FindFriendRoomType } from '@/types/friend.ts';
 import { useNavigate } from 'react-router-dom';
 
 interface MyGroupsSectionProps {
-  requireData: {
-    playgroundId: string;
-    status: string;
-    currentCount: number;
-    title: string;
-    description?: string;
-    playgroundName?: string;
-    playTime: string;
-  }[];
+  requireData: FindFriendRoomType[];
 }
 const MyGroupsSection = ({ requireData }: MyGroupsSectionProps) => {
   const navigate = useNavigate();
@@ -24,14 +17,14 @@ const MyGroupsSection = ({ requireData }: MyGroupsSectionProps) => {
     <>
       {requireData.map((item) => (
         <RequirementRoom
-          key={item.playgroundId}
-          onClick={goToPlaygroundMessage(item.playgroundId)}
-          status={item.status}
+          key={item.findFriendId}
+          onClick={goToPlaygroundMessage(String(item.findFriendId))}
+          status={item.recruitmentStatus}
           currentCount={item.currentCount}
           title={item.title}
           description={item.description || ''}
           playgroundName={item.playgroundName || ''}
-          playTime={item.playTime}
+          playTime={item.scheduleTime}
         />
       ))}
     </>

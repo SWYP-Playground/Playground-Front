@@ -21,8 +21,8 @@ const FriendsPlayedPage = () => {
     navigate(-1);
   };
 
-  const goToFriendMessage = (userId: string) => () => {
-    navigate(PATH.FRIEND_MESSAGE(userId));
+  const goToFriendMessage = (noteId: string) => () => {
+    navigate(PATH.FRIEND_MESSAGE(noteId));
   };
 
   return (
@@ -36,12 +36,12 @@ const FriendsPlayedPage = () => {
           <Card
             onClick={goToFriendMessage(items.friendId)}
             nickname={items.nickname}
-            status={items.status}
+            status={items.roleType}
             address={items.address}
             image={items.image}
-            content={items.content}
+            content={items.introduce}
           />
-          <TemperatureModal>
+          <TemperatureModal friendId={items.friendId} nickname={items.nickname}>
             <TemperatureButton />
           </TemperatureModal>
         </FriendsContainer>

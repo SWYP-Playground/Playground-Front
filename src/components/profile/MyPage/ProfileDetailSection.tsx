@@ -52,7 +52,7 @@ const ProfileDetails = ({ progress, children, showButtons, showSummary }: Profil
           <ProfileButton onClick={() => navigate(PATH.EDIT_PROFILE('1'))}>
             프로필 수정
           </ProfileButton>
-          <ProfileButton onClick={() => navigate(PATH.DIRECT_MESSAGE('1'))}>쪽지함</ProfileButton>
+          <ProfileButton onClick={() => navigate(PATH.DIRECT_MESSAGE)}>쪽지함</ProfileButton>
         </>
       )}
     </ProfileContainer>

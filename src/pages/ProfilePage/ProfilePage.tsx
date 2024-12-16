@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import {
@@ -8,14 +10,14 @@ import {
   ContactUsContainer,
   TitleContainer,
   RecentFriendsContainer,
-} from './ProfilePage.style.ts';
-import { useNavigate } from 'react-router-dom';
+} from '@/pages/ProfilePage/ProfilePage.style';
 import { PATH } from '@/constants/path';
 import ProfileDetails from '@/components/profile/MyPage/ProfileDetailSection.tsx';
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import ContactUsSection from '@/components/profile/MyPage/ContactUsSection.tsx';
 import Card from '@/components/common/Card/Card.tsx';
 import SettingButton from '@/components/profile/Button/SettingButton.tsx';
+import { FindFriendRoomType, RecentFriendType } from '@/types/friend.ts';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -27,24 +29,25 @@ const ProfilePage = () => {
     { name: '아이2', gender: 'male' },
   ];
 
-  const requireData = [
+  const requireData: FindFriendRoomType[] = [
     {
-      playgroundId: '25',
-      status: '모집 중',
+      findFriendId: 2,
+      playgroundName: '서울숲 유아숲 체험원',
+      title: '서울숲에서 놀사람 구합니다',
+      description: '구합니다 놀 사람',
+      scheduleTime: '2024. 12. 15 일요일 오후 10:08~오전 12:08',
+      recruitmentStatus: 'COMPLETE',
       currentCount: 2,
-      title: '내일 서리풀 놀이터에서 놀 친구 구해요',
-      description: '안녕하세요 저는 6살 애기 아빠이고, 서초구에서 살..',
-      playTime: '11.24 금요일·오후 3:00~4:00',
     },
   ];
 
-  const recentFriends = [
+  const recentFriends: RecentFriendType[] = [
     {
-      nickname: '닉네임1',
-      status: '아빠',
-      address: '서울시 노원구 중계동',
-      image: 'https://via.placeholder.com/150',
-      content: '안녕하세요!',
+      nickname: '길동1',
+      roleType: 'MOTHER',
+      address: '구미시 산호대로 25길 25-3',
+      introduce: '안녕하세요!',
+      profileImg: 'https://via.placeholder.com/150',
     },
   ];
 
@@ -76,11 +79,11 @@ const ProfilePage = () => {
           <Card
             key={index}
             nickname={friend.nickname}
-            status={friend.status}
+            status={friend.roleType}
             address={friend.address}
-            image={friend.image}
-            content={friend.content}
-            onClick={() => navigate(PATH.DIRECT_MESSAGE(`${index + 1}`))}
+            image={friend.profileImg}
+            content={friend.introduce}
+            onClick={() => navigate(PATH.DIRECT_MESSAGE)}
           />
         ))}
       </RecentFriendsContainer>

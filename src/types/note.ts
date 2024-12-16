@@ -3,11 +3,11 @@ export interface NoteData {
   targetNickname: string;
   content: string;
   writtenBy: string;
+  writerId: number;
   sentAt: string;
 }
 
 export interface NoteRequestBody {
-  noteId: number;
   targetNickname: string;
   content: string;
   writtenBy: string;

@@ -60,3 +60,7 @@ export const FreindRecommendedPage = lazy(
 export const UserSettingPage = lazy(() => import('@/pages/UserSettingPage/UserSettingPage'));
 
 export const ProfileInfoPage = lazy(() => import('@/pages/ProfileInfoPage/ProfileInfoPage'));
+
+export const PlaygroundRoomListPage = lazy(
+  () => import('@/pages/PlaygroundRoomListPage/PlaygroundRoomListPage'),
+);
