@@ -28,7 +28,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      storage: createJSONStorage(() => localStorage), // localStorage를 JSON 스토리지로 변환
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

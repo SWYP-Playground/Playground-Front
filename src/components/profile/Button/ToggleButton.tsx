@@ -35,7 +35,9 @@ const ToggleButtonGroupComponent = ({ options, selectedValue, onChange }: Toggle
         <ToggleButton
           key={option}
           isSelected={selectedValue === option}
-          onClick={() => onChange(option)}
+          onClick={() => {
+            onChange(option);
+          }}
         >
           {option}
         </ToggleButton>

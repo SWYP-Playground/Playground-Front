@@ -16,29 +16,45 @@ import {
 } from '@/pages/EditProfilePage/EditProfilePage.style';
 import ToggleButtonGroupComponent from '@/components/profile/Button/ToggleButton';
 import { useState } from 'react';
+
 interface Props {
   register: any;
   errors: any;
   fields: any;
   append: any;
   remove: any;
+  onChange: (key: string, value: any) => void;
 }
 
-const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) => {
+const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange }: Props) => {
   const [parentGender, setParentGender] = useState('');
-  const [childGenders, setChildGenders] = useState<{ [key: number]: string }>({});
+  const [childData, setChildData] = useState<{
+    [key: number]: { gender: string; birthDate: string };
+  }>(
+    fields.reduce((acc: any, field: any, index: number) => {
+      acc[index] = { gender: field.gender || '', birthDate: field.birthDate || '' };
+      return acc;
+    }, {}),
+  );
 
   const handleParentGenderChange = (value: string) => {
     setParentGender(value);
-    console.log(`부모 성별 선택: ${value}`);
+    const role = value === '엄마' ? 'MOTHER' : 'FATHER';
+    onChange('role', role);
   };
 
-  const handleChildGenderChange = (index: number, value: string) => {
-    setChildGenders((prev) => ({
-      ...prev,
-      [index]: value,
-    }));
-    console.log(`아이 ${index + 1} 성별 선택: ${value}`);
+  const handleChildDataChange = (index: number, key: 'gender' | 'birthDate', value: string) => {
+    setChildData((prev) => {
+      const updatedChild = { ...prev[index], [key]: value };
+      const updatedChildData = { ...prev, [index]: updatedChild };
+
+      const updatedChildren = fields.map((child: any, i: number) =>
+        i === index ? { ...child, ...updatedChild } : child,
+      );
+
+      onChange('children', updatedChildren);
+      return updatedChildData;
+    });
   };
 
   return (
@@ -64,11 +80,13 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) 
         <Input
           id="parentBirthDate"
           type="date"
-          {...register('parentBirthDate', {
+          {...register('birthDate', {
             required: '생년월일을 입력해 주세요.',
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange('birthDate', e.target.value),
           })}
         />
-        {errors.parentBirthDate && <ErrorMessage>{errors.parentBirthDate.message}</ErrorMessage>}
+        {errors.birthDate && <ErrorMessage>{errors.birthDate.message}</ErrorMessage>}
       </InputContainer>
 
       {fields.map((field: any, index: number) => (
@@ -76,7 +94,19 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) 
           <HorizonLine />
           <SubTitleContainer>
             <SubTitle>아이 {index + 1}</SubTitle>
-            <DeleteButton type="button" onClick={() => remove(index)} />
+            <DeleteButton
+              type="button"
+              onClick={() => {
+                const updatedChildren = fields.filter((_: any, i: number) => i !== index);
+                remove(index);
+                setChildData((prev) => {
+                  const newChildData = { ...prev };
+                  delete newChildData[index];
+                  return newChildData;
+                });
+                onChange('children', updatedChildren);
+              }}
+            />
           </SubTitleContainer>
 
           <Label>
@@ -84,8 +114,11 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) 
           </Label>
           <ToggleButtonGroupComponent
             options={['남자 아이', '여자 아이']}
-            selectedValue={childGenders[index] || ''}
-            onChange={(value) => handleChildGenderChange(index, value)}
+            selectedValue={childData[index]?.gender === 'MALE' ? '남자 아이' : '여자 아이'}
+            onChange={(value) => {
+              const genderValue = value === '남자 아이' ? 'MALE' : 'FEMALE';
+              handleChildDataChange(index, 'gender', genderValue);
+            }}
           />
 
           <InputContainer>
@@ -94,8 +127,11 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) 
             </Label>
             <Input
               type="date"
-              {...register(`children.${index}.birthDate` as const, {
+              value={childData[index]?.birthDate || ''}
+              {...register(`children.${index}.birthDate`, {
                 required: '아이 생년월일을 입력해 주세요.',
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleChildDataChange(index, 'birthDate', e.target.value),
               })}
             />
             {errors.children?.[index]?.birthDate && (
@@ -105,8 +141,17 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove }: Props) 
         </div>
       ))}
 
-      {/* 아이 추가 버튼 */}
-      <AddButton type="button" onClick={() => append({ gender: '', birthDate: '' })}>
+      <AddButton
+        type="button"
+        onClick={() => {
+          append({ gender: '', birthDate: '' });
+          setChildData((prev) => ({
+            ...prev,
+            [fields.length]: { gender: '', birthDate: '' },
+          }));
+          onChange('children', [...fields, { gender: '', birthDate: '' }]);
+        }}
+      >
         <PlusIcon />
         아이 추가
       </AddButton>

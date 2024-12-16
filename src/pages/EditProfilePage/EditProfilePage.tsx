@@ -9,7 +9,7 @@ import { PATH } from '@/constants/path.ts';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import CloseIcon from '@/assets/svg/cancel.svg?react';
 import ExtraImageSection from '@/components/profile/EditProfile/ExtraImageSection.tsx';
-
+import { useState } from 'react';
 interface ChildInfo {
   gender: string;
   birthDate: string;
@@ -30,11 +30,23 @@ interface FormData {
 const EditProfilePage = () => {
   const navigate = useNavigate();
 
+  const [formValues, setFormValues] = useState<FormData>({
+    nickname: '',
+    phoneNumber: '',
+    address: '',
+    parentGender: '',
+    parentBirthDate: '',
+    children: [],
+    friendCriteria: '',
+    introduction: '',
+    additionalPhoto: null,
+  });
+
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors }, // 유효성 검사 통과 못하면 에러 표시
+    formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
       children: [{ gender: '', birthDate: '' }],
@@ -46,8 +58,26 @@ const EditProfilePage = () => {
     name: 'children',
   });
 
+  const handleInputChange = (key: keyof FormData, value: any) => {
+    setFormValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleFileChange = (file: File | null) => {
+    setFormValues((prev) => ({
+      ...prev,
+      additionalPhoto: file,
+    }));
+  };
+
   const onSubmit = (data: FormData) => {
-    console.log('Form Data:', data);
+    const finalData = {
+      ...formValues,
+      children: data.children,
+    };
+    console.log('Form Data:', finalData);
   };
 
   return (
@@ -61,16 +91,29 @@ const EditProfilePage = () => {
       />
 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <ProfileImageSection register={register} errors={errors} />
+        <ProfileImageSection
+          register={register}
+          errors={errors}
+          onFileChange={handleFileChange}
+          onChange={(key, value) => handleInputChange(key as keyof FormData, value)}
+        />
         <FamilyInfoSection
           register={register}
           errors={errors}
           fields={fields}
           append={append}
           remove={remove}
+          onChange={(key, value) => handleInputChange(key as keyof FormData, value)}
         />
-        <AdditionalInfoSection register={register} errors={errors} />
-        <ExtraImageSection isEditable={true} />
+        <AdditionalInfoSection
+          register={register}
+          errors={errors}
+          onChange={(key, value) => handleInputChange(key as keyof FormData, value)}
+        />
+        <ExtraImageSection
+          isEditable={true}
+          // onFileChange={handleFileChange} // 추가된 prop 전달
+        />
         <SubmitButton type="submit">완료</SubmitButton>
       </Form>
     </Container>

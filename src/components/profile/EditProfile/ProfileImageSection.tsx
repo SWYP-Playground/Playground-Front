@@ -19,30 +19,38 @@ import {
   HiddenInput,
 } from '@/pages/EditProfilePage/EditProfilePage.style';
 
-interface Props {
+interface ProfileImageSectionProps {
   register: any;
   errors: any;
+  onFileChange: (file: File | null) => void;
+  onChange: (key: string, value: string) => void;
 }
 
-const ProfileImageSection = ({ register, errors }: Props) => {
+const ProfileImageSection = ({
+  register,
+  errors,
+  onFileChange,
+  onChange,
+}: ProfileImageSectionProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [isPhoneChecked, setIsPhoneChecked] = useState(false);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedImage(URL.createObjectURL(file));
+      onFileChange(file);
     }
   };
-  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
-  const [isPhoneChecked, setIsPhoneChecked] = useState(false);
 
   const checkNicknameDuplicate = () => {
-    console.log('이메일 중복 확인');
+    console.log('닉네임 중복 확인');
     setIsNicknameChecked(true);
   };
 
   const checkPhoneDuplicate = () => {
-    console.log('이메일 중복 확인');
+    console.log('휴대폰 번호 중복 확인');
     setIsPhoneChecked(true);
   };
 
@@ -86,6 +94,7 @@ const ProfileImageSection = ({ register, errors }: Props) => {
                 message: '특수문자는 사용할 수 없습니다.',
               },
             })}
+            onChange={(e) => onChange('nickname', e.target.value)}
           />
           <DuplicateCheckButton
             disabled={isNicknameChecked}
@@ -117,6 +126,7 @@ const ProfileImageSection = ({ register, errors }: Props) => {
                 message: '올바른 휴대폰 번호를 입력해 주세요.',
               },
             })}
+            onChange={(e) => onChange('phoneNumber', e.target.value)}
           />
           <DuplicateCheckButton
             disabled={isPhoneChecked}
@@ -137,13 +147,8 @@ const ProfileImageSection = ({ register, errors }: Props) => {
           <Input
             id="address"
             placeholder="주소를 검색해 주세요"
-            {...register('address', {
-              // required: '주소를 검색해 주세요.',
-              pattern: {
-                value: /^01[0-9]-\d{3,4}-\d{4}$/,
-                message: '주소를 검색해 주세요.',
-              },
-            })}
+            {...register('address')}
+            onChange={(e) => onChange('address', e.target.value)}
           />
           <SearchIconWrapper>
             <SearchIcon />

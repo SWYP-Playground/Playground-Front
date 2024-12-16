@@ -120,7 +120,7 @@ const SignUpPage = () => {
             placeholder="비밀번호를 다시 입력해 주세요"
             {...register('confirmPassword', {
               required: '비밀번호를 재입력해 주세요.',
-              validate: (value) => value === password || '비밀번호가 일치하지 않습니다.',
+              validate: (value: string) => value === password || '비밀번호가 일치하지 않습니다.',
             })}
             hasError={!!errors.confirmPassword}
           />

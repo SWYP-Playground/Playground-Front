@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
+import { useSignUpStore } from '@/store/signUpStore';
 
 interface FormData {
   name: string;
@@ -13,6 +14,7 @@ interface FormData {
 
 export const useSignUpForm = () => {
   const navigate = useNavigate();
+  const { setSignUpData } = useSignUpStore();
 
   const {
     register,
@@ -28,9 +30,24 @@ export const useSignUpForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const password = watch('password');
 
-  const onSubmit = (data: FormData) => {
-    console.log('회원가입 데이터:', data);
-    setIsModalOpen(true);
+  const onSubmit = async (data: FormData) => {
+    try {
+      setSignUpData({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log('SignUp Data Saved to Zustand:', {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+    }
   };
 
   const closePopup = () => {
