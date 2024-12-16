@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Flex } from '@radix-ui/themes';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -21,18 +20,23 @@ import { useFindFriendInfoQuery } from '@/hooks/api/useFindFriendInfoQuery';
 import LeftIcon from '@assets/svg/left-icon.svg?react';
 import { useParticipateFindFriendMutation } from '@/hooks/api/useParticipateFindFriendMutation';
 import { PARTICIPATE_ACTION } from '@/constants/playground';
+import getDecodedTokenData from '@/utils/getDecodedTokenData';
 
 const PlaygroundRoomPage = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { playgroundId } = params;
   const { FindFriendInfoData } = useFindFriendInfoQuery(Number(playgroundId));
-  const [isParticipated, setIsParticipated] = useState(false);
   const participateFindFriendMutation = useParticipateFindFriendMutation();
+  const { nickname } = getDecodedTokenData();
 
   const goToBackPage = () => {
     navigate(-1);
   };
+
+  const isParticipated = FindFriendInfoData.participants.some(
+    (participant) => participant.nickname === nickname,
+  );
 
   const handleParticipate = () => {
     if (playgroundId) {
@@ -40,6 +44,16 @@ const PlaygroundRoomPage = () => {
         playgroundId,
         findFriendId: FindFriendInfoData.findFriendId,
         action: PARTICIPATE_ACTION.PARTICIPATE,
+      });
+    }
+  };
+
+  const handleCancelParticipation = () => {
+    if (playgroundId) {
+      participateFindFriendMutation.mutate({
+        playgroundId,
+        findFriendId: FindFriendInfoData.findFriendId,
+        action: PARTICIPATE_ACTION.CANCEL,
       });
     }
   };
@@ -82,7 +96,7 @@ const PlaygroundRoomPage = () => {
             >
               댓글 보기
             </MessageButton>
-            <CancelEngageButton onClick={() => setIsParticipated(false)}>
+            <CancelEngageButton onClick={handleCancelParticipation}>
               참여하기 취소
             </CancelEngageButton>
             {/* 나중에 작성자면 삭제하기 버튼 추가 */}
