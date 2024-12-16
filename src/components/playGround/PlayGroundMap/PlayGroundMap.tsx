@@ -23,6 +23,7 @@ interface PlayGroundMapProps {
 
 const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
   useKakaoLoader();
+  const [centerUpdateAllowed, setCenterUpdateAllowed] = useState(true);
   const [center, setCenter] = useState<CenterType>(MAP_DEFAULT_CENTER);
   const mapRef = useRef<kakao.maps.Map>(null);
 
@@ -38,13 +39,39 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
 
     const newCenter = new kakao.maps.LatLng(coords.latitude, coords.longitude);
     mapRef.current.setCenter(newCenter);
+    setCenter({ lat: coords.latitude, lng: coords.longitude });
+    setCenterUpdateAllowed(true);
   }, [coords.latitude, coords.longitude]);
 
   useEffect(() => {
-    if (coords.latitude && coords.longitude) {
-      setCenter({ lat: coords.latitude, lng: coords.longitude });
+    if (mapRef.current) {
+      const map = mapRef.current;
+
+      const stopCenterUpdate = () => {
+        console.log('사용자가 지도를 이동했습니다.');
+        setCenterUpdateAllowed(false);
+      };
+
+      kakao.maps.event.addListener(map, 'dragend', stopCenterUpdate);
+
+      return () => {
+        kakao.maps.event.removeListener(map, 'dragend', stopCenterUpdate);
+      };
     }
-  }, [coords.latitude, coords.longitude]);
+  }, []);
+
+  useEffect(() => {
+    if (coords.latitude && coords.longitude) {
+      const distance = Math.sqrt(
+        Math.pow(coords.latitude - center.lat, 2) + Math.pow(coords.longitude - center.lng, 2),
+      );
+
+      if (distance > 0.001 && centerUpdateAllowed) {
+        // 0.001 정도는 미세한 이동으로 간주
+        setCenter({ lat: coords.latitude, lng: coords.longitude });
+      }
+    }
+  }, [coords.latitude, coords.longitude, center, centerUpdateAllowed]);
 
   console.log(locationError);
 
