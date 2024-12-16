@@ -47,7 +47,7 @@ const PlaygroundRoomPage = () => {
       });
     }
   };
-
+  
   const handleCancelParticipation = () => {
     if (playgroundId) {
       participateFindFriendMutation.mutate({
