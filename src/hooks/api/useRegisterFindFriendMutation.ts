@@ -16,8 +16,8 @@ export const useRegisterFindFriendMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['findFriendList', playgroundId] });
       navigate(PATH.ROOT);
     },
-    onError: () => {
-      toast('오류가 발생했습니다. 잠시 후 다시 시도해 주세요');
+    onError: (error) => {
+      toast(error.message);
     },
   });
 

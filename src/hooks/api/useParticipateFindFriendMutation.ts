@@ -12,8 +12,8 @@ export const useParticipateFindFriendMutation = () => {
     onSuccess: (_, { findFriendId }) => {
       queryClient.invalidateQueries({ queryKey: ['findFriendInfo', findFriendId] });
     },
-    onError: () => {
-      toast('오류가 발생했습니다. 혹시 취소하기를 2번 누르셨나요? 그러면 다시 참여할 수 없습니다!');
+    onError: (error) => {
+      toast(error.message);
     },
   });
 
