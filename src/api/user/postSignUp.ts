@@ -10,6 +10,7 @@ export type SignUpResponse = {
 };
 export const postSignUp = async (formData: SignUpRequest): Promise<SignUpResponse> => {
   const response = await axiosInstance.post<SignUpResponse>(END_POINTS.SIGNUP, formData, {
+    useAuth: false,
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return response.data;
