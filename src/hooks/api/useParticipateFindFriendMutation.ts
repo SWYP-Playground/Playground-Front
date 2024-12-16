@@ -13,7 +13,7 @@ export const useParticipateFindFriendMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['findFriendInfo', findFriendId] });
     },
     onError: () => {
-      toast('오류가 발생했습니다. 잠시 후 다시 시도해 주세요');
+      toast('오류가 발생했습니다. 혹시 취소하기를 2번 누르셨나요? 그러면 다시 참여할 수 없습니다!');
     },
   });
 
