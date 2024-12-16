@@ -86,13 +86,25 @@ export const handleTokenError = async (error: AxiosError<ErrorResponseData>) => 
 };
 
 export const handleAPIError = (error: AxiosError<ErrorResponseData>) => {
-  if (!error.response) throw error;
-
-  const { data, status } = error.response;
-
-  if (status >= HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR) {
-    throw new HTTPError(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR, data.message);
+  if (!error.response) {
+    console.error('No response received:', error);
+    return Promise.reject(error); // 네트워크 문제는 그대로 반환
   }
 
+  const { status, data } = error.response;
+
+  // 404: 기본 값 반환
+  if (status === HTTP_STATUS_CODE.NOT_FOUND) {
+    console.warn('404 Not Found:', data.message);
+    return { data: null }; // 기본 응답 구조를 반환
+  }
+
+  // 500번대 에러
+  if (status >= HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR) {
+    alert('서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    throw new HTTPError(status, data.message);
+  }
+
+  // 그 외 상태 코드
   throw new HTTPError(status, data.message, data.code);
 };
