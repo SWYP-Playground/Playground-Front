@@ -12,8 +12,8 @@ export const useUpdateParentMutation = () => {
     onSuccess: (_, { parentId }) => {
       queryClient.invalidateQueries({ queryKey: ['parent', parentId] });
     },
-    onError: () => {
-      toast('수정에 실패했습니다. 잠시 후 다시 시도해 주세요');
+    onError: (error) => {
+      toast(error.message);
     },
   });
 
