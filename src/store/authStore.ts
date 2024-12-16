@@ -30,7 +30,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: ACCESS_TOKEN_KEY,
-      storage: createJSONStorage(() => localStorage), // localStorage를 JSON 스토리지로 변환
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

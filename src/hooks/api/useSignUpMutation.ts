@@ -1,19 +1,33 @@
-import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
-
 import { postSignUp } from '@/api/user/postSignUp';
+import { useSignUpStore } from '@/store/signUpStore';
 
-// API 명세서 보고 코드를 짠거라 제대로 작동 안할 수 있습니다. 나중에 수정 필요
 export const useSignUpMutation = () => {
-  const signUpMutation = useMutation({
-    mutationFn: postSignUp,
-    onSuccess: () => {
-      // 회원가입 성공시에 로직 추가해야 함
+  const { setSignUpData } = useSignUpStore();
+
+  return useMutation({
+    mutationFn: async (formData: FormData) => {
+      return await postSignUp(formData);
     },
-    onError: () => {
-      toast('회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요');
+
+    onSuccess: (response) => {
+      console.log('✅ 회원가입 성공:', response);
+
+      // Zustand 상태 업데이트
+      setSignUpData({
+        name: response.name,
+        email: response.email,
+      });
+
+      // localStorage에 전체 데이터 저장
+      localStorage.setItem('user', JSON.stringify(response));
+      console.log('🔒 Full user data saved to localStorage:', response);
+    },
+
+    onError: (error) => {
+      console.error('❌ 회원가입 실패:', error);
     },
   });
-
-  return signUpMutation;
 };
+
+export default useSignUpMutation;

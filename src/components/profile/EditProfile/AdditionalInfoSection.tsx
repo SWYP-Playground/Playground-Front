@@ -18,9 +18,10 @@ import FriendRecommendationIcon3 from '@/assets/svg/recommendation-icon-3.svg?re
 interface Props {
   register: any;
   errors: any;
+  onChange: (key: string, value: string) => void;
 }
 
-const AdditionalInfoSection = ({ register, errors }: Props) => {
+const AdditionalInfoSection = ({ register, errors, onChange }: Props) => {
   const [selectedOption, setSelectedOption] = useState('가까운 거리');
 
   const handleRadioChange = (value: string) => {
@@ -30,7 +31,9 @@ const AdditionalInfoSection = ({ register, errors }: Props) => {
   const [textLength, setTextLength] = useState(0);
 
   const handleInputTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextLength(e.target.value.length);
+    const value = e.target.value;
+    setTextLength(value.length);
+    onChange('introduce', value);
   };
 
   return (
