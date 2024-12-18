@@ -4,8 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header';
 import {
   CancelEngageButton,
+  DeleteButton,
   EngageButton,
   MessageButton,
+  ModifyButton,
   ParticipantsButtonFlex,
   ParticipantsSpan,
   PlayGroundRoomFlex,
@@ -21,6 +23,7 @@ import LeftIcon from '@assets/svg/left-icon.svg?react';
 import { useParticipateFindFriendMutation } from '@/hooks/api/useParticipateFindFriendMutation';
 import { PARTICIPATE_ACTION } from '@/constants/playground';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
+import { useDeleteRoomMutation } from '@/hooks/api/useDeleteRoomMutation';
 
 const PlaygroundRoomPage = () => {
   const navigate = useNavigate();
@@ -28,15 +31,16 @@ const PlaygroundRoomPage = () => {
   const { playgroundId } = params;
   const { FindFriendInfoData } = useFindFriendInfoQuery(Number(playgroundId));
   const participateFindFriendMutation = useParticipateFindFriendMutation();
+  const deleteRoomMutation = useDeleteRoomMutation();
   const { nickname } = getDecodedTokenData();
+  const isParticipated = FindFriendInfoData.participants.some(
+    (participant) => participant.nickname === nickname,
+  );
+  const isManager = FindFriendInfoData.owner.nickname === nickname;
 
   const goToBackPage = () => {
     navigate(-1);
   };
-
-  const isParticipated = FindFriendInfoData.participants.some(
-    (participant) => participant.nickname === nickname,
-  );
 
   const handleParticipate = () => {
     if (playgroundId) {
@@ -47,13 +51,22 @@ const PlaygroundRoomPage = () => {
       });
     }
   };
-  
+
   const handleCancelParticipation = () => {
     if (playgroundId) {
       participateFindFriendMutation.mutate({
         playgroundId,
         findFriendId: FindFriendInfoData.findFriendId,
         action: PARTICIPATE_ACTION.CANCEL,
+      });
+    }
+  };
+
+  const handleDeleteRoom = () => {
+    if (playgroundId) {
+      deleteRoomMutation.mutate({
+        playgroundId,
+        findFriendId: FindFriendInfoData.findFriendId,
       });
     }
   };
@@ -88,18 +101,32 @@ const PlaygroundRoomPage = () => {
         {FindFriendInfoData.participants.length === 0 && <div>참여 인원 없음</div>}
       </PlayGroundRoomParticipants>
       <ParticipantsButtonFlex>
-        {!isParticipated && <EngageButton onClick={handleParticipate}>참여하기</EngageButton>}
-        {isParticipated && (
+        {!isManager && (
+          <>
+            {!isParticipated && <EngageButton onClick={handleParticipate}>참여하기</EngageButton>}
+            {isParticipated && (
+              <Flex direction="column" gap="2">
+                <MessageButton
+                  onClick={() => navigate(PATH.PLAYGROUND_MESSAGE(`${params.playgroundId}`))}
+                >
+                  댓글 보기
+                </MessageButton>
+                <CancelEngageButton onClick={handleCancelParticipation}>
+                  참여하기 취소
+                </CancelEngageButton>
+              </Flex>
+            )}
+          </>
+        )}
+        {isManager && (
           <Flex direction="column" gap="2">
             <MessageButton
               onClick={() => navigate(PATH.PLAYGROUND_MESSAGE(`${params.playgroundId}`))}
             >
               댓글 보기
             </MessageButton>
-            <CancelEngageButton onClick={handleCancelParticipation}>
-              참여하기 취소
-            </CancelEngageButton>
-            {/* 나중에 작성자면 삭제하기 버튼 추가 */}
+            <ModifyButton>수정하기</ModifyButton>
+            <DeleteButton onClick={handleDeleteRoom}>삭제하기</DeleteButton>
           </Flex>
         )}
       </ParticipantsButtonFlex>

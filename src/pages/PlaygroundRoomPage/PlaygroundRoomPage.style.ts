@@ -60,6 +60,28 @@ export const CancelEngageButton = styled(Button)`
   font-size: 18px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.black0};
-  background-color: #ee6363;
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  cursor: pointer;
+`;
+
+export const ModifyButton = styled(Button)`
+  width: 100%;
+  padding: 26px 0;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.black900};
+  background-color: ${({ theme }) => theme.colors.primary1};
+  cursor: pointer;
+`;
+
+export const DeleteButton = styled(Button)`
+  width: 100%;
+  padding: 26px 0;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.tertiary};
+  background-color: ${({ theme }) => theme.colors.black0};
   cursor: pointer;
 `;
