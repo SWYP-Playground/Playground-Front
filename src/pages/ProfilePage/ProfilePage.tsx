@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Header from '@/components/layout/Header/Header.tsx';
@@ -18,16 +19,64 @@ import ContactUsSection from '@/components/profile/MyPage/ContactUsSection.tsx';
 import Card from '@/components/common/Card/Card.tsx';
 import SettingButton from '@/components/profile/Button/SettingButton.tsx';
 import { FindFriendRoomType, RecentFriendType } from '@/types/friend.ts';
+import { getParentById } from '@/api/parent/getParentById';
+import getDecodedTokenData from '@/utils/getDecodedTokenData';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const progress = 70;
+  const [progress, setProgress] = useState<number>(0);
+  const [parentInfo, setParentInfo] = useState<{
+    nickname: string;
+    address: string;
+    introduce: string;
+    profileImg?: string;
+    role: string;
+  }>({
+    nickname: '',
+    address: '',
+    introduce: '',
+    profileImg: undefined,
+    role: '',
+  });
 
-  const children: { id: number; name: string; gender: 'female' | 'male' }[] = [
-    { id: 1, name: '아이1', gender: 'female' },
-    { id: 2, name: '아이2', gender: 'male' },
-  ];
+  const [children, setChildren] = useState<
+    { id: number; name: string; gender: 'female' | 'male' }[]
+  >([]);
+
+  useEffect(() => {
+    const fetchParentData = async () => {
+      try {
+        // 토큰 디코딩
+        const { parentId } = getDecodedTokenData();
+        if (!parentId) throw new Error('parentId가 없습니다.');
+
+        // API 호출
+        const data = await getParentById(Number(parentId));
+
+        setParentInfo({
+          nickname: data.nickname,
+          address: data.address,
+          introduce: data.introduce,
+          profileImg: data.profileImg || undefined,
+          role: data.role,
+        });
+
+        const formattedChildren = data.children.map((child) => ({
+          id: child.id,
+          name: `아이 ${child.id}`,
+          gender: (child.gender === 'MALE' ? 'male' : 'female') as 'male' | 'female',
+        }));
+
+        setChildren(formattedChildren);
+        setProgress(data.mannerTemp);
+      } catch (err) {
+        console.error('프로필 데이터를 불러오는 중 오류 발생:', err);
+      }
+    };
+
+    fetchParentData();
+  }, []);
 
   const requireData: FindFriendRoomType[] = [
     {
@@ -64,13 +113,7 @@ const ProfilePage = () => {
           progress={progress}
           children={children}
           showButtons={true}
-          parentInfo={{
-            nickname: '',
-            address: '',
-            introduce: '',
-            profileImg: undefined,
-            role: '',
-          }}
+          parentInfo={parentInfo}
         />
       </Background>
 
