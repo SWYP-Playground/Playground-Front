@@ -11,6 +11,7 @@ export interface ParentData {
   childCount: number;
   mannerTemp: number;
   children: ChildrenData[];
+  profileImg: string;
 }
 
 export interface Owner {

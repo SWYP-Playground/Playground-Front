@@ -14,39 +14,66 @@ import ProgressBar from './ProgressBar.tsx';
 import ChildCard from '@/components/profile/MyPage/ChildCard.tsx';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
+import DefaultProfile from '@/assets/png/profile1.png';
 
 interface ProfileDetailsProps {
   progress: number;
-  children: { name: string; gender: 'female' | 'male' }[];
+  children: {
+    gender: 'male' | 'female';
+    id: number;
+    name: string;
+  }[];
+  parentInfo: {
+    nickname: string;
+    address: string;
+    introduce: string;
+    profileImg?: string;
+    role: string;
+  };
   showButtons?: boolean;
   showSummary?: boolean;
 }
 
-const ProfileDetails = ({ progress, children, showButtons, showSummary }: ProfileDetailsProps) => {
+const ProfileDetails = ({
+  progress,
+  children,
+  parentInfo,
+  showButtons,
+  showSummary,
+}: ProfileDetailsProps) => {
   const navigate = useNavigate();
+
+  const getRoleDisplayName = (role: string): string => {
+    switch (role) {
+      case 'FATHER':
+        return '아빠';
+      case 'MOTHER':
+        return '엄마';
+      default:
+        return '보호자';
+    }
+  };
+
+  // children 데이터 디버깅
+  // console.log('children 데이터:', children);
 
   return (
     <ProfileContainer>
-      <ProfileImage />
-      <ProfileLabel>닉네임</ProfileLabel>
-      <ProfileSubLabel>아빠 | 서울시 노원구 중계동</ProfileSubLabel>
-      {showSummary && (
-        <SummaryText>
-          “안녕하세요 저는 6살 애기 아빠이고, 중계동에 살고있어요. 잘 부탁드립니다.”
-        </SummaryText>
-      )}
+      {/* <ProfileImage src={parentInfo.profileImg || DefaultProfile} alt="프로필 이미지" /> */}
+      <ProfileImage src={DefaultProfile} alt="프로필 이미지" />
+      <ProfileLabel>{parentInfo.nickname}</ProfileLabel>
+      <ProfileSubLabel>{`${getRoleDisplayName(parentInfo.role)} ㆍ ${parentInfo.address}`}</ProfileSubLabel>
+      {showSummary && <SummaryText>{`"${parentInfo.introduce}"`}</SummaryText>}
       <ProgressBarContainer>
         <ProgressLabel>현재 온도</ProgressLabel>
         <ProgressTemp progress={progress}>{progress}°C</ProgressTemp>
       </ProgressBarContainer>
       <ProgressBar progress={progress} />
-
       <ChildCardContainer>
-        {children.map((child, index) => (
-          <ChildCard key={index} name={child.name} gender={child.gender} />
+        {children.map((child) => (
+          <ChildCard key={child.id} name={child.name} gender={child.gender} />
         ))}
       </ChildCardContainer>
-
       {showButtons && (
         <>
           <ProfileButton onClick={() => navigate(PATH.EDIT_PROFILE('1'))}>

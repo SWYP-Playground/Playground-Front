@@ -1,42 +1,73 @@
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
-import {
-  Container,
-  SendMessageButton,
-  ExtraImageContainer,
-} from '@/pages/ProfileInfoPage/ProfileInfoPage.syle.ts';
+import { Container, SendMessageButton } from '@/pages/ProfileInfoPage/ProfileInfoPage.syle.ts';
 import { useNavigate } from 'react-router-dom';
 import ProfileDetails from '@/components/profile/MyPage/ProfileDetailSection.tsx';
-import ExtraImageSection from '@/components/profile/EditProfile/ExtraImageSection.tsx';
+import { useEffect, useState } from 'react';
+import getDecodedTokenData from '@/utils/getDecodedTokenData.ts';
+import { getParentById } from '@/api/parent/getParentById';
+import { ParentData } from '@/types/parent';
 
 const ProfileInfoPage = () => {
-  const progress = 70;
-
-  const children: { name: string; gender: 'female' | 'male' }[] = [
-    { name: '아이1', gender: 'female' },
-    { name: '아이2', gender: 'male' },
-  ];
-
-  const images = [
-    'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjAzMTVfMTcz%2FMDAxNjQ3MjcwNTE3NjAx.jSs23mu1-6jBML5I3i1VtQ-F6zP3RP1NFd0Z-joljJ8g.Bgm-9zHnKM50c5ceQpsFQXVbFhRDEK3EG69ALhDrvbsg.JPEG.only_my_diary%2FScreenshot%25A3%25DF20220314%25A3%25AD233611%25A3%25DFYouTube.jpg&type=sc960_832',
-    'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjAzMTVfMTcz%2FMDAxNjQ3MjcwNTE3NjAx.jSs23mu1-6jBML5I3i1VtQ-F6zP3RP1NFd0Z-joljJ8g.Bgm-9zHnKM50c5ceQpsFQXVbFhRDEK3EG69ALhDrvbsg.JPEG.only_my_diary%2FScreenshot%25A3%25DF20220314%25A3%25AD233611%25A3%25DFYouTube.jpg&type=sc960_832',
-  ];
-
   const navigate = useNavigate();
+
+  const [parentInfo, setParentInfo] = useState<ParentData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchParentInfo = async () => {
+      try {
+        const authStorage = localStorage.getItem('auth-storage');
+        if (!authStorage) {
+          throw new Error('auth-storage가 없습니다. 로그인이 필요합니다.');
+        }
+
+        const { state } = JSON.parse(authStorage);
+        if (!state?.token) {
+          throw new Error('state.token이 없습니다.');
+        }
+
+        const userInfo = getDecodedTokenData();
+        if (!userInfo.parentId) {
+          throw new Error('부모 ID가 없습니다.');
+        }
+
+        const parentData = await getParentById(Number(userInfo.parentId));
+        setParentInfo(parentData);
+      } catch (err) {
+        console.error('오류:', err);
+        setError('부모 정보를 가져오는 중 문제가 발생했습니다.');
+      }
+    };
+
+    fetchParentInfo();
+  }, []);
 
   return (
     <Container>
       <Header title="프로필 정보" leftIcon={<LeftIcon />} onLeftClick={() => navigate(-1)} />
-      <ProfileDetails
-        progress={progress}
-        children={children}
-        showButtons={false}
-        showSummary={true}
-      />
-      {Array.isArray(images) && images.length > 0 && (
-        <ExtraImageContainer>
-          <ExtraImageSection images={images} isEditable={false} />
-        </ExtraImageContainer>
+      {error ? (
+        <p>{error}</p>
+      ) : parentInfo ? (
+        <ProfileDetails
+          progress={parentInfo.mannerTemp}
+          children={parentInfo.children.map((child) => ({
+            id: child.id,
+            name: `아이 ${child.id}`,
+            gender: child.gender === 'MALE' ? 'male' : 'female',
+          }))}
+          parentInfo={{
+            nickname: parentInfo.nickname,
+            address: parentInfo.address,
+            introduce: parentInfo.introduce,
+            profileImg: parentInfo.profileImg,
+            role: parentInfo.role,
+          }}
+          showButtons={false}
+          showSummary={true}
+        />
+      ) : (
+        <p>로딩 중...</p>
       )}
       <SendMessageButton>쪽지 보내기</SendMessageButton>
     </Container>
