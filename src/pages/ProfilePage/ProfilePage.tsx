@@ -21,6 +21,7 @@ import SettingButton from '@/components/profile/Button/SettingButton.tsx';
 import { FindFriendRoomType, RecentFriendType } from '@/types/friend.ts';
 import { getParentById } from '@/api/parent/getParentById';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
+import { getMyFindFriendList } from '@/api/findFriend/getMyFindFriendList';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ const ProfilePage = () => {
     { id: number; name: string; gender: 'female' | 'male' }[]
   >([]);
 
+  const [requireData, setRequireData] = useState<FindFriendRoomType[]>([]);
+
   useEffect(() => {
     const fetchParentData = async () => {
       try {
@@ -65,8 +68,8 @@ const ProfilePage = () => {
         const formattedChildren = data.children.map((child) => ({
           id: child.id,
           name: `아이 ${child.id}`,
-          gender: (child.gender === 'MALE' ? 'male' : 'female') as 'male' | 'female',
-        }));
+          gender: child.gender === 'MALE' ? 'male' : 'female',
+        })) as { id: number; name: string; gender: 'female' | 'male' }[];
 
         setChildren(formattedChildren);
         setProgress(data.mannerTemp);
@@ -75,20 +78,30 @@ const ProfilePage = () => {
       }
     };
 
-    fetchParentData();
-  }, []);
+    // 내가 모집한 모임
+    const fetchFindFriendData = async () => {
+      try {
+        const response = await getMyFindFriendList();
 
-  const requireData: FindFriendRoomType[] = [
-    {
-      findFriendId: 2,
-      playgroundName: '서울숲 유아숲 체험원',
-      title: '서울숲에서 놀사람 구합니다',
-      description: '구합니다 놀 사람',
-      scheduleTime: '2024. 12. 15 일요일 오후 10:08~오전 12:08',
-      recruitmentStatus: 'COMPLETE',
-      currentCount: 2,
-    },
-  ];
+        setRequireData(
+          response.data.map((item) => ({
+            findFriendId: item.findFriendId,
+            playgroundName: item.playgroundName,
+            title: item.title,
+            description: item.description,
+            scheduleTime: item.scheduleTime,
+            recruitmentStatus: item.recruitmentStatus,
+            currentCount: item.currentCount,
+          })),
+        );
+      } catch (err) {
+        console.error('모임 데이터를 불러오는 중 오류 발생:', err);
+      }
+    };
+
+    fetchParentData();
+    fetchFindFriendData();
+  }, []);
 
   const recentFriends: RecentFriendType[] = [
     {
@@ -116,18 +129,15 @@ const ProfilePage = () => {
           parentInfo={parentInfo}
         />
       </Background>
-
       <TitleContainer>
         <TitleText>내가 모집한 모임</TitleText>
         <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS('1'))}>더보기</ViewMore>
       </TitleContainer>
       <MyGroupsSection requireData={requireData} />
-
       <TitleContainer>
         <TitleText>최근 논 친구</TitleText>
         <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED('1'))}>더보기</ViewMore>
       </TitleContainer>
-
       <RecentFriendsContainer>
         {recentFriends.map((friend, index) => (
           <Card
@@ -141,7 +151,6 @@ const ProfilePage = () => {
           />
         ))}
       </RecentFriendsContainer>
-
       <ContactUsContainer>
         <TitleText>문의</TitleText>
         <ContactUsSection />
