@@ -8,6 +8,7 @@ export type SignUpResponse = {
   name: string;
   email: string;
 };
+
 export const postSignUp = async (formData: SignUpRequest): Promise<SignUpResponse> => {
   const response = await axiosInstance.post<SignUpResponse>(END_POINTS.SIGNUP, formData, {
     useAuth: false,

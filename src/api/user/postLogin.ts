@@ -7,7 +7,7 @@ export interface PostLoginParams {
   LoginData: LoginRequestBody;
 }
 
-export const postLogin = async ({ LoginData }: PostLoginParams) => {
+export const postLogin = async ({ LoginData }: PostLoginParams): Promise<LoginData> => {
   const { data } = await axiosInstance.post<LoginData>(END_POINTS.LOGIN, LoginData, {
     useAuth: false,
     headers: {
@@ -16,12 +16,18 @@ export const postLogin = async ({ LoginData }: PostLoginParams) => {
     },
   });
 
-  // 토큰 저장
+  const { token, refreshToken } = data;
+
+  localStorage.setItem(
+    'auth-storage',
+    JSON.stringify({
+      state: { token, refreshToken },
+      version: 0,
+    }),
+  );
+
   const setAuth = useAuthStore.getState().setAuth;
-  setAuth({
-    token: data.token,
-    refreshToken: data.refreshToken,
-  });
+  setAuth({ token, refreshToken });
 
   return data;
 };
