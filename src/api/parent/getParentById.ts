@@ -5,7 +5,7 @@ import { END_POINTS } from '@/constants/api';
 import { ACCESS_TOKEN_KEY } from '@/constants/api';
 
 const getAuthTokens = () => {
-  const authStorage = localStorage.getItem('ACCESS_TOKEN_KEY');
+  const authStorage = localStorage.getItem(ACCESS_TOKEN_KEY);
   if (!authStorage) throw new Error('auth-storage가 없습니다.');
 
   const { state } = JSON.parse(authStorage);
