@@ -4,33 +4,22 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { ACCESS_TOKEN_KEY } from '@/constants/api';
 
 interface AuthState {
-  email: string | null;
-  nickname: string | null;
   token: string | null;
-  refreshToken: string | null;
-  setAuth: (authData: Partial<AuthState>) => void;
+  setAuth: (token: string) => void;
   clearAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      email: null,
-      nickname: null,
       token: null,
-      refreshToken: null,
-      setAuth: (authData) => set((state) => ({ ...state, ...authData })),
-      clearAuth: () =>
-        set({
-          email: null,
-          nickname: null,
-          token: null,
-          refreshToken: null,
-        }),
+      setAuth: (token) => set({ token }),
+      clearAuth: () => set({ token: null }),
     }),
     {
       name: ACCESS_TOKEN_KEY,
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ token: state.token }),
     },
   ),
 );

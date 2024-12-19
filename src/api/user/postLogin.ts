@@ -18,10 +18,7 @@ export const postLogin = async ({ LoginData }: PostLoginParams) => {
 
   // 토큰 저장
   const setAuth = useAuthStore.getState().setAuth;
-  setAuth({
-    token: data.token,
-    refreshToken: data.refreshToken,
-  });
+  setAuth(data.token);
 
   return data;
 };
