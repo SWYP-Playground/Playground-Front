@@ -19,7 +19,7 @@ export const ProfileContainer = styled.div`
   align-items: center;
 `;
 
-export const ProfileImage = styled.label`
+export const ProfileImage = styled.img`
   width: 100px;
   height: 100px;
 

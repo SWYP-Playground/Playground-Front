@@ -24,9 +24,9 @@ const ProfilePage = () => {
 
   const progress = 70;
 
-  const children: { name: string; gender: 'female' | 'male' }[] = [
-    { name: '아이1', gender: 'female' },
-    { name: '아이2', gender: 'male' },
+  const children: { id: number; name: string; gender: 'female' | 'male' }[] = [
+    { id: 1, name: '아이1', gender: 'female' },
+    { id: 2, name: '아이2', gender: 'male' },
   ];
 
   const requireData: FindFriendRoomType[] = [
@@ -60,7 +60,18 @@ const ProfilePage = () => {
           rightIcon={<SettingButton />}
           onRightClick={() => navigate(PATH.USER_SETTING('1'))}
         />
-        <ProfileDetails progress={progress} children={children} showButtons={true} />
+        <ProfileDetails
+          progress={progress}
+          children={children}
+          showButtons={true}
+          parentInfo={{
+            nickname: '',
+            address: '',
+            introduce: '',
+            profileImg: undefined,
+            role: '',
+          }}
+        />
       </Background>
 
       <TitleContainer>
