@@ -15,11 +15,20 @@ export const useLogInMutation = (): UseMutationResult<LoginData, Error, LoginReq
     onSuccess: (data: LoginData) => {
       setAuth(data.token);
 
-      console.log('Token: ', data.token);
+      localStorage.setItem(
+        'auth-storage',
+        JSON.stringify({
+          state: { token: data.token },
+          version: 0,
+        }),
+      );
+
+      console.log('Token saved successfully:', data.token);
 
       toast.success('로그인 성공!');
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('로그인 에러:', error);
       toast.error('로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.');
     },
   });
