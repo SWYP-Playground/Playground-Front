@@ -16,16 +16,18 @@ export const postLogin = async ({ LoginData }: PostLoginParams): Promise<LoginDa
     },
   });
 
+  const { token, refreshToken } = data;
+
   localStorage.setItem(
     'auth-storage',
     JSON.stringify({
-      state: { token: data.token },
+      state: { token, refreshToken },
       version: 0,
     }),
   );
 
   const setAuth = useAuthStore.getState().setAuth;
-  setAuth(data.token);
+  setAuth({ token, refreshToken });
 
   return data;
 };

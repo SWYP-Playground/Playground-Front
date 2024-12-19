@@ -13,17 +13,10 @@ export const useLogInMutation = (): UseMutationResult<LoginData, Error, LoginReq
   return useMutation<LoginData, Error, LoginRequestBody>({
     mutationFn: (loginData: LoginRequestBody) => postLogin({ LoginData: loginData }),
     onSuccess: (data: LoginData) => {
-      setAuth(data.token);
-
-      localStorage.setItem(
-        'auth-storage',
-        JSON.stringify({
-          state: { token: data.token },
-          version: 0,
-        }),
-      );
-
-      console.log('Token saved successfully:', data.token);
+      setAuth({
+        token: data.token,
+        refreshToken: data.refreshToken,
+      });
 
       toast.success('로그인 성공!');
     },
