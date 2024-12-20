@@ -15,7 +15,7 @@ import {
   Blue,
 } from '@/pages/EditProfilePage/EditProfilePage.style';
 import ToggleButtonGroupComponent from '@/components/profile/Button/ToggleButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Props {
   register: any;
@@ -36,6 +36,12 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
       return acc;
     }, {}),
   );
+
+  useEffect(() => {
+    if (register?.parentGender?.value) {
+      setParentGender(register?.parentGender?.value);
+    }
+  }, [register?.parentGender?.value]);
 
   const handleParentGenderChange = (value: string) => {
     setParentGender(value);

@@ -8,8 +8,10 @@ import Header from '@/components/layout/Header/Header.tsx';
 import { PATH } from '@/constants/path.ts';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import CloseIcon from '@/assets/svg/cancel.svg?react';
-import ExtraImageSection from '@/components/profile/EditProfile/ExtraImageSection.tsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getParentById } from '@/api/parent/getParentById';
+import getDecodedTokenData from '@/utils/getDecodedTokenData';
+
 interface ChildInfo {
   gender: string;
   birthDate: string;
@@ -27,29 +29,37 @@ interface FormData {
   additionalPhoto: File | null;
 }
 
+// 전화번호 포맷팅 함수
+const formatPhoneNumber = (phoneNumber: string): string => {
+  if (phoneNumber.length === 11) {
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7)}`;
+  }
+  return phoneNumber;
+};
+
 const EditProfilePage = () => {
   const navigate = useNavigate();
-
-  const [formValues, setFormValues] = useState<FormData>({
-    nickname: '',
-    phoneNumber: '',
-    address: '',
-    parentGender: '',
-    parentBirthDate: '',
-    children: [],
-    friendCriteria: '',
-    introduction: '',
-    additionalPhoto: null,
-  });
+  const { parentId } = getDecodedTokenData();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const {
     register,
     handleSubmit,
     control,
+    reset,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
+      nickname: '',
+      phoneNumber: '',
+      address: '',
+      parentGender: '',
+      parentBirthDate: '',
       children: [{ gender: '', birthDate: '' }],
+      friendCriteria: '',
+      introduction: '',
+      additionalPhoto: null,
     },
   });
 
@@ -58,27 +68,52 @@ const EditProfilePage = () => {
     name: 'children',
   });
 
-  const handleInputChange = (key: keyof FormData, value: any) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getParentById(Number(parentId));
+        console.log('data', data);
 
-  const handleFileChange = (file: File | null) => {
-    setFormValues((prev) => ({
-      ...prev,
-      additionalPhoto: file,
-    }));
-  };
+        reset({
+          nickname: data.nickname,
+          phoneNumber: formatPhoneNumber(data.phoneNumber),
+          address: data.address,
+          parentGender: data.role === 'MOTHER' ? '엄마' : '아빠',
+          parentBirthDate: data.birthDate,
+          children: data.children.map((child) => ({
+            gender: child.gender,
+            birthDate: child.birthDate,
+          })),
+          friendCriteria: '가까운 거리',
+          introduction: data.introduce || '',
+          additionalPhoto: null,
+        });
+
+        setValue('parentGender', data.role === 'MOTHER' ? '엄마' : '아빠');
+        setValue('parentBirthDate', data.birthDate);
+      } catch (err) {
+        console.error('사용자 데이터를 불러오는 중 오류 발생:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [parentId, reset, setValue]);
 
   const onSubmit = (data: FormData) => {
     const finalData = {
-      ...formValues,
-      children: data.children,
+      ...data,
+      parentGender: data.parentGender === '엄마' ? 'MOTHER' : 'FATHER',
     };
-    console.log('Form Data:', finalData);
+    console.log('finalData:', finalData);
+    navigate(PATH.PROFILE(parentId));
   };
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <Container>
@@ -89,13 +124,12 @@ const EditProfilePage = () => {
         rightIcon={<CloseIcon />}
         onRightClick={() => navigate(PATH.SIGNIN)}
       />
-
       <Form onSubmit={handleSubmit(onSubmit)}>
         <ProfileImageSection
           register={register}
           errors={errors}
-          onFileChange={handleFileChange}
-          onChange={(key, value) => handleInputChange(key as keyof FormData, value)}
+          onFileChange={(file) => reset((prev) => ({ ...prev, additionalPhoto: file }))}
+          onChange={(key, value) => reset((prev) => ({ ...prev, [key]: value }))}
         />
         <FamilyInfoSection
           register={register}
@@ -103,16 +137,12 @@ const EditProfilePage = () => {
           fields={fields}
           append={append}
           remove={remove}
-          onChange={(key, value) => handleInputChange(key as keyof FormData, value)}
+          onChange={(key, value) => reset((prev) => ({ ...prev, [key]: value }))}
         />
         <AdditionalInfoSection
           register={register}
           errors={errors}
-          onChange={(key, value) => handleInputChange(key as keyof FormData, value)}
-        />
-        <ExtraImageSection
-          isEditable={true}
-          // onFileChange={handleFileChange} // 추가된 prop 전달
+          onChange={(key, value) => reset((prev) => ({ ...prev, [key]: value }))}
         />
         <SubmitButton type="submit">완료</SubmitButton>
       </Form>
