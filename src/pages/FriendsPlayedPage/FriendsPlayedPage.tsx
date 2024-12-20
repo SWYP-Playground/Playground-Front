@@ -9,7 +9,7 @@ import {
   Banner,
   FriendsContainer,
 } from '@/pages/FriendsPlayedPage/FriendsPlayedPage.style';
-import { BlankText } from '@/pages/ProfilePage/ProfilePage.style.ts';
+import { BlankText } from '@/pages/MyProfilePage/MyProfilePage.style';
 import TemperatureButton from '@/components/temperature/TemperatureButton/TemperatureButton';
 import { PATH } from '@/constants/path';
 import { getRecentFriend } from '@/api/findFriend/getRecentFriend';

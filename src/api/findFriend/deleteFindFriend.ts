@@ -1,7 +1,7 @@
 import { END_POINTS } from '@/constants/api';
 import { axiosInstance } from '@/api/axiosInstance';
 
-interface deleteFindFriendParams {
+export interface deleteFindFriendParams {
   playgroundId: string;
   findFriendId: number;
 }

@@ -15,9 +15,10 @@ import { FormValues } from '@/components/playGround/PlayGroundForm/PlayGroundFor
 
 interface ControlType {
   control: Control<FormValues, any>;
+  startTime: string[];
 }
 
-const MeetTimePicker = ({ control }: ControlType) => {
+const MeetTimePicker = ({ control, startTime }: ControlType) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -27,7 +28,7 @@ const MeetTimePicker = ({ control }: ControlType) => {
         <Controller
           name="startTime"
           control={control}
-          defaultValue={INITIAL_MEET_TIME}
+          defaultValue={startTime.length === 0 ? INITIAL_MEET_TIME : startTime}
           render={({ field: { value, onChange } }) => (
             <PlayGroundFormDropDown>
               {value.map((item) => (

@@ -1,11 +1,13 @@
 import { Flex } from '@radix-ui/themes';
-import { useNavigate, useParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
 
 import Header from '@/components/layout/Header/Header';
 import {
   CancelEngageButton,
+  DeleteButton,
   EngageButton,
   MessageButton,
+  ModifyButton,
   ParticipantsButtonFlex,
   ParticipantsSpan,
   PlayGroundRoomFlex,
@@ -21,22 +23,43 @@ import LeftIcon from '@assets/svg/left-icon.svg?react';
 import { useParticipateFindFriendMutation } from '@/hooks/api/useParticipateFindFriendMutation';
 import { PARTICIPATE_ACTION } from '@/constants/playground';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
+import { useDeleteRoomMutation } from '@/hooks/api/useDeleteRoomMutation';
+import { useEffect, useState } from 'react';
 
 const PlaygroundRoomPage = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { playgroundId } = params;
   const { FindFriendInfoData } = useFindFriendInfoQuery(Number(playgroundId));
+  const [nickname, setNickname] = useState<string | null>(null);
   const participateFindFriendMutation = useParticipateFindFriendMutation();
-  const { nickname } = getDecodedTokenData();
+  const deleteRoomMutation = useDeleteRoomMutation();
+
+  useEffect(() => {
+    const decodedTokenData = getDecodedTokenData();
+    if (decodedTokenData) {
+      setNickname(decodedTokenData.nickname);
+    } else {
+      navigate(PATH.SIGNIN);
+    }
+  }, [navigate]);
+
+  if (!FindFriendInfoData) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (!nickname) {
+    return <div>로딩 중...</div>;
+  }
+
+  const isParticipated = FindFriendInfoData?.participants.some(
+    (participant) => participant.nickname === nickname,
+  );
+  const isManager = FindFriendInfoData?.owner.nickname === nickname;
 
   const goToBackPage = () => {
     navigate(-1);
   };
-
-  const isParticipated = FindFriendInfoData.participants.some(
-    (participant) => participant.nickname === nickname,
-  );
 
   const handleParticipate = () => {
     if (playgroundId) {
@@ -47,13 +70,35 @@ const PlaygroundRoomPage = () => {
       });
     }
   };
-  
+
   const handleCancelParticipation = () => {
     if (playgroundId) {
       participateFindFriendMutation.mutate({
         playgroundId,
         findFriendId: FindFriendInfoData.findFriendId,
         action: PARTICIPATE_ACTION.CANCEL,
+      });
+    }
+  };
+
+  const handleModifyRoom = () => {
+    const findFriendId = String(FindFriendInfoData.findFriendId);
+    if (playgroundId && findFriendId) {
+      navigate({
+        pathname: PATH.CREATE_PLAYGROUND,
+        search: createSearchParams({
+          playgroundId: playgroundId,
+          findFriendId: findFriendId,
+        }).toString(),
+      });
+    }
+  };
+
+  const handleDeleteRoom = () => {
+    if (playgroundId) {
+      deleteRoomMutation.mutate({
+        playgroundId,
+        findFriendId: FindFriendInfoData.findFriendId,
       });
     }
   };
@@ -88,18 +133,32 @@ const PlaygroundRoomPage = () => {
         {FindFriendInfoData.participants.length === 0 && <div>참여 인원 없음</div>}
       </PlayGroundRoomParticipants>
       <ParticipantsButtonFlex>
-        {!isParticipated && <EngageButton onClick={handleParticipate}>참여하기</EngageButton>}
-        {isParticipated && (
+        {!isManager && (
+          <>
+            {!isParticipated && <EngageButton onClick={handleParticipate}>참여하기</EngageButton>}
+            {isParticipated && (
+              <Flex direction="column" gap="2">
+                <MessageButton
+                  onClick={() => navigate(PATH.PLAYGROUND_MESSAGE(`${params.playgroundId}`))}
+                >
+                  댓글 보기
+                </MessageButton>
+                <CancelEngageButton onClick={handleCancelParticipation}>
+                  참여하기 취소
+                </CancelEngageButton>
+              </Flex>
+            )}
+          </>
+        )}
+        {isManager && (
           <Flex direction="column" gap="2">
             <MessageButton
               onClick={() => navigate(PATH.PLAYGROUND_MESSAGE(`${params.playgroundId}`))}
             >
               댓글 보기
             </MessageButton>
-            <CancelEngageButton onClick={handleCancelParticipation}>
-              참여하기 취소
-            </CancelEngageButton>
-            {/* 나중에 작성자면 삭제하기 버튼 추가 */}
+            <ModifyButton onClick={handleModifyRoom}>수정하기</ModifyButton>
+            <DeleteButton onClick={handleDeleteRoom}>삭제하기</DeleteButton>
           </Flex>
         )}
       </ParticipantsButtonFlex>

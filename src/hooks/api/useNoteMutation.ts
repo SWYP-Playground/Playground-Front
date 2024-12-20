@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postNote } from '@/api/note/postNote';
 
-// API 명세서 보고 코드를 짠거라 제대로 작동 안할 수 있습니다. 나중에 수정 필요
 export const useNoteMutation = () => {
   const queryClient = useQueryClient();
 
@@ -11,6 +10,7 @@ export const useNoteMutation = () => {
     mutationFn: postNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['note'] });
+      toast.success('쪽지가 전송되었습니다!');
     },
     onError: (error) => {
       toast(error.message);

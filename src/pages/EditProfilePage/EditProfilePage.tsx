@@ -108,7 +108,7 @@ const EditProfilePage = () => {
       parentGender: data.parentGender === '엄마' ? 'MOTHER' : 'FATHER',
     };
     console.log('finalData:', finalData);
-    navigate(PATH.PROFILE(parentId));
+    navigate(PATH.PROFILE);
   };
 
   if (isLoading) {

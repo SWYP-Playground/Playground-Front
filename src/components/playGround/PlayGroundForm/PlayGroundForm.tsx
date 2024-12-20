@@ -17,6 +17,9 @@ import { DESCRIPTION_MAX_LENGTH } from '@/constants/playground';
 import { PlaygroundData, PlaygroundRoom } from '@/types/playground';
 import { convertFinishTime, convertMeetTime } from '@/utils/convertTime';
 import { useRegisterFindFriendMutation } from '@/hooks/api/useRegisterFindFriendMutation';
+import { useUpdateFindFriendInfoMutation } from '@/hooks/api/useUpdateFindFriendInfoMutation';
+import { parseScheduleTime } from '@/utils/parseScheduleTime';
+import { toast } from 'react-toastify';
 
 export interface FormValues {
   title: string;
@@ -26,8 +29,21 @@ export interface FormValues {
   duration: string[];
 }
 
-const PlayGroundForm = () => {
-  const registerMutation = useRegisterFindFriendMutation();
+interface PlayGroundFormProps {
+  findFriendId?: string;
+  title?: string;
+  playgroundName?: string;
+  descriptionValue?: string;
+  scheduleTime?: string;
+}
+
+const PlayGroundForm = ({
+  findFriendId,
+  title,
+  playgroundName,
+  descriptionValue,
+  scheduleTime,
+}: PlayGroundFormProps) => {
   const {
     register,
     handleSubmit,
@@ -35,11 +51,20 @@ const PlayGroundForm = () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<FormValues>({ mode: 'onChange' });
+  } = useForm<FormValues>({
+    mode: 'onChange',
+    defaultValues: {
+      title: title || '',
+      description: descriptionValue || '',
+    },
+  });
   const description = useWatch({ control, name: 'description', defaultValue: '' });
   const watchAllFields = watch();
   const isValid =
     Object.keys(errors).length === 0 && watchAllFields.title && watchAllFields.description;
+  const { formattedStartTime, durationMinute } = parseScheduleTime(scheduleTime);
+  const registerMutation = useRegisterFindFriendMutation();
+  const findFriendInfoMutation = useUpdateFindFriendInfoMutation();
 
   const onSubmit = (data: PlaygroundRoom) => {
     const playgroundName = data.playgroundName.name;
@@ -53,10 +78,24 @@ const PlayGroundForm = () => {
       description: data.description,
     };
     console.log(JSON.stringify(playgroundRoom));
-    registerMutation.mutate({
-      playgroundId: data.playgroundName.id,
-      findFriendData: playgroundRoom,
-    });
+    if (findFriendId) {
+      findFriendInfoMutation.mutate(
+        {
+          findFriendId: Number(findFriendId),
+          playgroundId: data.playgroundName.id,
+          data: playgroundRoom,
+        },
+        { onSuccess: () => toast.success('수정되었습니다!') },
+      );
+    } else {
+      registerMutation.mutate(
+        {
+          playgroundId: data.playgroundName.id,
+          findFriendData: playgroundRoom,
+        },
+        { onSuccess: () => toast.success('작성되었습니다!') },
+      );
+    }
   };
 
   return (
@@ -71,10 +110,10 @@ const PlayGroundForm = () => {
       </PlayGroundFormElement>
       <PlayGroundFormElement>
         <PlayGroundFormLabel htmlFor="playgroundName">놀이터</PlayGroundFormLabel>
-        <PlayGroundFormSearchBar setValue={setValue} />
+        <PlayGroundFormSearchBar setValue={setValue} playgroundName={playgroundName} />
       </PlayGroundFormElement>
-      <MeetTimePicker control={control} />
-      <FinishTimePicker control={control} />
+      <MeetTimePicker control={control} startTime={formattedStartTime} />
+      <FinishTimePicker control={control} duration={durationMinute} />
       <PlayGroundFormElement>
         <PlayGroundFormLabel htmlFor="description">모집 내용</PlayGroundFormLabel>
         <PlayGroundFormContentFlex>
@@ -90,7 +129,7 @@ const PlayGroundForm = () => {
         </PlayGroundFormContentFlex>
       </PlayGroundFormElement>
       <PlayGroundFormSubmitButton type="submit" disabled={!isValid}>
-        등록하기
+        {findFriendId ? '수정하기' : '등록하기'}
       </PlayGroundFormSubmitButton>
     </PlayGroundFormFlex>
   );

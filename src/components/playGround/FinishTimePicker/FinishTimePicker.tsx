@@ -15,9 +15,10 @@ import { FormValues } from '@/components/playGround/PlayGroundForm/PlayGroundFor
 
 interface ControlType {
   control: Control<FormValues, any>;
+  duration: string[];
 }
 
-const FinishTimePicker = ({ control }: ControlType) => {
+const FinishTimePicker = ({ control, duration }: ControlType) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -27,7 +28,7 @@ const FinishTimePicker = ({ control }: ControlType) => {
         <Controller
           name="duration"
           control={control}
-          defaultValue={INITIAL_FINISH_TIME}
+          defaultValue={duration.length === 0 ? INITIAL_FINISH_TIME : duration}
           render={({ field: { value, onChange } }) => (
             <PlayGroundFormDropDown>
               <DropdownButton

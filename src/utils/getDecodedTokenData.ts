@@ -1,5 +1,6 @@
-import { ACCESS_TOKEN_KEY } from '@/constants/api';
 import { jwtDecode } from 'jwt-decode';
+
+import { ACCESS_TOKEN_KEY } from '@/constants/api';
 
 interface DecodedToken {
   sub: string;

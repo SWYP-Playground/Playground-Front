@@ -9,6 +9,7 @@ export const PlayGroundRoomListFlex = styled(Flex)`
 
 export const CreatePlayGroundRoomButton = styled(Button)`
   margin-top: auto;
+  align-self: center;
   width: 90%;
   padding: 30px 0;
   font-size: 18px;

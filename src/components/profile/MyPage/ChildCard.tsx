@@ -2,14 +2,14 @@ import styled from '@emotion/styled';
 
 interface ChildCardProps {
   name: string;
-  gender: 'male' | 'female';
+  gender: 'MALE' | 'FEMALE';
 }
 
 const ChildCard = ({ name, gender }: ChildCardProps) => {
   return (
     <CardContainer>
       <Icon>
-        {gender === 'female' ? (
+        {gender === 'MALE' ? (
           <span role="img" aria-label="female">
             👧🏻
           </span>
