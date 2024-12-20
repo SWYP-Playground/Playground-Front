@@ -17,7 +17,13 @@ export const useUserSettingForm = () => {
     watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({
-    mode: 'onChange',
+    mode: 'all',
+    defaultValues: {
+      name: '',
+      currentPassword: '',
+      newPassword: '',
+      confirmNewPassword: '',
+    },
   });
 
   const newPassword = watch('newPassword');

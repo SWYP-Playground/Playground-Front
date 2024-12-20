@@ -19,6 +19,9 @@ import {
   DeleteButton,
 } from './UserSettingPage.style.ts';
 import { PATH } from '@/constants/path.ts';
+import getDecodedTokenData from '@/utils/getDecodedTokenData';
+import { getParentById } from '@/api/parent/getParentById';
+import { postUserResetPassword } from '@/api/parent/postUserResetPassword';
 
 const UserSettingPage = () => {
   const navigate = useNavigate();
@@ -28,7 +31,6 @@ const UserSettingPage = () => {
     errors,
     isSubmitting,
     isValid,
-    onSubmit,
     newPassword,
     popupState,
     handleDeleteClick,
@@ -36,19 +38,58 @@ const UserSettingPage = () => {
     handleDeleteConfirm,
   } = useUserSettingForm();
 
-  const [email, setEmail] = useState<string>('playground@naver.com');
+  const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchEmail = async () => {
-      const response = await new Promise((resolve) => {
-        setTimeout(() => resolve({ email: 'playground@naver.com' }), 1000);
-      });
-      setEmail((response as { email: string }).email);
+    const fetchUserData = async () => {
+      try {
+        setIsLoading(true);
+        const { parentId } = getDecodedTokenData();
+        if (!parentId) throw new Error('parentId가 없습니다.');
+
+        const data = await getParentById(Number(parentId));
+        setEmail(data.email);
+        setName(data.name);
+      } catch (err) {
+        console.error('사용자 데이터를 불러오는 중 오류 발생:', err);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    fetchEmail();
+    fetchUserData();
   }, []);
 
+  const handleResetPassword = async (formData: any) => {
+    let payload;
+
+    try {
+      const { parentId } = getDecodedTokenData();
+      if (!parentId) throw new Error('parentId가 없습니다.');
+
+      payload = {
+        parentId: String(parentId),
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
+        newPasswordConfirm: formData.confirmNewPassword,
+      };
+
+      console.log('비밀번호 변경 요청 데이터:', payload);
+
+      const response = await postUserResetPassword(payload);
+      console.log('서버 응답:', response);
+
+      alert('비밀번호가 성공적으로 변경되었습니다.');
+    } catch (err) {
+      console.error('비밀번호 변경 중 오류 발생:', err);
+      if (payload) {
+        console.log('비밀번호 변경 실패 시 요청 데이터:', payload);
+      }
+      alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
   const handleDeleteComplete = () => {
     navigate(PATH.ROOT);
   };
@@ -57,16 +98,23 @@ const UserSettingPage = () => {
     <Container>
       <Header title="설정" leftIcon={<LeftIcon />} onLeftClick={() => navigate(-1)} />
       <Title>회원정보</Title>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        onSubmit={handleSubmit((formData) => {
+          handleResetPassword(formData);
+        })}
+      >
         <EmailContainer>
           <Label>이메일</Label>
-          <EmailText>{email}</EmailText>
+          <EmailText>
+            {isLoading ? '로딩중' : email || '이메일 정보를 가져올 수 없습니다.'}
+          </EmailText>
         </EmailContainer>
         <InputContainer>
           <Label htmlFor="name">이름</Label>
           <Input
             id="name"
             placeholder="이름을 입력해 주세요"
+            defaultValue={name}
             {...register('name', { required: '이름을 입력해 주세요.' })}
             hasError={!!errors.name}
           />
