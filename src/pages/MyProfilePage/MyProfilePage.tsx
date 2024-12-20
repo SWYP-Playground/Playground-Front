@@ -46,6 +46,9 @@ const MyProfilePage = () => {
     return null;
   }
 
+  const singleFindFriend = MyFindFriendListData.length > 0 ? [MyFindFriendListData[0]] : [];
+  const singleRecentFriend = RecentFriendData.length > 0 ? [RecentFriendData[0]] : [];
+
   return (
     <Container>
       <Background>
@@ -57,22 +60,24 @@ const MyProfilePage = () => {
         />
         <ProfileDetails showButtons={true} parentInfo={ParentData} />
       </Background>
+
       <TitleContainer>
         <TitleText>내가 모집한 모임</TitleText>
         <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS(parentId))}>더보기</ViewMore>
       </TitleContainer>
-      {MyFindFriendListData.length > 0 ? (
-        <MyGroupsSection requireData={MyFindFriendListData} />
+      {singleFindFriend.length > 0 ? (
+        <MyGroupsSection requireData={singleFindFriend} />
       ) : (
         <BlankText>내가 모집한 모임이 없습니다.</BlankText>
       )}
+
       <TitleContainer>
         <TitleText>최근 논 친구</TitleText>
         <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED(parentId))}>더보기</ViewMore>
       </TitleContainer>
       <RecentFriendsContainer>
-        {RecentFriendData.length > 0 ? (
-          RecentFriendData.map((friend, index) => (
+        {singleRecentFriend.length > 0 ? (
+          singleRecentFriend.map((friend, index) => (
             <Card
               key={index}
               nickname={friend.nickname}
@@ -87,6 +92,7 @@ const MyProfilePage = () => {
           <BlankText>최근 논 친구가 없습니다.</BlankText>
         )}
       </RecentFriendsContainer>
+
       <ContactUsContainer>
         <TitleText>문의</TitleText>
         <ContactUsSection />
