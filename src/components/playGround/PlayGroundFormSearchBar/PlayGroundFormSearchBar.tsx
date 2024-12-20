@@ -8,6 +8,7 @@ import {
   FormSearchFlex,
   FormSearchInput,
   FormSearchInputFlex,
+  SelectButton,
   SuggestionFlex,
 } from '@/components/playGround/PlayGroundFormSearchBar/PlayGroundFormSearchBar.style';
 import { FormValues } from '@/components/playGround//PlayGroundForm/PlayGroundForm';
@@ -17,13 +18,15 @@ import ResetSearchIcon from '@/assets/svg/reset-search.svg?react';
 import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
 import { PlaygroundData } from '@/types/playground';
 import VectorIcon from '@/assets/svg/vector.svg?react';
+import CancelIcon from '@/assets/svg/cancel.svg?react';
 
 interface PlayGroundFormSearchBarProps {
   setValue: UseFormSetValue<FormValues>;
+  playgroundName?: string;
 }
 
-const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => {
-  const [inputValue, setInputValue] = useState<string>('');
+const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSearchBarProps) => {
+  const [inputValue, setInputValue] = useState<string>(playgroundName ?? '');
   const [suggestions, setSuggestions] = useState<PlaygroundData[]>([]);
   const [selectedPlayground, setSelectedPlayground] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
@@ -47,6 +50,19 @@ const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => 
     focusInput();
   };
 
+  const handleSuggestionClear = () => {
+    const initialPlayground = {
+      id: '',
+      name: '',
+      address: '',
+      latitude: '',
+      longitude: '',
+      distance: '',
+    };
+    setSelectedPlayground('');
+    setValue('playgroundName', initialPlayground);
+  };
+
   const handlePlaygroundSelect = (playground: PlaygroundData) => {
     setSelectedPlayground(playground.name);
     setInputValue(playground.name);
@@ -55,6 +71,13 @@ const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => 
 
     setValue('playgroundName', playground);
   };
+
+  useEffect(() => {
+    if (playgroundName && playgroundsData.length > 0) {
+      setValue('playgroundName', playgroundsData[0]);
+      setSelectedPlayground(playgroundsData[0].name);
+    }
+  }, []);
 
   useEffect(() => {
     if (isFocused && debouncedInputValue) {
@@ -132,7 +155,13 @@ const PlayGroundFormSearchBar = ({ setValue }: PlayGroundFormSearchBarProps) => 
         )}
       </FormSearchFlex>
 
-      {selectedPlayground && <div>선택된 놀이터 : {selectedPlayground}</div>}
+      {selectedPlayground && (
+        <SelectButton onClick={handleSuggestionClear}>
+          <VectorIcon />
+          {selectedPlayground}
+          <CancelIcon />
+        </SelectButton>
+      )}
     </>
   );
 };
