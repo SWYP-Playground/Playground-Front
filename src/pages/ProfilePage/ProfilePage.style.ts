@@ -137,3 +137,12 @@ export const RecentFriendsContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+export const BlankText = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 10px 16px;
+  text-align: start;
+  font-size: 15px;
+  color: ${(props) => props.theme.colors.black600};
+`;
