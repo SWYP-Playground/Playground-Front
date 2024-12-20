@@ -2,15 +2,17 @@ import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { patchFindFriendInfo } from '@/api/findFriend/patchFindFriendInfo';
+import { useNavigate } from 'react-router-dom';
 
-// API 명세서 보고 코드를 짠거라 제대로 작동 안할 수 있습니다. 나중에 수정 필요
 export const useUpdateFindFriendInfoMutation = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const updateFindFriendInfoMutation = useMutation({
     mutationFn: patchFindFriendInfo,
     onSuccess: (_, { findFriendId }) => {
       queryClient.invalidateQueries({ queryKey: ['findFriendInfo', findFriendId] });
+      navigate(-1);
     },
     onError: (error) => {
       toast(error.message);
