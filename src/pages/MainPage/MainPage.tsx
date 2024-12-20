@@ -11,21 +11,23 @@ import {
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path.ts';
-import { FindFriendRoomType } from '@/types/friend';
+import Card from '@/components/common/Card/Card';
+import { FindFriendRoomType, RecentFriendType } from '@/types/friend';
 import { getMainFindFriendList } from '@/api/findFriend/getMainFindFriendList';
+import { getRecentFriend } from '@/api/findFriend/getRecentFriend';
 
 const MainPage = () => {
   const navigate = useNavigate();
   const [requireData, setRequireData] = useState<FindFriendRoomType[]>([]);
+  const [recentFriends, setRecentFriends] = useState<RecentFriendType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // 모집 중인 모임
   useEffect(() => {
     const fetchFindFriendList = async () => {
       try {
         const data = await getMainFindFriendList();
-
         const recruitingData = data.filter((item) => item.recruitmentStatus === 'RECRUITING');
-
         setRequireData(recruitingData);
       } catch (error) {
         console.error('모집 중인 모임 데이터를 불러오는 중 오류 발생:', error);
@@ -35,6 +37,20 @@ const MainPage = () => {
     };
 
     fetchFindFriendList();
+  }, []);
+
+  // 새로운 친구
+  useEffect(() => {
+    const fetchRecentFriends = async () => {
+      try {
+        const data = await getRecentFriend();
+        setRecentFriends(data.data);
+      } catch (error) {
+        console.error('새로운 친구 데이터를 불러오는 중 오류 발생:', error);
+      }
+    };
+
+    fetchRecentFriends();
   }, []);
 
   if (isLoading) {
@@ -50,13 +66,22 @@ const MainPage = () => {
         <TitleText>모집 중인 모임</TitleText>
         <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS('1'))}>더보기</ViewMore>
       </TitleContainer>
-
       <MyGroupsSection requireData={requireData} />
 
       <TitleContainer>
         <TitleText>새로운 친구</TitleText>
         <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED('1'))}>더보기</ViewMore>
       </TitleContainer>
+      {recentFriends.map((friend) => (
+        <Card
+          key={friend.nickname}
+          nickname={friend.nickname}
+          status={friend.roleType}
+          address={friend.address}
+          image={friend.profileImg || ''}
+          content={friend.introduce}
+        />
+      ))}
     </Container>
   );
 };
