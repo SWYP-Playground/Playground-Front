@@ -60,3 +60,17 @@ export const SuggestionFlex = styled(Flex)`
   z-index: 10;
   cursor: pointer;
 `;
+
+export const SelectButton = styled.button`
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid ${(props) => props.theme.colors.black400};
+  border-radius: 99px;
+  padding: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  align-self: flex-start;
+  box-sizing: border-box;
+`;

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import { Container } from '@/pages/MyRecruitmentsPage/MyRecruitmentsPage.style';
-import { BlankText } from '@/pages/ProfilePage/ProfilePage.style';
+import { BlankText } from '@/pages/MyProfilePage/MyProfilePage.style';
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import { FindFriendRoomType } from '@/types/friend';
 import { getMyFindFriendList } from '@/api/findFriend/getMyFindFriendList';

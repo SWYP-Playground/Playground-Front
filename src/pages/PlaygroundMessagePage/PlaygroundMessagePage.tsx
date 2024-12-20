@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import CustomBottomSheet from '@/components/common/BottomSheet/CustomBottomSheet';
@@ -14,6 +15,7 @@ import LeftIcon from '@assets/svg/left-icon.svg?react';
 import { useAllCommentByMatchIdQuery } from '@/hooks/api/useAllCommentByMatchIdQuery';
 import { useCommentMutation } from '@/hooks/api/useCommentMutation';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
+import { PATH } from '@/constants/path';
 
 const PlaygroundMessagePage = () => {
   const navigate = useNavigate();
@@ -24,14 +26,14 @@ const PlaygroundMessagePage = () => {
   );
   const commentMutation = useCommentMutation();
   const { isOpen, open, close } = useBottomSheet();
-  const { nickname } = getDecodedTokenData();
+  const [nickname, setNickname] = useState<string | null>(null);
 
   const goToBack = () => {
     navigate(-1);
   };
 
   const handleSubmitComment = (content: string) => {
-    if (findFriendId) {
+    if (findFriendId && nickname) {
       commentMutation.mutate(
         {
           commentData: {
@@ -46,6 +48,19 @@ const PlaygroundMessagePage = () => {
       );
     }
   };
+
+  useEffect(() => {
+    const decodedTokenData = getDecodedTokenData();
+    if (decodedTokenData) {
+      setNickname(decodedTokenData.nickname);
+    } else {
+      navigate(PATH.SIGNIN);
+    }
+  }, [navigate]);
+
+  if (!nickname) {
+    return null;
+  }
 
   return (
     <PlayGroundRoomFlex>
