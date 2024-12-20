@@ -111,13 +111,14 @@ const UserSettingPage = () => {
         </EmailContainer>
         <InputContainer>
           <Label htmlFor="name">이름</Label>
-          <Input
+          {/* <Input
             id="name"
             placeholder="이름을 입력해 주세요"
             defaultValue={name}
             {...register('name', { required: '이름을 입력해 주세요.' })}
             hasError={!!errors.name}
-          />
+          /> */}
+          {isLoading ? '로딩중' : name || '이름 정보를 가져올 수 없습니다.'}
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </InputContainer>
         <InputContainer>
