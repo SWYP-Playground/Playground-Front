@@ -11,10 +11,14 @@ import {
   FindButton,
   FooterLinkContainer,
   FooterLink,
+  ServerMessageContainer,
+  ServerMessage,
 } from './FindAccountPage.style';
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import { PATH } from '@/constants/path.ts';
+import { postResetPassword } from '@/api/user/postResetPassword';
+import { useState } from 'react';
 
 interface FormData {
   email: string;
@@ -22,6 +26,8 @@ interface FormData {
 
 const FindAccountPage = () => {
   const navigate = useNavigate();
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
 
   const {
     register,
@@ -29,9 +35,15 @@ const FindAccountPage = () => {
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({ mode: 'onChange' });
 
-  const onSubmit = (data: FormData) => {
-    console.log('계정 찾기:', data);
-    setTimeout(() => {}, 1000);
+  const onSubmit = async (data: FormData) => {
+    try {
+      const response = await postResetPassword({ email: data.email });
+      setServerMessage(response.data.message);
+      setIsSuccess(true);
+    } catch (error: any) {
+      setServerMessage(error.response?.data?.message || '오류가 발생했습니다. 다시 시도해 주세요.');
+      setIsSuccess(false);
+    }
   };
 
   return (
@@ -62,6 +74,13 @@ const FindAccountPage = () => {
             {errors.email && <WarningMessage>{errors.email.message}</WarningMessage>}
           </WarningMessageContainer>
         </Label>
+        {serverMessage && (
+          <ServerMessageContainer>
+            <ServerMessage style={{ color: isSuccess ? 'green' : 'red' }}>
+              {serverMessage}
+            </ServerMessage>
+          </ServerMessageContainer>
+        )}
         <ButtonContainer>
           <FindButton type="submit" disabled={!isValid || isSubmitting}>
             찾기
