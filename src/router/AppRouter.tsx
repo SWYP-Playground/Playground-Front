@@ -113,10 +113,10 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.PROFILE(':userId'),
+          path: PATH.PROFILE,
           element: (
             <Suspense>
-              <Lazy.ProfilePage />
+              <Lazy.MyProfilePage />
             </Suspense>
           ),
         },

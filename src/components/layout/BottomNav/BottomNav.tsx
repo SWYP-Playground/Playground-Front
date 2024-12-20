@@ -51,7 +51,7 @@ const BottomNav = () => {
       label: '내정보',
       icon: <ProfileIcon width="25" height="25" />,
       iconActive: <ProfileFillIcon width="25" height="25" />,
-      path: PATH.PROFILE('22'),
+      path: PATH.PROFILE,
     },
   ];
 
