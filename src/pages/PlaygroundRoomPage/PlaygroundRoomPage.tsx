@@ -1,5 +1,5 @@
 import { Flex } from '@radix-ui/themes';
-import { useNavigate, useParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
 
 import Header from '@/components/layout/Header/Header';
 import {
@@ -24,19 +24,38 @@ import { useParticipateFindFriendMutation } from '@/hooks/api/useParticipateFind
 import { PARTICIPATE_ACTION } from '@/constants/playground';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
 import { useDeleteRoomMutation } from '@/hooks/api/useDeleteRoomMutation';
+import { useEffect, useState } from 'react';
 
 const PlaygroundRoomPage = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { playgroundId } = params;
   const { FindFriendInfoData } = useFindFriendInfoQuery(Number(playgroundId));
+  const [nickname, setNickname] = useState<string | null>(null);
   const participateFindFriendMutation = useParticipateFindFriendMutation();
   const deleteRoomMutation = useDeleteRoomMutation();
-  const { nickname } = getDecodedTokenData();
-  const isParticipated = FindFriendInfoData.participants.some(
+
+  useEffect(() => {
+    const decodedTokenData = getDecodedTokenData();
+    if (decodedTokenData) {
+      setNickname(decodedTokenData.nickname);
+    } else {
+      navigate(PATH.SIGNIN);
+    }
+  }, [navigate]);
+
+  if (!FindFriendInfoData) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (!nickname) {
+    return <div>로딩 중...</div>;
+  }
+
+  const isParticipated = FindFriendInfoData?.participants.some(
     (participant) => participant.nickname === nickname,
   );
-  const isManager = FindFriendInfoData.owner.nickname === nickname;
+  const isManager = FindFriendInfoData?.owner.nickname === nickname;
 
   const goToBackPage = () => {
     navigate(-1);
@@ -58,6 +77,19 @@ const PlaygroundRoomPage = () => {
         playgroundId,
         findFriendId: FindFriendInfoData.findFriendId,
         action: PARTICIPATE_ACTION.CANCEL,
+      });
+    }
+  };
+
+  const handleModifyRoom = () => {
+    const findFriendId = String(FindFriendInfoData.findFriendId);
+    if (playgroundId && findFriendId) {
+      navigate({
+        pathname: PATH.CREATE_PLAYGROUND,
+        search: createSearchParams({
+          playgroundId: playgroundId,
+          findFriendId: findFriendId,
+        }).toString(),
       });
     }
   };
@@ -125,7 +157,7 @@ const PlaygroundRoomPage = () => {
             >
               댓글 보기
             </MessageButton>
-            <ModifyButton>수정하기</ModifyButton>
+            <ModifyButton onClick={handleModifyRoom}>수정하기</ModifyButton>
             <DeleteButton onClick={handleDeleteRoom}>삭제하기</DeleteButton>
           </Flex>
         )}

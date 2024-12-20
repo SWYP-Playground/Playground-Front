@@ -7,6 +7,8 @@ import TextInput from '@/components/common/TextInput/TextInput';
 import { useParentQuery } from '@/hooks/api/useParentQuery';
 import { useReportMutation } from '@/hooks/api/useReportMutation';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
+import { useEffect, useState } from 'react';
+import { PATH } from '@/constants/path';
 
 const ReportFriendPage = () => {
   const navigate = useNavigate();
@@ -14,27 +16,40 @@ const ReportFriendPage = () => {
   const { userId: findFriendId } = params;
   const { ParentData } = useParentQuery(Number(findFriendId));
   const reportMutation = useReportMutation();
-  const { nickname } = getDecodedTokenData();
+  const [nickname, setNickname] = useState<string | null>(null);
 
   const goBackToPage = () => {
     navigate(-1);
   };
 
   const handleSubmitReport = (cause: string) => {
-    if (ParentData && findFriendId) {
+    if (ParentData && findFriendId && nickname) {
       reportMutation.mutate(
         {
           ReportData: {
             targetNickname: ParentData.nickname,
             findFriendId: Number(findFriendId),
             cause,
-            writtenBy: nickname, // 나중에 JWT에서 닉네임 빼야함
+            writtenBy: nickname,
           },
         },
         { onSuccess: () => navigate(-1) },
       );
     }
   };
+
+  useEffect(() => {
+    const decodedTokenData = getDecodedTokenData();
+    if (decodedTokenData) {
+      setNickname(decodedTokenData.nickname);
+    } else {
+      navigate(PATH.SIGNIN);
+    }
+  }, [navigate]);
+
+  if (!nickname) {
+    return null;
+  }
 
   return (
     <ReportFriendFlex>
