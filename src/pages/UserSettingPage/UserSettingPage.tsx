@@ -42,28 +42,8 @@ const UserSettingPage = () => {
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [email, setEmail] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        setIsLoading(true);
-        const { parentId } = getDecodedTokenData();
-        if (!parentId) throw new Error('parentId가 없습니다.');
-
-        const data = await getParentById(Number(parentId));
-        setEmail(data.email);
-        setName(data.name);
-      } catch (err) {
-        console.error('사용자 데이터를 불러오는 중 오류 발생:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserData();
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
@@ -130,16 +110,8 @@ const UserSettingPage = () => {
           handleResetPassword(formData);
         })}
       >
-      <Form
-        onSubmit={handleSubmit((formData) => {
-          handleResetPassword(formData);
-        })}
-      >
         <EmailContainer>
           <Label>이메일</Label>
-          <EmailText>
-            {isLoading ? '로딩중' : email || '이메일 정보를 가져올 수 없습니다.'}
-          </EmailText>
           <EmailText>
             {isLoading ? '로딩중' : email || '이메일 정보를 가져올 수 없습니다.'}
           </EmailText>
@@ -147,15 +119,11 @@ const UserSettingPage = () => {
         <InputContainer>
           <Label htmlFor="name">이름</Label>
           {/* <Input
-          {/* <Input
             id="name"
             placeholder="이름을 입력해 주세요"
             defaultValue={name}
-            defaultValue={name}
             {...register('name', { required: '이름을 입력해 주세요.' })}
             hasError={!!errors.name}
-          /> */}
-          {isLoading ? '로딩중' : name || '이름 정보를 가져올 수 없습니다.'}
           /> */}
           {isLoading ? '로딩중' : name || '이름 정보를 가져올 수 없습니다.'}
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
