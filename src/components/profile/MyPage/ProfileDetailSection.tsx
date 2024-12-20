@@ -27,7 +27,7 @@ interface ProfileDetailsProps {
     nickname: string;
     address: string;
     introduce: string;
-    profileImg?: string;
+    profileImg?: string | undefined;
     role: string;
   };
   showButtons?: boolean;

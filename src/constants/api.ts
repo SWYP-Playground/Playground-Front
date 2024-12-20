@@ -29,6 +29,7 @@ export const END_POINTS = {
   NOTE: (noteId: number) => `/note?id=${noteId}`,
   COMMENT_MATCH: (matchId: number) => `/comment/match?id=${matchId}`,
   COMMENT: (commentId: number) => `/comment?id=${commentId}`,
+  USER_RESET_PASSWORD: (parentId: string) => `/auth/password/${parentId}`,
   RESET_PASSWORD: (email: string) => `/auth/reset-password?email=${email}`,
   FIND_FRIEND: (playgroundId: string, findFriendId: number) =>
     `/find-friend/${playgroundId}/${findFriendId}`,
