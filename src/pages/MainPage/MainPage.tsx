@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Header from '@/components/layout/Header/Header.tsx';
 import {
   Container,
@@ -11,42 +12,50 @@ import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path.ts';
 import Card from '@/components/common/Card/Card';
-import { useCardData } from '@/hooks/mypage/useCardData';
-import { FindFriendRoomType } from '@/types/friend';
-
-const requireData: FindFriendRoomType[] = [
-  {
-    findFriendId: 3,
-    playgroundName: '서울 식물원 숲 문화학교 앞 놀이터',
-    title: '문화학교 앞 놀이터에서 놀사람 구해요',
-    description: '같이 놀 사람 구합니다',
-    scheduleTime: '2024. 12. 15 일요일 오후 5:00~오후 6:00',
-    recruitmentStatus: 'COMPLETE',
-    currentCount: 1,
-  },
-  {
-    findFriendId: 2,
-    playgroundName: '서울숲 유아숲 체험원',
-    title: '서울숲에서 놀사람 구합니다',
-    description: '구합니다 놀 사람',
-    scheduleTime: '2024. 12. 15 일요일 오후 10:08~오전 12:08',
-    recruitmentStatus: 'COMPLETE',
-    currentCount: 2,
-  },
-  {
-    findFriendId: 1,
-    playgroundName: '서리풀 상상나라 숲속학교 놀이터',
-    title: '바다육지 할 분~~~~~',
-    description: '오늘 학원 쨌습니다.',
-    scheduleTime: '2024. 12. 10 화요일 오후 5:30~오후 6:00',
-    recruitmentStatus: 'COMPLETE',
-    currentCount: 1,
-  },
-];
+import { FindFriendRoomType, RecentFriendType } from '@/types/friend';
+import { getMainFindFriendList } from '@/api/findFriend/getMainFindFriendList';
+import { getRecentFriend } from '@/api/findFriend/getRecentFriend';
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const cardData = useCardData();
+  const [requireData, setRequireData] = useState<FindFriendRoomType[]>([]);
+  const [recentFriends, setRecentFriends] = useState<RecentFriendType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 모집 중인 모임
+  useEffect(() => {
+    const fetchFindFriendList = async () => {
+      try {
+        const data = await getMainFindFriendList();
+        const recruitingData = data.filter((item) => item.recruitmentStatus === 'RECRUITING');
+        setRequireData(recruitingData);
+      } catch (error) {
+        console.error('모집 중인 모임 데이터를 불러오는 중 오류 발생:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFindFriendList();
+  }, []);
+
+  // 새로운 친구
+  useEffect(() => {
+    const fetchRecentFriends = async () => {
+      try {
+        const data = await getRecentFriend();
+        setRecentFriends(data.data);
+      } catch (error) {
+        console.error('새로운 친구 데이터를 불러오는 중 오류 발생:', error);
+      }
+    };
+
+    fetchRecentFriends();
+  }, []);
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <Container>
@@ -63,13 +72,14 @@ const MainPage = () => {
         <TitleText>새로운 친구</TitleText>
         <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED('1'))}>더보기</ViewMore>
       </TitleContainer>
-      {cardData.map((item) => (
+      {recentFriends.map((friend) => (
         <Card
-          nickname={item.nickname}
-          status={item.roleType}
-          address={item.address}
-          image={item.image}
-          content={item.introduce}
+          key={friend.nickname}
+          nickname={friend.nickname}
+          status={friend.roleType}
+          address={friend.address}
+          image={friend.profileImg || ''}
+          content={friend.introduce}
         />
       ))}
     </Container>

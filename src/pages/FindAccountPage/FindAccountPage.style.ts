@@ -99,3 +99,12 @@ export const FooterLink = styled(Link)`
     text-decoration: underline;
   }
 `;
+
+export const ServerMessageContainer = styled.div`
+  display: flex;
+`;
+
+export const ServerMessage = styled.p`
+  font-size: 14px;
+  padding: 6px;
+`;

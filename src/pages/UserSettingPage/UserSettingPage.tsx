@@ -22,6 +22,7 @@ import { PATH } from '@/constants/path.ts';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
 import { getParentById } from '@/api/parent/getParentById';
 import { postUserResetPassword } from '@/api/parent/postUserResetPassword';
+import { deleteParent } from '@/api/parent/deleteParent';
 
 const UserSettingPage = () => {
   const navigate = useNavigate();
@@ -90,7 +91,13 @@ const UserSettingPage = () => {
       alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
     }
   };
-  const handleDeleteComplete = () => {
+
+  const handleDeleteComplete = async () => {
+    const { parentId } = getDecodedTokenData();
+    if (!parentId) throw new Error('parentId가 없습니다.');
+
+    await deleteParent({ parentId: Number(parentId) });
+
     navigate(PATH.ROOT);
   };
 
