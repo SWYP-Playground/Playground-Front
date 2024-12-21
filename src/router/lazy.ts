@@ -53,6 +53,10 @@ export const MyRecruitmentsPage = lazy(
   () => import('@/pages/MyRecruitmentsPage/MyRecruitmentsPage'),
 );
 
+export const ActiveRecruitmentsPage = lazy(
+  () => import('@/pages/ActiveRecruitmentsPage/ActiveRecruitmentsPage'),
+);
+
 export const FreindRecommendedPage = lazy(
   () => import('@/pages/FriendRecommendedPage/FriendRecommendedPage'),
 );

@@ -20,6 +20,7 @@ export const PATH = {
   FRIENDS_PLAYED: (userId: string) => `/friends-played/${userId}`,
   REPORT_FRIEND: (userId: string) => `/report-friend/${userId}`,
   MY_RECRUITMENTS: (userId: string) => `/my-recruitments/${userId}`,
+  ACTIVE_RECRUITMENTS: (userId: string) => `/active-recruitments/${userId}`,
   FRIEND_RECOMMENDED: (userId: string) => `/friend-recommended/${userId}`,
   USER_SETTING: (userId: string) => `/user-setting/${userId}`,
   PROFILE_INFO: (userId: string) => `/profile-info/${userId}`,

@@ -65,7 +65,7 @@ const MainPage = () => {
 
       <TitleContainer>
         <TitleText>모집 중인 모임</TitleText>
-        <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS('1'))}>더보기</ViewMore>
+        <ViewMore onClick={() => navigate(PATH.ACTIVE_RECRUITMENTS('1'))}>더보기</ViewMore>
       </TitleContainer>
       {requireData.length > 0 ? (
         <MyGroupsSection requireData={requireData} />
