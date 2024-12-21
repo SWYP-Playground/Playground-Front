@@ -6,7 +6,6 @@ import Header from '@/components/layout/Header/Header';
 import TemperatureModal from '@/components/temperature/TemperatureModal/TemperatureModal';
 import {
   FriendsPlayedFlex,
-  Banner,
   FriendsContainer,
 } from '@/pages/FriendsPlayedPage/FriendsPlayedPage.style';
 import { BlankText } from '@/pages/MyProfilePage/MyProfilePage.style';
@@ -61,7 +60,6 @@ const FriendsPlayedPage = () => {
   return (
     <FriendsPlayedFlex>
       <Header title="최근 논 친구" leftIcon={<LeftIcon />} onLeftClick={goBackToPage} />
-      <Banner />
 
       {isLoading ? (
         <BlankText>데이터를 불러오는 중입니다...</BlankText>

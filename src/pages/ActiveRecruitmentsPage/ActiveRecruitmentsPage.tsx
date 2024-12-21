@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
-import { Container } from '@/pages/MyRecruitmentsPage/MyRecruitmentsPage.style';
+import { Container } from '@/pages/ActiveRecruitmentsPage/ActiveRecruitmentsPage.style';
 import { BlankText } from '@/pages/MyProfilePage/MyProfilePage.style';
 import RequirementRoom from '@/components/common/RequirementRoom/RequirementRoom';
 import { FindFriendRoomType } from '@/types/friend';
-import { getMyFindFriendList } from '@/api/findFriend/getMyFindFriendList';
+import { getMainFindFriendList } from '@/api/findFriend/getMainFindFriendList';
 import { PATH } from '@/constants/path';
 
-const MyRecruitmentsPage = () => {
+const ActiveRecruitmentsPage = () => {
   const navigate = useNavigate();
 
   const [requireData, setRequireData] = useState<FindFriendRoomType[]>([]);
@@ -21,35 +20,24 @@ const MyRecruitmentsPage = () => {
   };
 
   useEffect(() => {
-    const fetchMyRecruitments = async () => {
+    const fetchFindFriendList = async () => {
       try {
-        setIsLoading(true);
-        const response = await getMyFindFriendList();
-
-        setRequireData(
-          response.data.map((item) => ({
-            findFriendId: item.findFriendId,
-            playgroundName: item.playgroundName,
-            title: item.title,
-            description: item.description,
-            scheduleTime: item.scheduleTime,
-            recruitmentStatus: item.recruitmentStatus,
-            currentCount: item.currentCount,
-          })),
-        );
-      } catch (err) {
-        console.error('내가 모집한 모임 데이터를 불러오는 중 오류 발생:', err);
+        const data = await getMainFindFriendList();
+        const recruitingData = data.filter((item) => item.recruitmentStatus === 'RECRUITING');
+        setRequireData(recruitingData);
+      } catch (error) {
+        console.error('모집 중인 모임 데이터를 불러오는 중 오류 발생:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchMyRecruitments();
+    fetchFindFriendList();
   }, []);
 
   return (
     <Container>
-      <Header title="내가 모집한 모임" leftIcon={<LeftIcon />} onLeftClick={() => navigate(-1)} />
+      <Header title="모집 중인 모임" leftIcon={<LeftIcon />} onLeftClick={() => navigate(-1)} />
       {isLoading ? (
         <BlankText>데이터를 불러오는 중입니다...</BlankText>
       ) : requireData.length > 0 ? (
@@ -66,10 +54,10 @@ const MyRecruitmentsPage = () => {
           />
         ))
       ) : (
-        <BlankText>내가 모집한 모임이 없습니다.</BlankText>
+        <BlankText>모집 중인 모임이 없습니다.</BlankText>
       )}
     </Container>
   );
 };
 
-export default MyRecruitmentsPage;
+export default ActiveRecruitmentsPage;

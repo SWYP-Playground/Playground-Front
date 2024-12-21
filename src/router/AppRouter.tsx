@@ -177,6 +177,14 @@ const AppRouter = () => {
           ),
         },
         {
+          path: PATH.ACTIVE_RECRUITMENTS(':userId'),
+          element: (
+            <Suspense>
+              <Lazy.ActiveRecruitmentsPage />
+            </Suspense>
+          ),
+        },
+        {
           path: PATH.FRIEND_RECOMMENDED(':userId'),
           element: (
             <Suspense>
