@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Dialog, Flex, Skeleton } from '@radix-ui/themes';
+import { Dialog, Flex } from '@radix-ui/themes';
 
 import {
   CompleteButton,
@@ -16,6 +16,9 @@ import { PATH } from '@/constants/path';
 import { convertTemp } from '@/utils/convertTemp';
 import { TemperatureType } from '@/types/temperature';
 import { postLeaveMannerTemp } from '@/api/findFriend/postLeaveMannerTemp';
+import Sad from '@/assets/png/sad.png';
+import Good from '@/assets/png/good.png';
+import Again from '@/assets/png/again.png';
 
 interface TemperatureModalProps {
   friendId: string;
@@ -69,19 +72,19 @@ const TemperatureModal = ({ friendId, nickname, children }: TemperatureModalProp
           >
             <RadioGroupItem value="sad" id="sad">
               <Flex direction="column" align="center" gap="2">
-                <Skeleton width="48px" height="48px" />
+                <img src={Sad} width="48px" height="48px" />
                 <span>아쉬워요</span>
               </Flex>
             </RadioGroupItem>
             <RadioGroupItem value="good" id="good">
               <Flex direction="column" align="center" gap="2">
-                <Skeleton width="48px" height="48px" />
+                <img src={Good} width="48px" height="48px" />
                 <span>좋아요</span>
               </Flex>
             </RadioGroupItem>
             <RadioGroupItem value="again" id="again">
               <Flex direction="column" align="center" gap="2">
-                <Skeleton width="48px" height="48px" />
+                <img src={Again} width="48px" height="48px" />
                 <span>또 만나요</span>
               </Flex>
             </RadioGroupItem>
