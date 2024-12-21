@@ -14,7 +14,6 @@ import {
 } from '@/pages/MyProfilePage/MyProfilePage.style';
 import { PATH } from '@/constants/path';
 import ProfileDetails from '@/components/profile/MyPage/ProfileDetailSection.tsx';
-import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import ContactUsSection from '@/components/profile/MyPage/ContactUsSection.tsx';
 import Card from '@/components/common/Card/Card.tsx';
 import SettingButton from '@/components/profile/Button/SettingButton.tsx';
@@ -22,6 +21,7 @@ import getDecodedTokenData from '@/utils/getDecodedTokenData';
 import { useParentQuery } from '@/hooks/api/useParentQuery';
 import { useMyFindFriendListQuery } from '@/hooks/api/useMyFindFriendListQuery';
 import { useRecentFriendQuery } from '@/hooks/api/useRecentFriendQuery';
+import RequirementRoom from '@/components/common/RequirementRoom/RequirementRoom.tsx';
 import { useEffect, useState } from 'react';
 
 const MyProfilePage = () => {
@@ -49,6 +49,10 @@ const MyProfilePage = () => {
   const singleFindFriend = MyFindFriendListData.length > 0 ? [MyFindFriendListData[0]] : [];
   const singleRecentFriend = RecentFriendData.length > 0 ? [RecentFriendData[0]] : [];
 
+  const goToPlayGroundRoom = (playgroundId: string) => () => {
+    navigate(PATH.PLAYGROUND_ROOM(playgroundId));
+  };
+
   return (
     <Container>
       <Background>
@@ -66,7 +70,18 @@ const MyProfilePage = () => {
         <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS(parentId))}>더보기</ViewMore>
       </TitleContainer>
       {singleFindFriend.length > 0 ? (
-        <MyGroupsSection requireData={singleFindFriend} />
+        singleFindFriend.map((item) => (
+          <RequirementRoom
+            key={item.findFriendId}
+            onClick={goToPlayGroundRoom(String(item.findFriendId))}
+            title={item.title}
+            description={item.description}
+            status={item.recruitmentStatus}
+            currentCount={item.currentCount}
+            playTime={item.scheduleTime}
+            playgroundName={item.playgroundName}
+          />
+        ))
       ) : (
         <BlankText>내가 모집한 모임이 없습니다.</BlankText>
       )}
@@ -85,7 +100,7 @@ const MyProfilePage = () => {
               address={friend.address}
               image={friend.profileImg}
               content={friend.introduce}
-              onClick={() => navigate(PATH.DIRECT_MESSAGE)}
+              onClick={() => navigate(PATH.FRIENDS_PLAYED(parentId))}
             />
           ))
         ) : (

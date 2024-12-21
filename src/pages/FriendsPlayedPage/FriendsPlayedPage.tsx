@@ -6,7 +6,6 @@ import Header from '@/components/layout/Header/Header';
 import TemperatureModal from '@/components/temperature/TemperatureModal/TemperatureModal';
 import {
   FriendsPlayedFlex,
-  Banner,
   FriendsContainer,
 } from '@/pages/FriendsPlayedPage/FriendsPlayedPage.style';
 import { BlankText } from '@/pages/MyProfilePage/MyProfilePage.style';
