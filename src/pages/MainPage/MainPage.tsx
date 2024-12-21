@@ -7,6 +7,7 @@ import {
   TitleContainer,
   TitleText,
   ViewMore,
+  BlankText,
 } from '@/pages/MainPage/MainPage.style.ts';
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import { useNavigate } from 'react-router-dom';
@@ -66,22 +67,30 @@ const MainPage = () => {
         <TitleText>모집 중인 모임</TitleText>
         <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS('1'))}>더보기</ViewMore>
       </TitleContainer>
-      <MyGroupsSection requireData={requireData} />
+      {requireData.length > 0 ? (
+        <MyGroupsSection requireData={requireData} />
+      ) : (
+        <BlankText>모집 중인 모임이 없습니다.</BlankText>
+      )}
 
       <TitleContainer>
         <TitleText>새로운 친구</TitleText>
         <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED('1'))}>더보기</ViewMore>
       </TitleContainer>
-      {recentFriends.map((friend) => (
-        <Card
-          key={friend.nickname}
-          nickname={friend.nickname}
-          status={friend.roleType}
-          address={friend.address}
-          image={friend.profileImg || ''}
-          content={friend.introduce}
-        />
-      ))}
+      {recentFriends.length > 0 ? (
+        recentFriends.map((friend) => (
+          <Card
+            key={friend.nickname}
+            nickname={friend.nickname}
+            status={friend.roleType}
+            address={friend.address}
+            image={friend.profileImg || ''}
+            content={friend.introduce}
+          />
+        ))
+      ) : (
+        <BlankText>새로운 친구가 없습니다.</BlankText>
+      )}
     </Container>
   );
 };
