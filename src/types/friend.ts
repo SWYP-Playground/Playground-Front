@@ -13,6 +13,7 @@ export interface FindFriendData {
 }
 
 export interface Participants {
+  id: number;
   nickname: string;
   profileImg: string;
 }
