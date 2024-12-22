@@ -28,10 +28,6 @@ const MyProfilePage = () => {
   const navigate = useNavigate();
   const [parentId, setParentId] = useState<string | null>(null);
 
-  const { ParentData } = useParentQuery(Number(parentId));
-  const { MyFindFriendListData } = useMyFindFriendListQuery();
-  const { RecentFriendData } = useRecentFriendQuery();
-
   useEffect(() => {
     try {
       const decodedTokenData = getDecodedTokenData();
@@ -41,6 +37,10 @@ const MyProfilePage = () => {
       navigate(PATH.SIGNIN);
     }
   }, [navigate]);
+
+  const { ParentData } = useParentQuery(Number(parentId));
+  const { MyFindFriendListData } = useMyFindFriendListQuery();
+  const { RecentFriendData } = useRecentFriendQuery();
 
   if (!parentId || !ParentData) {
     return null;
