@@ -23,6 +23,19 @@ const ProfileInfoPage = () => {
   const noteMutation = useNoteMutation();
   const [nickname, setNickname] = useState<string | null>(null);
 
+  useEffect(() => {
+    const decodedTokenData = getDecodedTokenData();
+    if (decodedTokenData) {
+      setNickname(decodedTokenData.nickname);
+    } else {
+      navigate(PATH.SIGNIN);
+    }
+  }, [navigate]);
+
+  if (!nickname) {
+    return null;
+  }
+
   if (!ParentData) {
     return null;
   }
@@ -43,19 +56,6 @@ const ProfileInfoPage = () => {
       );
     }
   };
-
-  useEffect(() => {
-    const decodedTokenData = getDecodedTokenData();
-    if (decodedTokenData) {
-      setNickname(decodedTokenData.nickname);
-    } else {
-      navigate(PATH.SIGNIN);
-    }
-  }, [navigate]);
-
-  if (!nickname) {
-    return null;
-  }
 
   return (
     <Container>
