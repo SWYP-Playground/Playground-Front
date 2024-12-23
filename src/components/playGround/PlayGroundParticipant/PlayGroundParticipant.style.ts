@@ -4,6 +4,7 @@ import { Flex } from '@radix-ui/themes';
 export const PlayGroundParticipantFlex = styled(Flex)`
   align-items: center;
   gap: 12px;
+  cursor: pointer;
 `;
 
 export const PlayGroundParticipantSpan = styled.span`

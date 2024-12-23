@@ -15,6 +15,7 @@ export interface ParentData {
 }
 
 export interface Owner {
+  id: number;
   nickname: string;
   role: ParentRoleType;
   address: string;

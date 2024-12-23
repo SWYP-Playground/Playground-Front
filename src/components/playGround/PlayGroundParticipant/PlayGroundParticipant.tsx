@@ -7,11 +7,12 @@ import { Avatar } from '@radix-ui/themes';
 interface PlayGroundParticipantProps {
   image: string;
   nickname: string;
+  onClick?: () => void;
 }
 
-const PlayGroundParticipant = ({ image, nickname }: PlayGroundParticipantProps) => {
+const PlayGroundParticipant = ({ image, nickname, onClick }: PlayGroundParticipantProps) => {
   return (
-    <PlayGroundParticipantFlex>
+    <PlayGroundParticipantFlex onClick={onClick}>
       <Avatar src={image} fallback="A" radius="full" size="4" />
       <PlayGroundParticipantSpan>{nickname}</PlayGroundParticipantSpan>
     </PlayGroundParticipantFlex>

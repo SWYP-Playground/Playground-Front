@@ -16,6 +16,7 @@ export const CardMain = styled(Flex)`
   padding: 20px;
   flex-direction: column;
   gap: 11px;
+  cursor: pointer;
 `;
 
 export const CardHeader = styled(Flex)`

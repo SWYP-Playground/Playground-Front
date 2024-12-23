@@ -24,7 +24,9 @@ interface PlayGroundMapProps {
 const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
   useKakaoLoader();
   const [centerUpdateAllowed, setCenterUpdateAllowed] = useState(true);
-  const [center, setCenter] = useState<CenterType>(MAP_DEFAULT_CENTER);
+  const [currentPosition, setCurrentPosition] = useState<CenterType>(MAP_DEFAULT_CENTER);
+  const [mapCenter, setMapCenter] = useState<CenterType>(MAP_DEFAULT_CENTER);
+  const [info, setInfo] = useState<string>('');
   const mapRef = useRef<kakao.maps.Map>(null);
 
   const { coords, error: locationError } = useLocation({
@@ -39,7 +41,8 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
 
     const newCenter = new kakao.maps.LatLng(coords.latitude, coords.longitude);
     mapRef.current.setCenter(newCenter);
-    setCenter({ lat: coords.latitude, lng: coords.longitude });
+    setMapCenter({ lat: coords.latitude, lng: coords.longitude });
+    setCurrentPosition({ lat: coords.latitude, lng: coords.longitude });
     setCenterUpdateAllowed(true);
   }, [coords.latitude, coords.longitude]);
 
@@ -63,22 +66,39 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
   useEffect(() => {
     if (coords.latitude && coords.longitude) {
       const distance = Math.sqrt(
-        Math.pow(coords.latitude - center.lat, 2) + Math.pow(coords.longitude - center.lng, 2),
+        Math.pow(coords.latitude - currentPosition.lat, 2) +
+          Math.pow(coords.longitude - currentPosition.lng, 2),
       );
 
       if (distance > 0.001 && centerUpdateAllowed) {
         // 0.001 정도는 미세한 이동으로 간주
-        setCenter({ lat: coords.latitude, lng: coords.longitude });
+        setCurrentPosition({ lat: coords.latitude, lng: coords.longitude });
       }
     }
-  }, [coords.latitude, coords.longitude, center, centerUpdateAllowed]);
+  }, [coords.latitude, coords.longitude, currentPosition, centerUpdateAllowed]);
+
+  useEffect(() => {
+    if (playgroundsData && playgroundsData.length > 0) {
+      const firstPlayground = playgroundsData[0];
+      const newCenter = {
+        lat: Number(firstPlayground.latitude),
+        lng: Number(firstPlayground.longitude),
+      };
+      setMapCenter(newCenter);
+
+      if (mapRef.current) {
+        const kakaoCenter = new kakao.maps.LatLng(newCenter.lat, newCenter.lng);
+        mapRef.current.setCenter(kakaoCenter);
+      }
+    }
+  }, [playgroundsData]);
 
   console.log(locationError);
 
   return (
     <PlayGroundMapDiv>
       <Map
-        center={center}
+        center={mapCenter}
         style={{
           width: '100%',
           height: '100%',
@@ -89,7 +109,7 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
         ref={mapRef}
       >
         <MapMarker
-          position={center}
+          position={currentPosition}
           title="현재 위치"
           image={{
             src: playerMarkerUrl,
@@ -109,6 +129,7 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
           <MarkerClusterer averageCenter={true} minLevel={10}>
             {playgroundsData.map((playground) => (
               <MapMarker
+                key={playground.id}
                 position={{ lat: Number(playground.latitude), lng: Number(playground.longitude) }}
                 title="놀이터 위치"
                 image={{
@@ -118,7 +139,12 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
                     height: 60,
                   },
                 }}
-              />
+                onClick={() => setInfo(playground.name)}
+              >
+                {info && info === playground.name && (
+                  <div style={{ color: '#000' }}>{playground.name}</div>
+                )}
+              </MapMarker>
             ))}
           </MarkerClusterer>
         )}

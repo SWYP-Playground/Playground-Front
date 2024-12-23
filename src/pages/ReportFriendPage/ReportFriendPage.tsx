@@ -18,6 +18,19 @@ const ReportFriendPage = () => {
   const reportMutation = useReportMutation();
   const [nickname, setNickname] = useState<string | null>(null);
 
+  useEffect(() => {
+    const decodedTokenData = getDecodedTokenData();
+    if (decodedTokenData) {
+      setNickname(decodedTokenData.nickname);
+    } else {
+      navigate(PATH.SIGNIN);
+    }
+  }, [navigate]);
+
+  if (!nickname) {
+    return null;
+  }
+
   const goBackToPage = () => {
     navigate(-1);
   };
@@ -37,19 +50,6 @@ const ReportFriendPage = () => {
       );
     }
   };
-
-  useEffect(() => {
-    const decodedTokenData = getDecodedTokenData();
-    if (decodedTokenData) {
-      setNickname(decodedTokenData.nickname);
-    } else {
-      navigate(PATH.SIGNIN);
-    }
-  }, [navigate]);
-
-  if (!nickname) {
-    return null;
-  }
 
   return (
     <ReportFriendFlex>

@@ -25,12 +25,14 @@ import { PARTICIPATE_ACTION } from '@/constants/playground';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
 import { useDeleteRoomMutation } from '@/hooks/api/useDeleteRoomMutation';
 import { useEffect, useState } from 'react';
+import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
 
 const PlaygroundRoomPage = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { playgroundId } = params;
   const { FindFriendInfoData } = useFindFriendInfoQuery(Number(playgroundId));
+  const { playgroundsData } = usePlaygroundsQuery(String(FindFriendInfoData?.playgroundName));
   const [nickname, setNickname] = useState<string | null>(null);
   const participateFindFriendMutation = useParticipateFindFriendMutation();
   const deleteRoomMutation = useDeleteRoomMutation();
@@ -110,7 +112,7 @@ const PlaygroundRoomPage = () => {
         leftIcon={<LeftIcon />}
         onLeftClick={goToBackPage}
       />
-      <PlayGroundMap />
+      <PlayGroundMap playgroundsData={playgroundsData} />
       <PlayGroundRoomContent
         status={FindFriendInfoData.recruitmentStatus}
         title={FindFriendInfoData.title}
@@ -119,6 +121,7 @@ const PlaygroundRoomPage = () => {
         playTime={FindFriendInfoData.scheduleTime}
       />
       <Card
+        onClick={() => navigate(PATH.PROFILE_INFO(String(FindFriendInfoData.owner.id)))}
         nickname={FindFriendInfoData.owner.nickname}
         status={FindFriendInfoData.owner.role}
         address={FindFriendInfoData.owner.address}
@@ -128,7 +131,11 @@ const PlaygroundRoomPage = () => {
         <ParticipantsSpan>현재 참여 인원</ParticipantsSpan>
         {FindFriendInfoData.participants.length > 0 &&
           FindFriendInfoData.participants.map((item) => (
-            <PlayGroundParticipant image={item.profileImg} nickname={item.nickname} />
+            <PlayGroundParticipant
+              image={item.profileImg}
+              nickname={item.nickname}
+              onClick={() => navigate(PATH.PROFILE_INFO(String(item.id)))}
+            />
           ))}
         {FindFriendInfoData.participants.length === 0 && <div>참여 인원 없음</div>}
       </PlayGroundRoomParticipants>

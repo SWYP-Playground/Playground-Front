@@ -28,6 +28,19 @@ const PlaygroundMessagePage = () => {
   const { isOpen, open, close } = useBottomSheet();
   const [nickname, setNickname] = useState<string | null>(null);
 
+  useEffect(() => {
+    const decodedTokenData = getDecodedTokenData();
+    if (decodedTokenData) {
+      setNickname(decodedTokenData.nickname);
+    } else {
+      navigate(PATH.SIGNIN);
+    }
+  }, [navigate]);
+
+  if (!nickname) {
+    return null;
+  }
+
   const goToBack = () => {
     navigate(-1);
   };
@@ -48,19 +61,6 @@ const PlaygroundMessagePage = () => {
       );
     }
   };
-
-  useEffect(() => {
-    const decodedTokenData = getDecodedTokenData();
-    if (decodedTokenData) {
-      setNickname(decodedTokenData.nickname);
-    } else {
-      navigate(PATH.SIGNIN);
-    }
-  }, [navigate]);
-
-  if (!nickname) {
-    return null;
-  }
 
   return (
     <PlayGroundRoomFlex>
