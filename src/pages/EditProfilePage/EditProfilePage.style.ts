@@ -227,9 +227,10 @@ export const SearchIconWrapper = styled.div`
 `;
 
 export const SearchIcon = styled(Search)`
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
+  margin-bottom: 10px;
 `;
 
 export const HorizonLine = styled.div`
