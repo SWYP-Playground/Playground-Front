@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AddressSearchModal from './AddressSearchModal';
 import {
   InputContainer,
   Label,
@@ -11,8 +12,8 @@ import {
   DuplicateContainer,
   HintMessage,
   ErrorMessage,
-  SearchIcon,
   SearchIconWrapper,
+  SearchIcon,
   HorizonLine,
   ComponentContainer,
   Blue,
@@ -35,6 +36,8 @@ const ProfileImageSection = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
   const [isPhoneChecked, setIsPhoneChecked] = useState(false);
+  const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
+  const [address, setAddress] = useState('');
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -52,6 +55,13 @@ const ProfileImageSection = ({
   const checkPhoneDuplicate = () => {
     console.log('휴대폰 번호 중복 확인');
     setIsPhoneChecked(true);
+  };
+
+  const handleAddressSelection = (data: any) => {
+    const placeName = data.buildingName || data.address;
+    setAddress(placeName);
+    onChange('address', placeName);
+    setIsPostcodeVisible(false);
   };
 
   return (
@@ -146,16 +156,25 @@ const ProfileImageSection = ({
         <DuplicateContainer>
           <Input
             id="address"
+            value={address}
             placeholder="주소를 검색해 주세요"
             {...register('address')}
-            onChange={(e) => onChange('address', e.target.value)}
+            disabled
           />
-          <SearchIconWrapper>
+          <SearchIconWrapper onClick={() => setIsPostcodeVisible(true)}>
             <SearchIcon />
           </SearchIconWrapper>
         </DuplicateContainer>
         {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
       </InputContainer>
+
+      {isPostcodeVisible && (
+        <AddressSearchModal
+          onComplete={handleAddressSelection}
+          onClose={() => setIsPostcodeVisible(false)}
+        />
+      )}
+
       <HorizonLine />
     </ComponentContainer>
   );
