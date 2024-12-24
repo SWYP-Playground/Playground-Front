@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Button } from '@radix-ui/themes';
+import LogoVertical from '@/assets/svg/logo-horizon.svg';
 
 interface SignUpCompletePopupProps {
   onClose: () => void;
@@ -9,7 +10,7 @@ const SignUpCompletePopup = ({ onClose }: SignUpCompletePopupProps) => {
   return (
     <PopupContainer>
       <PopupContent>
-        <Logo src="/src/assets/svg/logo-vertical.svg" alt="Playground Logo" />
+        <Logo src={LogoVertical} alt="Playground Logo" />
         <Title>가입 완료</Title>
         <Description>
           프로필을 작성하고

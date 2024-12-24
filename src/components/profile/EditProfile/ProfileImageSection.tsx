@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AddressSearchModal from './AddressSearchModal';
+import AddressSearchModal from '@/components/profile/EditProfile/AddressSearchModal';
 import {
   InputContainer,
   Label,
@@ -58,7 +58,7 @@ const ProfileImageSection = ({
   };
 
   const handleAddressSelection = (data: any) => {
-    const placeName = data.buildingName || data.address;
+    const placeName = data.address;
     setAddress(placeName);
     onChange('address', placeName);
     setIsPostcodeVisible(false);
