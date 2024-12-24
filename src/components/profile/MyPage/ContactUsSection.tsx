@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
+import { useLogOutMutation } from '@/hooks/api/useLogOutMutation';
 
 const ContactUs = () => {
+  const logOutMutation = useLogOutMutation();
+
   const handleContactClick = () => {
     window.open(
       'https://docs.google.com/forms/d/e/1FAIpQLSc2_iMdxDubVh2ACwSP5URQUVhLZQlqDeTvuGfoDALv-2DXNA/viewform',
@@ -8,7 +11,16 @@ const ContactUs = () => {
     );
   };
 
-  return <ContactUsButton onClick={handleContactClick}>문의하기</ContactUsButton>;
+  const handleLogoutClick = () => {
+    logOutMutation.mutate();
+  };
+
+  return (
+    <>
+      <ContactUsButton onClick={handleContactClick}>문의하기</ContactUsButton>
+      <ContactUsButton onClick={handleLogoutClick}>로그아웃</ContactUsButton>
+    </>
+  );
 };
 
 export default ContactUs;
@@ -26,7 +38,7 @@ export const ContactUsButton = styled.div`
 
   border: 1px solid ${(props) => props.theme.colors.black300};
   border-radius: 8px;
-  margin: 20px 0;
+  margin-top: 20px;
 
   cursor: pointer;
 `;

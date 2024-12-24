@@ -15,7 +15,7 @@ import {
   Blue,
 } from '@/pages/EditProfilePage/EditProfilePage.style';
 import ToggleButtonGroupComponent from '@/components/profile/Button/ToggleButton';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface Props {
   register: any;
@@ -37,12 +37,6 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
     }, {}),
   );
 
-  useEffect(() => {
-    if (register?.parentGender?.value) {
-      setParentGender(register?.parentGender?.value);
-    }
-  }, [register?.parentGender?.value]);
-
   const handleParentGenderChange = (value: string) => {
     setParentGender(value);
     const role = value === '엄마' ? 'MOTHER' : 'FATHER';
@@ -54,11 +48,10 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
       const updatedChild = { ...prev[index], [key]: value };
       const updatedChildData = { ...prev, [index]: updatedChild };
 
-      const updatedChildren = fields.map((child: any, i: number) =>
-        i === index ? { ...child, ...updatedChild } : child,
-      );
-
+      const updatedChildren = Object.values(updatedChildData);
       onChange('children', updatedChildren);
+
+      console.log('현재 아이 데이터:', updatedChildData);
       return updatedChildData;
     });
   };
@@ -88,8 +81,11 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
           type="date"
           {...register('birthDate', {
             required: '생년월일을 입력해 주세요.',
-            onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-              onChange('birthDate', e.target.value),
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              onChange('birthDate', value);
+              console.log('보호자 생년월일:', value);
+            },
           })}
         />
         {errors.birthDate && <ErrorMessage>{errors.birthDate.message}</ErrorMessage>}
@@ -108,6 +104,7 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
                 setChildData((prev) => {
                   const newChildData = { ...prev };
                   delete newChildData[index];
+                  console.log('아이 삭제됨 - 현재 아이 데이터:', newChildData);
                   return newChildData;
                 });
                 onChange('children', updatedChildren);
@@ -120,7 +117,13 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
           </Label>
           <ToggleButtonGroupComponent
             options={['남자 아이', '여자 아이']}
-            selectedValue={childData[index]?.gender === 'MALE' ? '남자 아이' : '여자 아이'}
+            selectedValue={
+              childData[index]?.gender === 'MALE'
+                ? '남자 아이'
+                : childData[index]?.gender === 'FEMALE'
+                  ? '여자 아이'
+                  : ''
+            }
             onChange={(value) => {
               const genderValue = value === '남자 아이' ? 'MALE' : 'FEMALE';
               handleChildDataChange(index, 'gender', genderValue);
@@ -136,8 +139,10 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
               value={childData[index]?.birthDate || ''}
               {...register(`children.${index}.birthDate`, {
                 required: '아이 생년월일을 입력해 주세요.',
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChildDataChange(index, 'birthDate', e.target.value),
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                  const value = e.target.value;
+                  handleChildDataChange(index, 'birthDate', value);
+                },
               })}
             />
             {errors.children?.[index]?.birthDate && (
@@ -151,10 +156,14 @@ const FamilyInfoSection = ({ register, errors, fields, append, remove, onChange 
         type="button"
         onClick={() => {
           append({ gender: '', birthDate: '' });
-          setChildData((prev) => ({
-            ...prev,
-            [fields.length]: { gender: '', birthDate: '' },
-          }));
+          setChildData((prev) => {
+            const newChildData = {
+              ...prev,
+              [Object.keys(prev).length]: { gender: '', birthDate: '' },
+            };
+            console.log('아이 추가됨 - 현재 아이 데이터:', newChildData);
+            return newChildData;
+          });
           onChange('children', [...fields, { gender: '', birthDate: '' }]);
         }}
       >
