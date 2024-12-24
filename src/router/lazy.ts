@@ -39,6 +39,10 @@ export const ReportFriendPage = lazy(() => import('@/pages/ReportFriendPage/Repo
 
 export const SignInPage = lazy(() => import('@/pages/SignInPage/SignInPage'));
 
+export const SignUpCompletePage = lazy(
+  () => import('@/pages/SignUpCompletePage/SignUpCompletePage'),
+);
+
 export const SignUpPage = lazy(() => import('@/pages/SignUpPage/SignUpPage'));
 
 export const PlaygroundSearchPage = lazy(
