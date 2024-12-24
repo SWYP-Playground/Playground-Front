@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Button } from '@radix-ui/themes';
-import LogoVertical from '@/assets/svg/logo-horizon.svg';
+import LogoVertical from '@/assets/svg/logo-vertical.svg';
 
 interface SignUpCompletePopupProps {
   onClose: () => void;
