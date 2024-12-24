@@ -10,8 +10,10 @@ import { useResetError } from '@hooks/common/useResetError';
 import BottomNav from '@components/layout/BottomNav/BottomNav';
 
 function App() {
+  const { handleErrorReset } = useResetError();
+
   return (
-    <ErrorBoundary Fallback={Error} onReset={useResetError}>
+    <ErrorBoundary Fallback={Error} onReset={handleErrorReset}>
       <Login>
         <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '100dvh' }}>
           <main
