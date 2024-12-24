@@ -1,6 +1,8 @@
 import { HTTP_ERROR_MESSAGE, HTTP_STATUS_CODE } from '@/constants/api';
 // import { useTokenError } from '@/hooks/member/useTokenError';
 import { hasKeyInObject } from '@/utils/typeGuard';
+import { ErrorButton, ErrorFlex, ErrorMessage } from '@/components/common/Error/Error.style';
+import LogoIcon from '@/assets/svg/logo-vertical.svg?react';
 
 export interface ErrorProps {
   statusCode?: number;
@@ -15,14 +17,16 @@ const Error = ({ statusCode = HTTP_STATUS_CODE.NOT_FOUND, errorCode, resetError 
 
   // const { handleTokenError } = useTokenError();
 
-  console.log(errorCode);
+  console.log(errorCode, isHTTPError);
 
-  if (!isHTTPError) return null;
+  // if (!isHTTPError) return null;
 
   return (
-    <>
-      <button onClick={resetError}>에러 리셋하기</button>
-    </>
+    <ErrorFlex>
+      <LogoIcon width="200px" height="200px" />
+      <ErrorMessage>오류가 발생하였습니다!</ErrorMessage>
+      <ErrorButton onClick={resetError}>에러 리셋하기</ErrorButton>
+    </ErrorFlex>
   );
 };
 
