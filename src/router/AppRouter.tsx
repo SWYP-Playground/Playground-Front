@@ -145,14 +145,6 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.SIGNUP_COMPLETE,
-          element: (
-            <Suspense>
-              <Lazy.SignUpCompletePage />
-            </Suspense>
-          ),
-        },
-        {
           path: PATH.PLAYGROUND_SEARCH,
           element: (
             <Suspense>
