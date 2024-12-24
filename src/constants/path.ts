@@ -1,7 +1,6 @@
 export const PATH = {
   ROOT: '/',
   SIGNUP: '/sign-up',
-  SIGNUP_COMPLETE: '/sign-up/complete',
   SIGNIN: '/sign-in',
   FIND_ACCOUNT: '/find-account',
   FIND_PLAYGROUND_FRIEND: '/find-playground-friend',
