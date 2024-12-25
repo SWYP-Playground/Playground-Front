@@ -13,14 +13,14 @@ import {
 import MyGroupsSection from '@/components/profile/MyPage/MyGroupsSection.tsx';
 import { PATH } from '@/constants/path.ts';
 import Card from '@/components/common/Card/Card';
-import { useMyFindFriendListQuery } from '@/hooks/api/useMyFindFriendListQuery';
 import { useRecentFriendQuery } from '@/hooks/api/useRecentFriendQuery';
+import { useMainFindFriendListQuery } from '@/hooks/api/useMainFindFriendListQuery';
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const { MyFindFriendListData } = useMyFindFriendListQuery();
+  const { MainFindFriendListData } = useMainFindFriendListQuery();
   const { RecentFriendData } = useRecentFriendQuery();
-  const recruitingData = MyFindFriendListData.filter(
+  const recruitingData = MainFindFriendListData.filter(
     (item) => item.recruitmentStatus === 'RECRUITING',
   );
 
