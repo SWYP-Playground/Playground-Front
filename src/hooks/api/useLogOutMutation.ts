@@ -12,6 +12,7 @@ export const useLogOutMutation = () => {
   const logOutMutation = useMutation({
     mutationFn: postLogout,
     onSuccess: () => {
+      localStorage.clear();
       queryClient.clear();
       navigate(PATH.SIGNIN);
     },
