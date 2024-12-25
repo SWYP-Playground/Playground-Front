@@ -33,6 +33,7 @@ const ToggleButtonGroupComponent = ({ options, selectedValue, onChange }: Toggle
     <ToggleButtonGroup>
       {options.map((option) => (
         <ToggleButton
+          type="button"
           key={option}
           isSelected={selectedValue === option}
           onClick={() => {
