@@ -21,12 +21,11 @@ import Good from '@/assets/png/good.png';
 import Again from '@/assets/png/again.png';
 
 interface TemperatureModalProps {
-  friendId: string;
   nickname: string;
   children: ReactNode;
 }
 
-const TemperatureModal = ({ friendId, nickname, children }: TemperatureModalProps) => {
+const TemperatureModal = ({ nickname, children }: TemperatureModalProps) => {
   const navigate = useNavigate();
   const [selectedValue, setSelectedValue] = useState<TemperatureType>('good');
 
@@ -46,7 +45,7 @@ const TemperatureModal = ({ friendId, nickname, children }: TemperatureModalProp
   };
 
   const reportFriend = () => {
-    navigate(PATH.REPORT_FRIEND(friendId));
+    navigate(PATH.REPORT_FRIEND(nickname));
   };
 
   return (

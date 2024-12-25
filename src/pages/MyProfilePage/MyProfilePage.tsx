@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Header from '@/components/layout/Header/Header.tsx';
@@ -22,7 +23,6 @@ import { useParentQuery } from '@/hooks/api/useParentQuery';
 import { useMyFindFriendListQuery } from '@/hooks/api/useMyFindFriendListQuery';
 import { useRecentFriendQuery } from '@/hooks/api/useRecentFriendQuery';
 import RequirementRoom from '@/components/common/RequirementRoom/RequirementRoom.tsx';
-import { useEffect, useState } from 'react';
 
 const MyProfilePage = () => {
   const navigate = useNavigate();
@@ -59,6 +59,7 @@ const MyProfilePage = () => {
         <Header
           title="내정보"
           leftIcon={<LeftIcon />}
+          onLeftClick={() => navigate(-1)}
           rightIcon={<SettingButton />}
           onRightClick={() => navigate(PATH.USER_SETTING(parentId))}
         />
@@ -67,7 +68,7 @@ const MyProfilePage = () => {
 
       <TitleContainer>
         <TitleText>내가 모집한 모임</TitleText>
-        <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS(parentId))}>더보기</ViewMore>
+        <ViewMore onClick={() => navigate(PATH.MY_RECRUITMENTS)}>더보기</ViewMore>
       </TitleContainer>
       {singleFindFriend.length > 0 ? (
         singleFindFriend.map((item) => (
@@ -88,7 +89,7 @@ const MyProfilePage = () => {
 
       <TitleContainer>
         <TitleText>최근 논 친구</TitleText>
-        <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED(parentId))}>더보기</ViewMore>
+        <ViewMore onClick={() => navigate(PATH.FRIENDS_PLAYED)}>더보기</ViewMore>
       </TitleContainer>
       <RecentFriendsContainer>
         {singleRecentFriend.length > 0 ? (
@@ -100,7 +101,6 @@ const MyProfilePage = () => {
               address={friend.address}
               image={friend.profileImg}
               content={friend.introduce}
-              onClick={() => navigate(PATH.FRIENDS_PLAYED(parentId))}
             />
           ))
         ) : (

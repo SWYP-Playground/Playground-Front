@@ -1,20 +1,18 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Header from '@/components/layout/Header/Header';
 import { ReportFriendFlex } from '@/pages/ReportFriendPage/ReportFriendPage.style';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
 import TextInput from '@/components/common/TextInput/TextInput';
-import { useParentQuery } from '@/hooks/api/useParentQuery';
 import { useReportMutation } from '@/hooks/api/useReportMutation';
 import getDecodedTokenData from '@/utils/getDecodedTokenData';
-import { useEffect, useState } from 'react';
 import { PATH } from '@/constants/path';
 
 const ReportFriendPage = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const { userId: findFriendId } = params;
-  const { ParentData } = useParentQuery(Number(findFriendId));
+  const { userId: friendNickname } = params;
   const reportMutation = useReportMutation();
   const [nickname, setNickname] = useState<string | null>(null);
 
@@ -36,12 +34,11 @@ const ReportFriendPage = () => {
   };
 
   const handleSubmitReport = (cause: string) => {
-    if (ParentData && findFriendId && nickname) {
+    if (friendNickname && nickname) {
       reportMutation.mutate(
         {
           ReportData: {
-            targetNickname: ParentData.nickname,
-            findFriendId: Number(findFriendId),
+            targetNickname: nickname,
             cause,
             writtenBy: nickname,
           },

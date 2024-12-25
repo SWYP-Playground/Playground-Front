@@ -9,7 +9,6 @@ export interface ReportData {
 
 export interface ReportRequestBody {
   targetNickname: string;
-  findFriendId: number;
   cause: string;
   writtenBy: string;
 }
