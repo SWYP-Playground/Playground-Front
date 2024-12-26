@@ -89,7 +89,7 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.FRIENDS_PLAYED(':userId'),
+          path: PATH.FRIENDS_PLAYED,
           element: (
             <Suspense>
               <Lazy.FriendsPlayedPage />
@@ -161,7 +161,7 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.MY_RECRUITMENTS(':userId'),
+          path: PATH.MY_RECRUITMENTS,
           element: (
             <Suspense>
               <Lazy.MyRecruitmentsPage />

@@ -1,13 +1,13 @@
 import { AxiosError } from 'axios';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { FindFriendData } from '@/types/friend';
-// import { getMainFindFriendList } from '@/api/findFriend/getMainFindFriendList';
+import { FindFriendRoomType } from '@/types/friend';
+import { getMainFindFriendList } from '@/api/findFriend/getMainFindFriendList';
 
 export const useMainFindFriendListQuery = () => {
-  const { data: MainFindFriendListData } = useSuspenseQuery<FindFriendData[], AxiosError>({
+  const { data: MainFindFriendListData } = useSuspenseQuery<FindFriendRoomType[], AxiosError>({
     queryKey: ['mainFindFriendList'],
-    // queryFn: () => getMainFindFriendList(),
+    queryFn: () => getMainFindFriendList(),
   });
 
   return { MainFindFriendListData };
