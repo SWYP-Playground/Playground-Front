@@ -16,12 +16,12 @@ import { useDebounce } from '@/hooks/common/useDebounce';
 import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
 
 const PlaygroundSearchPage = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const debouncedPlaygroundWord = useDebounce(searchQuery, 500);
-  const { playgroundsData } = usePlaygroundsQuery(debouncedPlaygroundWord || query || '');
-  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState<string>(query || '');
+  const debouncedPlaygroundWord = useDebounce(searchQuery, 250);
+  const { playgroundsData } = usePlaygroundsQuery(debouncedPlaygroundWord);
 
   const goToBackPage = () => {
     navigate(-1);
@@ -41,7 +41,7 @@ const PlaygroundSearchPage = () => {
         onRightClick={goToCreatePlayground}
       />
       <SearchBarWrapper>
-        <PlayGroundSearchBar onSearchChange={setSearchQuery} />
+        <PlayGroundSearchBar query={searchQuery} onSearchChange={setSearchQuery} />
       </SearchBarWrapper>
       <PlayGroundItemFlex>
         {playgroundsData &&
