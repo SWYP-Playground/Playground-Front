@@ -13,18 +13,19 @@ import SearchIcon from '@/assets/svg/search.svg?react';
 import { PATH } from '@/constants/path';
 
 interface PlayGroundSearchBarProps {
+  query?: string;
   onSearchChange?: (query: string) => void;
 }
 
-const PlayGroundSearchBar = ({ onSearchChange }: PlayGroundSearchBarProps) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('query');
+const PlayGroundSearchBar = ({ query, onSearchChange }: PlayGroundSearchBarProps) => {
+  // const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, _] = useSearchParams();
   const [word, setWord] = useState<string>(query || '');
   const inputRef = useRef<HTMLInputElement>(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const goToSearchPage = async () => {
+  const goToSearchPage = () => {
     if (pathname === PATH.PLAYGROUND_SEARCH) return;
 
     if (query) return navigate({ pathname: PATH.PLAYGROUND_SEARCH, search: `?query=${query}` });
@@ -53,7 +54,7 @@ const PlayGroundSearchBar = ({ onSearchChange }: PlayGroundSearchBarProps) => {
     onSearchChange?.('');
     if (query) {
       searchParams.delete('query');
-      setSearchParams(searchParams, { replace: true });
+      // setSearchParams(searchParams, { replace: true });
     }
     focusInput();
   };
