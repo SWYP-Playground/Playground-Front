@@ -1,16 +1,17 @@
 import { AxiosError } from 'axios';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { getPlaygrounds } from '@/api/playground/getPlaygrounds';
-import { PlaygroundType } from '@/types/playground';
+import { PlaygroundData, PlaygroundType } from '@/types/playground';
 
 export const usePlaygroundsQuery = (playgroundId: string) => {
-  const { data } = useSuspenseQuery<PlaygroundType, AxiosError>({
+  const { data, isLoading } = useQuery<PlaygroundType, AxiosError, PlaygroundData[]>({
     queryKey: ['playgrounds', playgroundId],
     queryFn: () => getPlaygrounds(playgroundId),
+    select: (data) => data.playgrounds,
     gcTime: 7 * 24 * 60 * 60 * 1000,
     staleTime: Infinity,
   });
 
-  return { playgroundsData: data.playgrounds };
+  return { playgroundsData: data ?? [], isLoading };
 };

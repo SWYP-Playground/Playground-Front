@@ -1,5 +1,5 @@
 import { Flex } from '@radix-ui/themes';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
 import {
@@ -27,30 +27,29 @@ interface PlayGroundFormSearchBarProps {
 
 const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSearchBarProps) => {
   const [inputValue, setInputValue] = useState<string>(playgroundName ?? '');
-  const [suggestions, setSuggestions] = useState<PlaygroundData[]>([]);
   const [selectedPlayground, setSelectedPlayground] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const debouncedInputValue = useDebounce(inputValue, 150);
-  const { playgroundsData } = usePlaygroundsQuery(debouncedInputValue);
+  const debouncedInputValue = useDebounce(inputValue, 250);
+  const { playgroundsData, isLoading } = usePlaygroundsQuery(debouncedInputValue);
+  const filteredSuggestions = isFocused && debouncedInputValue ? playgroundsData : [];
 
   const focusInput = () => {
     inputRef.current?.focus();
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     setInputValue(value);
-  };
+  }, []);
 
   const handleInputClear = () => {
     setInputValue('');
-    setSuggestions([]);
     focusInput();
   };
 
-  const handleSuggestionClear = () => {
+  const handleSelectedClear = () => {
     const initialPlayground = {
       id: '',
       name: '',
@@ -66,7 +65,6 @@ const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSea
   const handlePlaygroundSelect = (playground: PlaygroundData) => {
     setSelectedPlayground(playground.name);
     setInputValue(playground.name);
-    setSuggestions([]);
     setIsFocused(false);
 
     setValue('playgroundName', playground);
@@ -80,29 +78,17 @@ const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSea
   }, []);
 
   useEffect(() => {
-    if (isFocused && debouncedInputValue) {
-      setSuggestions(playgroundsData);
-    } else {
-      setSuggestions([]);
-    }
-  }, [debouncedInputValue, isFocused]);
-
-  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target as Node)
       ) {
         setIsFocused(false);
-        setSuggestions([]);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -129,18 +115,20 @@ const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSea
             <SearchIcon width="20" height="20" />
           </FormSearchButton>
         </FormSearchInputFlex>
-        {(suggestions.length > 0 || isFocused) && (
+        {(filteredSuggestions.length > 0 || isFocused) && (
           <SuggestionFlex direction="column" gap="3">
             {/* 최근 검색어 섹션 */}
             {debouncedInputValue === '' && (
-              <div>
+              <Flex>
                 <FormAlertName>놀이터 이름을 정확히 입력해 주세요</FormAlertName>
-              </div>
+              </Flex>
             )}
 
             {/* 검색 결과 목록 */}
-
-            {suggestions.map((playground) => (
+            {debouncedInputValue && filteredSuggestions.length === 0 && !isLoading && (
+              <Flex>해당하는 놀이터가 없습니다</Flex>
+            )}
+            {filteredSuggestions.map((playground) => (
               <Flex
                 key={playground.id}
                 onClick={() => handlePlaygroundSelect(playground)}
@@ -156,7 +144,7 @@ const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSea
       </FormSearchFlex>
 
       {selectedPlayground && (
-        <SelectButton onClick={handleSuggestionClear}>
+        <SelectButton onClick={handleSelectedClear}>
           <VectorIcon />
           {selectedPlayground}
           <CancelIcon />

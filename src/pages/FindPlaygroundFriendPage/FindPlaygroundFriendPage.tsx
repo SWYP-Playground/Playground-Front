@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Flex } from '@radix-ui/themes';
 
@@ -17,6 +17,7 @@ const FindPlaygroundFriendPage = () => {
   const navigate = useNavigate();
   const [searchParams, _] = useSearchParams();
   const query = searchParams.get('query');
+  const [searchQuery, setSearchQuery] = useState<string>(query || '');
   const { playgroundsData } = query ? usePlaygroundsQuery(query) : { playgroundsData: [] };
 
   const goToBackPage = () => {
@@ -27,17 +28,18 @@ const FindPlaygroundFriendPage = () => {
 
   useEffect(() => {
     query ? open() : close();
-  }, [query]);
+  }, [query, open, close]);
 
   return (
     <PlaygroundFlex direction="column">
       <Header title="놀이터 찾기" leftIcon={<LeftIcon />} onLeftClick={goToBackPage} />
       <Flex style={{ padding: '0 16px' }}>
-        <PlayGroundSearchBar />
+        <PlayGroundSearchBar query={searchQuery} onSearchChange={setSearchQuery} />
       </Flex>
-      <CustomBottomSheet isOpen={isOpen} onClose={close} showBackdrop={false}>
-        {playgroundsData &&
-          playgroundsData.map((item) => (
+      <PlayGroundMap playgroundsData={playgroundsData} />
+      {playgroundsData && (
+        <CustomBottomSheet isOpen={isOpen} onClose={close} showBackdrop={false}>
+          {playgroundsData.map((item) => (
             <PlayGroundItem
               key={item.id}
               playgroundId={item.id}
@@ -46,8 +48,8 @@ const FindPlaygroundFriendPage = () => {
               distance={item.distance}
             />
           ))}
-      </CustomBottomSheet>
-      <PlayGroundMap playgroundsData={playgroundsData} />
+        </CustomBottomSheet>
+      )}
       <PlayGroundButton />
     </PlaygroundFlex>
   );
