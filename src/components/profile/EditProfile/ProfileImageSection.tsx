@@ -19,7 +19,7 @@ import {
   Blue,
   HiddenInput,
 } from '@/pages/EditProfilePage/EditProfilePage.style';
-
+import { getRandomImage } from '@/components/profile/RandomImage.tsx';
 interface ProfileImageSectionProps {
   register: any;
   errors: any;
@@ -67,9 +67,9 @@ const ProfileImageSection = ({
   return (
     <ComponentContainer>
       <ProfileImage>
-        {selectedImage && (
+        {selectedImage || (
           <img
-            src={selectedImage}
+            src={getRandomImage()}
             alt="Selected profile"
             style={{
               width: '100%',

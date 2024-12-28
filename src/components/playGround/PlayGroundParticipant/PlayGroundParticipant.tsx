@@ -3,17 +3,18 @@ import {
   PlayGroundParticipantSpan,
 } from '@/components/playGround/PlayGroundParticipant/PlayGroundParticipant.style';
 import { Avatar } from '@radix-ui/themes';
+import { getRandomImage } from '@/components/profile/RandomImage.tsx';
 
 interface PlayGroundParticipantProps {
-  image: string;
+  image?: string;
   nickname: string;
   onClick?: () => void;
 }
 
-const PlayGroundParticipant = ({ image, nickname, onClick }: PlayGroundParticipantProps) => {
+const PlayGroundParticipant = ({ nickname, onClick }: PlayGroundParticipantProps) => {
   return (
     <PlayGroundParticipantFlex onClick={onClick}>
-      <Avatar src={image} fallback="A" radius="full" size="4" />
+      <Avatar src={getRandomImage()} fallback="A" radius="full" size="4" />
       <PlayGroundParticipantSpan>{nickname}</PlayGroundParticipantSpan>
     </PlayGroundParticipantFlex>
   );
