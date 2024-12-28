@@ -31,7 +31,7 @@ const MainPage = () => {
 
       <TitleContainer>
         <TitleText>모집 중인 모임</TitleText>
-        {/* <ViewMore onClick={() => navigate(PATH.ACTIVE_RECRUITMENTS('1'))}>더보기</ViewMore> */}
+        <ViewMore onClick={() => navigate(PATH.ACTIVE_RECRUITMENTS('1'))}>더보기</ViewMore>
       </TitleContainer>
       {recruitingData.length > 0 ? (
         <MyGroupsSection requireData={recruitingData} />
