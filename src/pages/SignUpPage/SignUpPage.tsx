@@ -146,7 +146,9 @@ const SignUpPage = () => {
           </CheckboxWrapper>
           <CheckboxLabel htmlFor="agreement">개인정보약관에 동의합니다</CheckboxLabel>
           {errors.agreement && <ErrorMessage>{errors.agreement.message}</ErrorMessage>}
-          <DetailsLink>자세히 보기</DetailsLink>
+          <DetailsLink href="https://dent-kitten-aab.notion.site/17130a2dbf6f80bf8f06f41d8119349d">
+            자세히 보기
+          </DetailsLink>
         </CheckboxContainer>
 
         <SubmitButton
