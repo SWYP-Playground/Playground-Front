@@ -51,7 +51,6 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
       const map = mapRef.current;
 
       const stopCenterUpdate = () => {
-        console.log('사용자가 지도를 이동했습니다.');
         setCenterUpdateAllowed(false);
       };
 
@@ -78,20 +77,35 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
   }, [coords.latitude, coords.longitude, currentPosition, centerUpdateAllowed]);
 
   useEffect(() => {
-    if (playgroundsData && playgroundsData.length > 0) {
-      const firstPlayground = playgroundsData[0];
-      const newCenter = {
-        lat: Number(firstPlayground.latitude),
-        lng: Number(firstPlayground.longitude),
-      };
-      setMapCenter(newCenter);
+    const initializeMap = async () => {
+      if (playgroundsData && playgroundsData.length > 0) {
+        const firstPlayground = playgroundsData[0];
+        const newCenter = {
+          lat: Number(firstPlayground.latitude),
+          lng: Number(firstPlayground.longitude),
+        };
+        setMapCenter(newCenter);
 
-      if (mapRef.current) {
-        const kakaoCenter = new kakao.maps.LatLng(newCenter.lat, newCenter.lng);
-        mapRef.current.setCenter(kakaoCenter);
+        if (mapRef.current) {
+          const kakaoCenter = new kakao.maps.LatLng(newCenter.lat, newCenter.lng);
+          mapRef.current.setCenter(kakaoCenter);
+        }
+      } else if (coords.latitude && coords.longitude) {
+        const position = {
+          lat: coords.latitude,
+          lng: coords.longitude,
+        };
+        setCurrentPosition(position);
+        setMapCenter(position);
+        if (mapRef.current) {
+          const kakaoCenter = new kakao.maps.LatLng(position.lat, position.lng);
+          mapRef.current.setCenter(kakaoCenter);
+        }
       }
-    }
-  }, [playgroundsData]);
+    };
+
+    initializeMap();
+  }, [coords.latitude, coords.longitude, playgroundsData]);
 
   console.log(locationError);
 
