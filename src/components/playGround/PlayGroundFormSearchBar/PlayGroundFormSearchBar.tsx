@@ -71,11 +71,13 @@ const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSea
   };
 
   useEffect(() => {
-    if (playgroundName && playgroundsData.length > 0) {
-      setValue('playgroundName', playgroundsData[0]);
-      setSelectedPlayground(playgroundsData[0].name);
+    if (debouncedInputValue === playgroundName) {
+      if (playgroundName && playgroundsData.length > 0) {
+        setValue('playgroundName', playgroundsData[0]);
+        setSelectedPlayground(playgroundsData[0].name);
+      }
     }
-  }, []);
+  }, [playgroundName, playgroundsData]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
