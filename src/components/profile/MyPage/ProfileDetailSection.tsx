@@ -14,10 +14,9 @@ import ProgressBar from './ProgressBar.tsx';
 import ChildCard from '@/components/profile/MyPage/ChildCard.tsx';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
-// import DefaultProfile from '@/assets/png/profile1.png';
+import DefaultProfile from '@/assets/png/profile1.png';
 import { ParentData } from '@/types/parent.ts';
 import { convertRole } from '@/utils/convertRole.ts';
-import { getRandomImage } from '@/components/profile/RandomImage.tsx';
 
 interface ProfileDetailsProps {
   parentInfo: ParentData;
@@ -30,8 +29,7 @@ const ProfileDetails = ({ parentInfo, showButtons, showSummary }: ProfileDetails
 
   return (
     <ProfileContainer>
-      {/* <ProfileImage src={parentInfo.profileImg || DefaultProfile} alt="프로필 이미지" /> */}
-      <ProfileImage src={getRandomImage()} alt="프로필 이미지" />
+      <ProfileImage src={parentInfo.profileImg || DefaultProfile} alt="프로필 이미지" />
       <ProfileLabel>{parentInfo.nickname}</ProfileLabel>
       <ProfileSubLabel>{`${convertRole(parentInfo.role)} ㆍ ${parentInfo.address}`}</ProfileSubLabel>
       {showSummary && <SummaryText>{`"${parentInfo.introduce}"`}</SummaryText>}
