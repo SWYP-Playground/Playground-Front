@@ -19,7 +19,6 @@ import {
   Blue,
   HiddenInput,
 } from '@/pages/EditProfilePage/EditProfilePage.style';
-import { getRandomImage } from '@/components/profile/RandomImage.tsx';
 interface ProfileImageSectionProps {
   register: any;
   errors: any;
@@ -33,7 +32,7 @@ const ProfileImageSection = ({
   onFileChange,
   onChange,
 }: ProfileImageSectionProps) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
   const [isPhoneChecked, setIsPhoneChecked] = useState(false);
   const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
@@ -42,7 +41,9 @@ const ProfileImageSection = ({
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedImage(URL.createObjectURL(file));
+      const imageUrl = URL.createObjectURL(file);
+      // console.log('Blob URL: ', imageUrl);
+      setSelectedImage(imageUrl);
       onFileChange(file);
     }
   };
@@ -67,9 +68,9 @@ const ProfileImageSection = ({
   return (
     <ComponentContainer>
       <ProfileImage>
-        {selectedImage || (
+        {selectedImage ? (
           <img
-            src={getRandomImage()}
+            src={selectedImage}
             alt="Selected profile"
             style={{
               width: '100%',
@@ -78,6 +79,17 @@ const ProfileImageSection = ({
               objectFit: 'cover',
             }}
           />
+        ) : (
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: '#f4f4f4',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          ></div>
         )}
       </ProfileImage>
       <ProfileImageContainer>
