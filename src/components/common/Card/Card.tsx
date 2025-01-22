@@ -11,7 +11,6 @@ import {
 import { useParentQuery } from '@/hooks/api/useParentQuery';
 import { ParentRoleType } from '@/types/parent';
 import { convertRole } from '@/utils/convertRole';
-import { getRandomImage } from '@/components/profile/RandomImage.tsx';
 
 interface CardProps {
   onClick?: () => void;
@@ -30,7 +29,7 @@ const Card = ({
   nickname,
   status,
   address,
-  // image,
+  image,
   content,
   isSummary = false,
 }: CardProps) => {
@@ -58,7 +57,7 @@ const Card = ({
               </>
             )}
           </CardUser>
-          <CardAvatar size="5" src={getRandomImage()} fallback="A" radius="full" />
+          <CardAvatar size="5" src={image} fallback="A" radius="full" />
         </CardHeader>
         <CardContent isSummary={isSummary}>{content}</CardContent>
       </CardMain>
