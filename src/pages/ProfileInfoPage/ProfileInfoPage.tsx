@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import Header from '@/components/layout/Header/Header.tsx';
 import LeftIcon from '@/assets/svg/left-icon.svg?react';
-import { Container, SendMessageButton } from '@/pages/ProfileInfoPage/ProfileInfoPage.syle.ts';
+import { Container, SendMessageButton } from '@/pages/ProfileInfoPage/ProfileInfoPage.style';
 import ProfileDetails from '@/components/profile/MyPage/ProfileDetailSection.tsx';
 import { useParentQuery } from '@/hooks/api/useParentQuery';
 import CustomBottomSheet from '@/components/common/BottomSheet/CustomBottomSheet';
