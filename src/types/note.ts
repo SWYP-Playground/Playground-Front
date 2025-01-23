@@ -5,6 +5,7 @@ export interface NoteData {
   writtenBy: string;
   writerId: number;
   sentAt: string;
+  read: boolean;
 }
 
 export interface NoteRequestBody {
