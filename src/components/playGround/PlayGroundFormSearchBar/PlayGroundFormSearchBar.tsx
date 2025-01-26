@@ -19,6 +19,7 @@ import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
 import { PlaygroundData } from '@/types/playground';
 import VectorIcon from '@/assets/svg/vector.svg?react';
 import CancelIcon from '@/assets/svg/cancel.svg?react';
+import { sortByDistance } from '@/utils/sortByDistance';
 
 interface PlayGroundFormSearchBarProps {
   setValue: UseFormSetValue<FormValues>;
@@ -33,7 +34,8 @@ const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSea
   const inputRef = useRef<HTMLInputElement>(null);
   const debouncedInputValue = useDebounce(inputValue, 250);
   const { playgroundsData, isLoading } = usePlaygroundsQuery(debouncedInputValue);
-  const filteredSuggestions = isFocused && debouncedInputValue ? playgroundsData : [];
+  const playgrounds = sortByDistance(playgroundsData);
+  const filteredSuggestions = isFocused && debouncedInputValue ? playgrounds : [];
 
   const focusInput = () => {
     inputRef.current?.focus();
@@ -71,11 +73,13 @@ const PlayGroundFormSearchBar = ({ setValue, playgroundName }: PlayGroundFormSea
   };
 
   useEffect(() => {
-    if (playgroundName && playgroundsData.length > 0) {
-      setValue('playgroundName', playgroundsData[0]);
-      setSelectedPlayground(playgroundsData[0].name);
+    if (debouncedInputValue === playgroundName) {
+      if (playgroundName && playgroundsData.length > 0) {
+        setValue('playgroundName', playgroundsData[0]);
+        setSelectedPlayground(playgroundsData[0].name);
+      }
     }
-  }, []);
+  }, [playgroundName, playgroundsData]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

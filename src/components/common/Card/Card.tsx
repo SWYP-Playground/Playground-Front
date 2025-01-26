@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
   CardFlex,
   CardMain,
@@ -11,6 +13,8 @@ import {
 import { useParentQuery } from '@/hooks/api/useParentQuery';
 import { ParentRoleType } from '@/types/parent';
 import { convertRole } from '@/utils/convertRole';
+import { getRandomImage } from '@/components/profile/RandomImage.tsx';
+import { PATH } from '@/constants/path';
 
 interface CardProps {
   onClick?: () => void;
@@ -33,7 +37,13 @@ const Card = ({
   content,
   isSummary = false,
 }: CardProps) => {
+  const navigate = useNavigate();
   const { ParentData } = useParentQuery(Number(id));
+
+  const goToProfileInfo = (id: string) => (event: React.MouseEvent<HTMLImageElement>) => {
+    event.stopPropagation();
+    navigate(PATH.PROFILE_INFO(id));
+  };
 
   return (
     <CardFlex onClick={onClick}>
@@ -57,7 +67,13 @@ const Card = ({
               </>
             )}
           </CardUser>
-          <CardAvatar size="5" src={image} fallback="A" radius="full" />
+          <CardAvatar
+            size="5"
+            src={getRandomImage()}
+            fallback="A"
+            radius="full"
+            onClick={id ? goToProfileInfo(id) : () => {}}
+          />
         </CardHeader>
         <CardContent isSummary={isSummary}>{content}</CardContent>
       </CardMain>

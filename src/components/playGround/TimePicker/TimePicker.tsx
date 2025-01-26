@@ -1,7 +1,8 @@
+import { useState } from 'react';
+import { Control, Controller } from 'react-hook-form';
 import { Picker, ConfigProvider } from 'antd-mobile';
 import koKR from 'antd-mobile/es/locales/ko-KR';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
 
 import {
   PlayGroundFormElement,
@@ -9,26 +10,31 @@ import {
   DropdownButton,
   PlayGroundFormLabel,
 } from '@/components/playGround/PlayGroundForm/PlayGroundForm.style';
-import { FINISH_TIME_COLUMNS, INITIAL_FINISH_TIME } from '@/constants/playground';
-import { Control, Controller } from 'react-hook-form';
 import { FormValues } from '@/components/playGround/PlayGroundForm/PlayGroundForm';
 
 interface ControlType {
   control: Control<FormValues, any>;
-  duration: string[];
+  name: 'duration' | 'startTime';
+  label: string;
+  defaultValue: string[];
+  initialValue: string[];
+  columns: {
+    label: string;
+    value: string;
+  }[][];
 }
 
-const FinishTimePicker = ({ control, duration }: ControlType) => {
+const TimePicker = ({ control, name, label, defaultValue, initialValue, columns }: ControlType) => {
   const [visible, setVisible] = useState(false);
 
   return (
     <PlayGroundFormElement>
-      <PlayGroundFormLabel htmlFor="duration">종료 시간</PlayGroundFormLabel>
+      <PlayGroundFormLabel htmlFor={name}>{label}</PlayGroundFormLabel>
       <ConfigProvider locale={koKR}>
         <Controller
-          name="duration"
+          name={name}
           control={control}
-          defaultValue={duration.length === 0 ? INITIAL_FINISH_TIME : duration}
+          defaultValue={defaultValue.length === 0 ? initialValue : defaultValue}
           render={({ field: { value, onChange } }) => (
             <PlayGroundFormDropDown>
               <DropdownButton
@@ -41,7 +47,7 @@ const FinishTimePicker = ({ control, duration }: ControlType) => {
               </DropdownButton>
 
               <Picker
-                columns={FINISH_TIME_COLUMNS}
+                columns={columns}
                 visible={visible}
                 onClose={() => setVisible(false)}
                 value={value}
@@ -57,4 +63,4 @@ const FinishTimePicker = ({ control, duration }: ControlType) => {
   );
 };
 
-export default FinishTimePicker;
+export default TimePicker;

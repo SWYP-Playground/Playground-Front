@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { useForm, useWatch } from 'react-hook-form';
 
 import {
@@ -10,16 +11,20 @@ import {
   PlayGroundFormSubmitButton,
   PlayGroundFormElement,
 } from '@/components/playGround/PlayGroundForm/PlayGroundForm.style';
-import MeetTimePicker from '@/components/playGround/MeetTimePicker/MeetTimePicker';
-import FinishTimePicker from '@/components/playGround/FinishTimePicker/FinishTimePicker';
 import PlayGroundFormSearchBar from '@/components/playGround/PlayGroundFormSearchBar/PlayGroundFormSearchBar';
-import { DESCRIPTION_MAX_LENGTH } from '@/constants/playground';
+import {
+  DATE_COLUMNS,
+  DESCRIPTION_MAX_LENGTH,
+  FINISH_TIME_COLUMNS,
+  INITIAL_FINISH_TIME,
+  INITIAL_MEET_TIME,
+} from '@/constants/playground';
 import { PlaygroundData, PlaygroundRoom } from '@/types/playground';
 import { convertFinishTime, convertMeetTime } from '@/utils/convertTime';
 import { useRegisterFindFriendMutation } from '@/hooks/api/useRegisterFindFriendMutation';
+import TimePicker from '@/components/playGround/TimePicker/TimePicker';
 import { useUpdateFindFriendInfoMutation } from '@/hooks/api/useUpdateFindFriendInfoMutation';
 import { parseScheduleTime } from '@/utils/parseScheduleTime';
-import { toast } from 'react-toastify';
 
 export interface FormValues {
   title: string;
@@ -112,8 +117,22 @@ const PlayGroundForm = ({
         <PlayGroundFormLabel htmlFor="playgroundName">놀이터</PlayGroundFormLabel>
         <PlayGroundFormSearchBar setValue={setValue} playgroundName={playgroundName} />
       </PlayGroundFormElement>
-      <MeetTimePicker control={control} startTime={formattedStartTime} />
-      <FinishTimePicker control={control} duration={durationMinute} />
+      <TimePicker
+        control={control}
+        name="startTime"
+        label="만나는 시간"
+        defaultValue={formattedStartTime}
+        initialValue={INITIAL_MEET_TIME}
+        columns={DATE_COLUMNS}
+      />
+      <TimePicker
+        control={control}
+        name="duration"
+        label="종료 시간"
+        defaultValue={durationMinute}
+        initialValue={INITIAL_FINISH_TIME}
+        columns={FINISH_TIME_COLUMNS}
+      />
       <PlayGroundFormElement>
         <PlayGroundFormLabel htmlFor="description">모집 내용</PlayGroundFormLabel>
         <PlayGroundFormContentFlex>

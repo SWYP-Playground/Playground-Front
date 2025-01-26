@@ -12,6 +12,7 @@ import { PlaygroundFlex } from '@/pages/FindPlaygroundFriendPage/FindPlaygroundF
 import PlayGroundItem from '@/components/playGround/PlayGroundItem/PlayGroundItem';
 import LeftIcon from '@assets/svg/left-icon.svg?react';
 import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
+import { sortByDistance } from '@/utils/sortByDistance';
 
 const FindPlaygroundFriendPage = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const FindPlaygroundFriendPage = () => {
   const query = searchParams.get('query');
   const [searchQuery, setSearchQuery] = useState<string>(query || '');
   const { playgroundsData } = query ? usePlaygroundsQuery(query) : { playgroundsData: [] };
+  const playgrounds = sortByDistance(playgroundsData);
 
   const goToBackPage = () => {
     navigate(-1);
@@ -36,10 +38,10 @@ const FindPlaygroundFriendPage = () => {
       <Flex style={{ padding: '0 16px' }}>
         <PlayGroundSearchBar query={searchQuery} onSearchChange={setSearchQuery} />
       </Flex>
-      <PlayGroundMap playgroundsData={playgroundsData} />
-      {playgroundsData && (
+      <PlayGroundMap playgroundsData={playgrounds} />
+      {playgrounds && (
         <CustomBottomSheet isOpen={isOpen} onClose={close} showBackdrop={false}>
-          {playgroundsData.map((item) => (
+          {playgrounds.map((item) => (
             <PlayGroundItem
               key={item.id}
               playgroundId={item.id}
