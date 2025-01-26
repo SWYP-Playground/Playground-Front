@@ -14,6 +14,7 @@ import LeftIcon from '@assets/svg/left-icon.svg?react';
 import { useState } from 'react';
 import { useDebounce } from '@/hooks/common/useDebounce';
 import { usePlaygroundsQuery } from '@/hooks/api/usePlaygroundsQuery';
+import { sortByDistance } from '@/utils/sortByDistance';
 
 const PlaygroundSearchPage = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const PlaygroundSearchPage = () => {
   const [searchQuery, setSearchQuery] = useState<string>(query || '');
   const debouncedPlaygroundWord = useDebounce(searchQuery, 250);
   const { playgroundsData } = usePlaygroundsQuery(debouncedPlaygroundWord);
+  const playgrounds = sortByDistance(playgroundsData);
 
   const goToBackPage = () => {
     navigate(-1);
@@ -44,8 +46,8 @@ const PlaygroundSearchPage = () => {
         <PlayGroundSearchBar query={searchQuery} onSearchChange={setSearchQuery} />
       </SearchBarWrapper>
       <PlayGroundItemFlex>
-        {playgroundsData &&
-          playgroundsData.map((item) => (
+        {playgrounds &&
+          playgrounds.map((item) => (
             <PlayGroundItem
               key={item.id}
               playgroundId={item.id}

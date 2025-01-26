@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import RequirementRoom from '@/components/common/RequirementRoom/RequirementRoom';
 import Header from '@/components/layout/Header/Header';
@@ -12,6 +12,8 @@ import LeftIcon from '@assets/svg/left-icon.svg?react';
 
 const PlaygroundRoomListPage = () => {
   const navigate = useNavigate();
+  const [searchParams, _] = useSearchParams();
+  const name = searchParams.get('name');
   const params = useParams();
   const { playgroundId } = params;
   const { FindFriendListData } = useFindFriendListQuery(String(playgroundId));
@@ -25,7 +27,14 @@ const PlaygroundRoomListPage = () => {
   };
 
   const goToCreatePlaygroundPage = () => {
-    navigate(PATH.CREATE_PLAYGROUND);
+    if (name) {
+      navigate({
+        pathname: PATH.CREATE_PLAYGROUND,
+        search: createSearchParams({
+          playgroundName: name,
+        }).toString(),
+      });
+    }
   };
 
   return (

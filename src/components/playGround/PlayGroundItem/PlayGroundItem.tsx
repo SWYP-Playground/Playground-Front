@@ -6,7 +6,7 @@ import {
   PlayGroundItemFlex,
 } from '@/components/playGround/PlayGroundItem/PlayGroundItem.style';
 import VectorIcon from '@/assets/svg/vector.svg?react';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 
 interface PlayGroundItemProps {
@@ -20,7 +20,10 @@ const PlayGroundItem = ({ name, playgroundId, address, distance }: PlayGroundIte
   const navigate = useNavigate();
 
   const goPlaygroundRoomList = () => {
-    navigate(PATH.PLAYGROUND_ROOM_LIST(playgroundId));
+    navigate({
+      pathname: PATH.PLAYGROUND_ROOM_LIST(playgroundId),
+      search: createSearchParams({ name: name }).toString(),
+    });
   };
 
   return (
