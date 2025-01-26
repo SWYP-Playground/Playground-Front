@@ -60,6 +60,9 @@ export const RequirementDescription = styled.span`
 
 export const PlaygroundDetails = styled(Flex)`
   gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const RequirementTime = styled.span`
