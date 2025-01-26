@@ -31,3 +31,27 @@ export const MessageRoomContent = styled.div<{ isCurrentUser: boolean }>`
     background-color:${theme.colors.secondary};
   `}
 `;
+
+export const MessageRoomRead = styled.div`
+  display: flex;
+  align-items: end;
+  font-size: 12px;
+  margin: 0 6px;
+  color: ${({ theme }) => theme.colors.secondary};
+`;
+
+export const MessageRoomTime = styled.div<{ isCurrentUser: boolean }>`
+  width: 100%;
+  padding: 8px 0 0 0;
+  font-size: 11px;
+  color: ${({ theme }) => theme.colors.black700};
+  min-width: fit-content; /* 최소 너비를 텍스트 길이에 맞게 조정 */
+  word-wrap: break-word; /* 긴 단어도 줄바꿈 */
+  word-break: break-word; /* 단어가 너무 길 경우 줄바꿈 */
+
+  ${({ isCurrentUser }) =>
+    isCurrentUser &&
+    `
+    text-align: right;
+  `}
+`;

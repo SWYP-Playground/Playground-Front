@@ -75,6 +75,8 @@ const FriendMessagePage = () => {
               content={item.content}
               isCurrentUser={item.writtenBy === nickname}
               isFirstMessageByUser={index === 0 || Message[index - 1].writerId !== item.writerId}
+              sentAt={item.sentAt}
+              isRead={item.read}
             />
           ))}
       </MessageFlex>
