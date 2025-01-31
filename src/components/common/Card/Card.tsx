@@ -33,7 +33,6 @@ const Card = ({
   nickname,
   status,
   address,
-  // image,
   content,
   isSummary = false,
 }: CardProps) => {

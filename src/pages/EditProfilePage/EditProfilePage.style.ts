@@ -178,6 +178,7 @@ export const ProfileImage = styled.label`
   background-color: ${(props) => props.theme.colors.black100};
   border: 1px solid ${(props) => props.theme.colors.black100};
   border-radius: 50%;
+  overflow: hidden;
 `;
 
 export const RadioContainer = styled.div`
