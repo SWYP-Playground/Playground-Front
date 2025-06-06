@@ -1,9 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import { Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 
 import useKakaoLoader from '@/hooks/common/useKakaoLoader';
-import { MAP_DEFAULT_CENTER, MAP_INITIAL_ZOOM_LEVEL } from '@/constants/map';
-import useLocation from '@/hooks/common/useLocation';
+import { MAP_INITIAL_ZOOM_LEVEL } from '@/constants/map';
+import { useLocationTracking } from '@/hooks/common/useLocationTracking';
+import { useMapState } from '@/hooks/common/useMapState';
+import { useMapInitialization } from '@/hooks/common/useMapInitialization';
+import { usePlaygroundInfo } from '@/hooks/common/usePlaygroundInfo';
 import {
   CurrentPositionButton,
   PlayGroundMapDiv,
@@ -12,10 +15,6 @@ import { PlaygroundData } from '@/types/playground';
 import playerMarkerUrl from '@/assets/svg/player-marker.svg';
 import CrossHair from '@/assets/svg/crosshair.svg?react';
 import playgroundMarkerUrl from '@/assets/svg/playground-marker.svg';
-export interface CenterType {
-  lat: number;
-  lng: number;
-}
 
 interface PlayGroundMapProps {
   playgroundsData?: PlaygroundData[];
@@ -23,89 +22,27 @@ interface PlayGroundMapProps {
 
 const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
   useKakaoLoader();
-  const [centerUpdateAllowed, setCenterUpdateAllowed] = useState(true);
-  const [currentPosition, setCurrentPosition] = useState<CenterType>(MAP_DEFAULT_CENTER);
-  const [mapCenter, setMapCenter] = useState<CenterType>(MAP_DEFAULT_CENTER);
-  const [info, setInfo] = useState<string>('');
-  const mapRef = useRef<kakao.maps.Map>(null);
 
-  const { coords, error: locationError } = useLocation({
-    enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 0,
+  // 각 관심사별로 분리된 커스텀 훅들
+  const { currentPosition, coords, locationError } = useLocationTracking();
+  const { mapCenter, mapRef, moveToCenter } = useMapState();
+  const { selectedPlaygroundName, selectPlayground } = usePlaygroundInfo();
+
+  // 맵 초기화 (놀이터 데이터나 사용자 위치 기반)
+  useMapInitialization({
+    playgroundsData,
+    currentPosition,
+    hasCoords: Boolean(coords.latitude && coords.longitude),
+    moveToCenter,
   });
 
-  const moveCenter = useCallback(() => {
+  // 현재 위치로 이동하는 함수
+  const moveToCurrentPosition = useCallback(() => {
     console.log(coords.latitude, coords.longitude);
-    if (!mapRef.current || !coords.latitude || !coords.longitude) return;
-
-    const newCenter = new kakao.maps.LatLng(coords.latitude, coords.longitude);
-    mapRef.current.setCenter(newCenter);
-    setMapCenter({ lat: coords.latitude, lng: coords.longitude });
-    setCurrentPosition({ lat: coords.latitude, lng: coords.longitude });
-    setCenterUpdateAllowed(true);
-  }, [coords.latitude, coords.longitude]);
-
-  useEffect(() => {
-    if (mapRef.current) {
-      const map = mapRef.current;
-
-      const stopCenterUpdate = () => {
-        setCenterUpdateAllowed(false);
-      };
-
-      kakao.maps.event.addListener(map, 'dragend', stopCenterUpdate);
-
-      return () => {
-        kakao.maps.event.removeListener(map, 'dragend', stopCenterUpdate);
-      };
-    }
-  }, []);
-
-  useEffect(() => {
     if (coords.latitude && coords.longitude) {
-      const distance = Math.sqrt(
-        Math.pow(coords.latitude - currentPosition.lat, 2) +
-          Math.pow(coords.longitude - currentPosition.lng, 2),
-      );
-
-      if (distance > 0.001 && centerUpdateAllowed) {
-        // 0.001 정도는 미세한 이동으로 간주
-        setCurrentPosition({ lat: coords.latitude, lng: coords.longitude });
-      }
+      moveToCenter({ lat: coords.latitude, lng: coords.longitude });
     }
-  }, [coords.latitude, coords.longitude, currentPosition, centerUpdateAllowed]);
-
-  useEffect(() => {
-    const initializeMap = async () => {
-      if (playgroundsData && playgroundsData.length > 0) {
-        const firstPlayground = playgroundsData[0];
-        const newCenter = {
-          lat: Number(firstPlayground.latitude),
-          lng: Number(firstPlayground.longitude),
-        };
-        setMapCenter(newCenter);
-
-        if (mapRef.current) {
-          const kakaoCenter = new kakao.maps.LatLng(newCenter.lat, newCenter.lng);
-          mapRef.current.setCenter(kakaoCenter);
-        }
-      } else if (coords.latitude && coords.longitude) {
-        const position = {
-          lat: coords.latitude,
-          lng: coords.longitude,
-        };
-        setCurrentPosition(position);
-        setMapCenter(position);
-        if (mapRef.current) {
-          const kakaoCenter = new kakao.maps.LatLng(position.lat, position.lng);
-          mapRef.current.setCenter(kakaoCenter);
-        }
-      }
-    };
-
-    initializeMap();
-  }, [coords.latitude, coords.longitude, playgroundsData]);
+  }, [coords.latitude, coords.longitude, moveToCenter]);
 
   console.log(locationError);
 
@@ -153,16 +90,16 @@ const PlayGroundMap = ({ playgroundsData }: PlayGroundMapProps) => {
                     height: 60,
                   },
                 }}
-                onClick={() => setInfo(playground.name)}
+                onClick={() => selectPlayground(playground.name)}
               >
-                {info && info === playground.name && (
+                {selectedPlaygroundName === playground.name && (
                   <div style={{ color: '#000' }}>{playground.name}</div>
                 )}
               </MapMarker>
             ))}
           </MarkerClusterer>
         )}
-        <CurrentPositionButton title="현재 위치로 이동" onClick={moveCenter}>
+        <CurrentPositionButton title="현재 위치로 이동" onClick={moveToCurrentPosition}>
           <CrossHair />
         </CurrentPositionButton>
       </Map>
